@@ -1,0 +1,18 @@
+import 'package:flutter/material.dart';
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Text(
+          'مرحبًا بك في الصفحة الرئيسية!',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+    );
+  }
+}
