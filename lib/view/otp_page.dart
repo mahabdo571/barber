@@ -22,7 +22,7 @@ class _OtpPageState extends State<OtpPage> {
         if (state is AuthSuccess) {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (_) => const HomePage()),
+            MaterialPageRoute(builder: (_) =>  const BookingPage()),
             (route) => false,
           );
         } else if (state is AuthError) {
