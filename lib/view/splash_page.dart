@@ -1,7 +1,7 @@
 import 'package:barber/cubit/auth/auth_cubit.dart';
 import 'package:barber/cubit/auth/auth_state.dart';
-import 'package:barber/view/home_page.dart';
 import 'package:barber/view/login_page.dart';
+import 'package:barber/view/selection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,7 +29,7 @@ class _SplashPageState extends State<SplashPage> {
           Navigator.of(context).pushReplacement(
             PageRouteBuilder(
               transitionDuration: const Duration(milliseconds: 500),
-              pageBuilder: (_, __, ___) => const HomePage(),
+              pageBuilder: (_, __, ___) => const SelectionPage(),
               transitionsBuilder: (_, animation, __, child) {
                 return FadeTransition(opacity: animation, child: child);
               },
