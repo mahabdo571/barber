@@ -46,4 +46,17 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthError("رمز التحقق غير صحيح"));
     }
   }
+
+  void checkAuthStatus() async {
+    emit(AuthChecking());
+
+    final user = _auth.currentUser;
+    await Future.delayed(Duration(microseconds: 500));
+
+    if (user != null) {
+      emit(AuthSuccess());
+    } else {
+      emit(AuthInitial());
+    }
+  }
 }
