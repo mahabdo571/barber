@@ -79,8 +79,8 @@ class _FormBarberBodyState extends State<FormBarberBody> {
               controller: _phoneCtrl,
               keyboardType: TextInputType.phone, // numeric keyboard
               decoration: const InputDecoration(
-                labelText: 'رقم الهاتف',
-                hintText: 'مثال: 0591234567',
+                labelText: 'رقم الهاتف او واتساب',
+                hintText: '+970591234567',
                 prefixIcon: Icon(Icons.phone),
               ),
               validator: (value) {

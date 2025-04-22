@@ -32,18 +32,18 @@ class SelectionPage extends StatelessWidget {
                   ),
                 );
               },
-              child: Image.network(
+              child: Image.asset(
                 height: screenWidth - 100,
-                'https://cdn.vectorstock.com/i/preview-2x/02/25/barber-avatar-icon-barbershop-and-hairdresser-vector-6620225.webp',
+                'assets/images/barber.webp',
               ),
             ),
             SizedBox(height: 24),
 
             GestureDetector(
               onTap: () {},
-              child: Image.network(
+              child: Image.asset(
                 height: screenWidth - 100,
-                'https://cdn.vectorstock.com/i/preview-2x/87/41/customer-vector-27808741.webp',
+                'assets/images/person.webp',
               ),
             ),
           ],
