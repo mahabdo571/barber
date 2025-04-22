@@ -1,9 +1,16 @@
+import 'package:barber/constants.dart';
+import 'package:barber/cubit/barber_cubit/barber_cubit.dart';
+import 'package:barber/cubit/barber_cubit/barber_state.dart';
+import 'package:barber/helper/help_metod.dart';
+import 'package:barber/view/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../models/barber_model.dart';
 
 class FormBarberBody extends StatefulWidget {
-  const FormBarberBody({super.key});
-
+  const FormBarberBody({super.key, required this.isBarber});
+  final bool isBarber;
   @override
   State<FormBarberBody> createState() => _FormBarberBodyState();
 }
@@ -24,18 +31,18 @@ class _FormBarberBodyState extends State<FormBarberBody> {
     super.dispose();
   }
 
-  void _submit() {
+  void _submit() async {
     if (_formKey.currentState!.validate()) {
-      // All fields are valid, process the data
-      String name = _nameCtrl.text.trim();
-      String phone = _phoneCtrl.text.trim();
-      String location = _locationCtrl.text.trim();
-      String zipcode = _zipcode.text.trim();
+      final barber = Users(
+        uid: kUid.toString(),
+        name: _nameCtrl.text.trim(),
+        phone: _phoneCtrl.text.trim(),
+        location: _locationCtrl.text.trim(),
+        zipcode: _zipcode.text.trim(),
+        isBarber: widget.isBarber,
+      );
 
-      // TODO: send data to backend or move to next screen
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('تمّ حفظ البيانات بنجاح!')));
+      await context.read<BarberCubit>().addBarber(barber);
     }
   }
 
@@ -50,6 +57,40 @@ class _FormBarberBodyState extends State<FormBarberBody> {
 
   @override
   Widget build(BuildContext context) {
+    return _buildForm(context);
+  }
+
+  Widget _buildForm(BuildContext context) {
+    return BlocConsumer<BarberCubit, BarberState>(
+      listener: (context, state) {
+        if (state is BarberLoading) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (_) => const Center(child: CircularProgressIndicator()),
+          );
+        } else {
+          Navigator.of(context, rootNavigator: true).pop();
+          if (state is BarberSuccess) {
+            gotoPage(context, HomePage());
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('تم حفظ البيانات بنجاح!')),
+            );
+            _formKey.currentState?.reset();
+          } else if (state is BarberFailure) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text('خطأ: ${state.error}')));
+          }
+        }
+      },
+      builder: (context, state) {
+        return FillForm(); // هنا مكان الفورم تبعك
+      },
+    );
+  }
+
+  SingleChildScrollView FillForm() {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0), // consistent padding
       child: Form(

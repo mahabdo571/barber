@@ -41,7 +41,7 @@ class AuthCubit extends Cubit<AuthState> {
         smsCode: otpCode,
       );
       await _auth.signInWithCredential(credential);
-      emit(AuthSuccess());
+          emit(AuthSuccess());
     } catch (e) {
       emit(AuthError("رمز التحقق غير صحيح"));
     }
@@ -51,7 +51,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthChecking());
 
     final user = _auth.currentUser;
-    await Future.delayed(Duration(microseconds: 500));
+    await Future.delayed(Duration(seconds: 3));
 
     if (user != null) {
       emit(AuthSuccess());

@@ -1,5 +1,7 @@
-import 'package:barber/constants.dart';
-import 'package:barber/view/barber_data_form.dart';
+import 'package:barber/helper/help_metod.dart';
+
+import '../constants.dart';
+import 'barber_data_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -22,15 +24,7 @@ class SelectionPage extends StatelessWidget {
             SizedBox(height: 24),
             GestureDetector(
               onTap: () {
-                Navigator.of(context).pushReplacement(
-                  PageRouteBuilder(
-                    transitionDuration: const Duration(milliseconds: 500),
-                    pageBuilder: (_, __, ___) => const BarberDataForm(),
-                    transitionsBuilder: (_, animation, __, child) {
-                      return FadeTransition(opacity: animation, child: child);
-                    },
-                  ),
-                );
+                gotoPage(context,BarberDataForm(isBarber:true));
               },
               child: Image.asset(
                 height: screenWidth - 100,
@@ -51,4 +45,6 @@ class SelectionPage extends StatelessWidget {
       ),
     );
   }
+
+
 }
