@@ -1,5 +1,4 @@
-import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:barber/helper/help_metod.dart';
 
 import 'view/splash_page.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +16,11 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)  {
+
+
     return BlocProvider(
       create: (_) => AuthCubit(),
       child: const MaterialApp(

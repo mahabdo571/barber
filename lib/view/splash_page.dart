@@ -1,4 +1,6 @@
+import 'package:barber/constants.dart';
 import 'package:barber/helper/help_metod.dart';
+import 'package:barber/view/home_page.dart';
 
 import '../cubit/auth/auth_cubit.dart';
 import '../cubit/auth/auth_state.dart';
@@ -17,10 +19,16 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
+    loadData();
     Future.delayed(Duration.zero, () {
       context.read<AuthCubit>().checkAuthStatus();
     });
+
     super.initState();
+  }
+
+  Future<void> loadData() async {
+    setState(() async {});
   }
 
   @override
@@ -28,9 +36,19 @@ class _SplashPageState extends State<SplashPage> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          gotoPage(context, SelectionPage());
+          gotoPage(context, HomePage());
         } else if (state is AuthInitial || state is AuthError) {
           gotoPage(context, LoginPage());
+        } else if (state is AuthSlowConnection) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('الاتصال بالانترنت غير مستقر')),
+          );
+        } else if (state is AuthNoInternet) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('لا يوجد اتصال بالانترنت')));
+        } else if (state is AuthIncompleteProfile) {
+          gotoPage(context, SelectionPage());
         }
       },
       builder: (context, state) {

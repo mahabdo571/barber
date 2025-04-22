@@ -1,5 +1,6 @@
 import 'package:barber/helper/help_metod.dart';
 import 'package:barber/view/selection_page.dart';
+import 'package:barber/view/splash_page.dart';
 
 import '../cubit/auth/auth_cubit.dart';
 import '../cubit/auth/auth_state.dart';
@@ -23,7 +24,7 @@ class _OtpPageState extends State<OtpPage> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          gotoPage(context, SelectionPage());
+          gotoPage(context, SplashPage());
         } else if (state is AuthError) {
           ScaffoldMessenger.of(
             context,

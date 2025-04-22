@@ -26,4 +26,7 @@ class BarberCubit extends Cubit<BarberState> {
       emit(BarberFailure(e.toString()));
     }
   }
+
+ 
+
 }
