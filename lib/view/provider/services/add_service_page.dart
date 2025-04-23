@@ -1,3 +1,4 @@
+import 'package:barber/helper/help_metod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -60,114 +61,14 @@ class _AddServicePageState extends State<AddServicePage> {
         },
         builder: (context, state) {
           final isLoading = state.status == ServiceStatus.loading;
-          return SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      labelText: 'اسم الخدمة',
-                      border: OutlineInputBorder(),
-                    ),
-                    textInputAction: TextInputAction.next,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'يرجى إدخال اسم الخدمة';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16),
-                  TextFormField(
-                    controller: _descriptionController,
-                    decoration: InputDecoration(
-                      labelText: 'وصف الخدمة',
-                      border: OutlineInputBorder(),
-                    ),
-                    maxLines: 3,
-                    textInputAction: TextInputAction.next,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'يرجى إدخال وصف الخدمة';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: _priceController,
-                          decoration: InputDecoration(
-                            labelText: 'السعر',
-                            prefixText: '₪ ',
-                            border: OutlineInputBorder(),
-                          ),
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.next,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'يرجى إدخال السعر';
-                            }
-                            if (double.tryParse(value.trim()) == null) {
-                              return 'السعر غير صالح';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 16),
-                      Expanded(
-                        child: TextFormField(
-                          controller: _durationController,
-                          decoration: InputDecoration(
-                            labelText: 'المدة (دقائق)',
-                            border: OutlineInputBorder(),
-                          ),
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.done,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'يرجى إدخال المدة';
-                            }
-                            if (int.tryParse(value.trim()) == null) {
-                              return 'المدة غير صالحة';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: isLoading ? null : _submit,
-                    child:
-                        isLoading
-                            ? SizedBox(
-                              height: 24,
-                              width: 24,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: Colors.white,
-                              ),
-                            )
-                            : Text('حفظ'),
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          return FormForAddEditServiceProvider(
+            isLoading,
+            () => _submit,
+            _formKey,
+            _nameController,
+            _descriptionController,
+            _priceController,
+            _durationController,
           );
         },
       ),

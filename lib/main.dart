@@ -23,13 +23,13 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(
-          create: (_) => AuthCubit(), // كيوبت الأوث
+          create: (_) => AuthCubit(), 
         ),
         BlocProvider<ServiceProviderCubit>(
           create:
               (_) =>
                   ServiceProviderCubit(repository: FirestoreServiceRepository())
-                    ..loadServices(), // كيوبت الخدمات
+                    ..loadServices(), 
         ),
       ],
       child: const MaterialApp(
