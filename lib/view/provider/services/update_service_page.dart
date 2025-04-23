@@ -1,4 +1,5 @@
 import 'package:barber/helper/help_metod.dart';
+import 'package:barber/widget/provider/form_for_add_edit_service_provider.dart';
 
 import '../../../cubit/service_provider_cubit/service_provider_cubit.dart';
 import '../../../models/service_model.dart';
@@ -70,13 +71,13 @@ class _UpdateServicePageState extends State<UpdateServicePage> {
     return Scaffold(
       appBar: AppBar(title: Text('تعديل الخدمة')),
       body: FormForAddEditServiceProvider(
-        _isLoading,
-        () => _submit,
-        _formKey,
-        _titleController,
-        _descriptionController,
-        _priceController,
-        _durationController,
+        isLoading: _isLoading,
+        submit: () => _submit,
+        formKey: _formKey,
+        nameController: _titleController,
+        descriptionController: _descriptionController,
+        priceController: _priceController,
+        durationController: _durationController,
       ),
     );
   }

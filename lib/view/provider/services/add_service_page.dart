@@ -1,4 +1,5 @@
 import 'package:barber/helper/help_metod.dart';
+import 'package:barber/widget/provider/form_for_add_edit_service_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -62,13 +63,13 @@ class _AddServicePageState extends State<AddServicePage> {
         builder: (context, state) {
           final isLoading = state.status == ServiceStatus.loading;
           return FormForAddEditServiceProvider(
-            isLoading,
-            () => _submit,
-            _formKey,
-            _nameController,
-            _descriptionController,
-            _priceController,
-            _durationController,
+            isLoading: isLoading,
+            submit: () => _submit,
+            formKey: _formKey,
+            nameController: _nameController,
+            descriptionController: _descriptionController,
+            priceController: _priceController,
+            durationController: _durationController,
           );
         },
       ),
