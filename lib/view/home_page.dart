@@ -29,7 +29,9 @@ class _HomePageState extends State<HomePage> {
       body: _screens[_selectedIndex],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          gotoPage(context, AddServicePage());
+          Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (_) => AddServicePage()));
         },
         child: Icon(Icons.add),
       ),
