@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class BarberDataForm extends StatelessWidget {
-  const BarberDataForm({super.key, required this.isBarber});
-  final bool isBarber;
+  const BarberDataForm({super.key, required this.role});
+  final String  role;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class BarberDataForm extends StatelessWidget {
                 'قم بتعبئة البيانات التالية',
                 style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
               ),
-              FormBarberBody(isBarber:isBarber),
+              FormBarberBody(role:role),
             ],
           ),
         ),

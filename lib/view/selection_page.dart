@@ -24,7 +24,7 @@ class SelectionPage extends StatelessWidget {
             SizedBox(height: 24),
             GestureDetector(
               onTap: () {
-                gotoPage(context,BarberDataForm(isBarber:true));
+                gotoPage(context,BarberDataForm(role:'provider'));
               },
               child: Image.asset(
                 height: screenWidth - 100,

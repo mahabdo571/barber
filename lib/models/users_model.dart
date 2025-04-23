@@ -2,7 +2,7 @@ class Users {
   final String uid;
   final String name;
   final String phone;
-  final bool role;
+  final String role;
 
   Users({
     required this.uid,

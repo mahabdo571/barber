@@ -10,8 +10,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../models/users_model.dart';
 
 class FormBarberBody extends StatefulWidget {
-  const FormBarberBody({super.key, required this.isBarber});
-  final bool isBarber;
+  const FormBarberBody({super.key, required this.role});
+  final String  role;
+
   @override
   State<FormBarberBody> createState() => _FormBarberBodyState();
 }
@@ -40,7 +41,7 @@ class _FormBarberBodyState extends State<FormBarberBody> {
         phone: _phoneCtrl.text.trim(),
         location: _locationCtrl.text.trim(),
         zipcode: _zipcode.text.trim(),
-        role: widget.isBarber,
+        role: widget.role,
       );
 
       await context.read<BarberCubit>().addBarber(barber);

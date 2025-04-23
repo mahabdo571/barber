@@ -1,20 +1,18 @@
 import 'package:barber/models/users_model.dart';
 
 class ProviderModel extends Users {
-
   final String location;
   final String zipcode;
 
   ProviderModel({
     required this.location,
-   required this.zipcode,
+    required this.zipcode,
     required super.uid,
     required super.name,
     required super.phone,
     required super.role,
   });
 
-  
   Map<String, dynamic> toJson() {
     return {
       'uid': uid,
@@ -34,9 +32,7 @@ class ProviderModel extends Users {
       phone: json['phone'] as String,
       location: json['location'] as String,
       zipcode: json['zipcode'] as String,
-      role: json['role'] as bool,
+      role: json['role'] as String,
     );
   }
 }
-
-
