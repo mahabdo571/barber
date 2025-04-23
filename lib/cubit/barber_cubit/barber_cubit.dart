@@ -1,7 +1,7 @@
 // blocs/barber/barber_cubit.dart
 
 import 'package:barber/constants.dart';
-import 'package:barber/models/barber_model.dart';
+import 'package:barber/models/provider_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -12,7 +12,7 @@ class BarberCubit extends Cubit<BarberState> {
 
   BarberCubit() : super(BarberInitial());
 
-  Future<void> addBarber(Users barber) async {
+  Future<void> addBarber(ProviderModel barber) async {
     try {
       emit(BarberLoading());
 

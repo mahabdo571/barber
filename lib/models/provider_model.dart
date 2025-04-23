@@ -1,40 +1,42 @@
-class Users {
-  final String uid;
-  final String name;
-  final String phone;
+import 'package:barber/models/users_model.dart';
+
+class ProviderModel extends Users {
+
   final String location;
   final String zipcode;
-  final bool isBarber;
 
-  Users({
-    required this.uid,
-    required this.name,
-    required this.phone,
+  ProviderModel({
     required this.location,
-    required this.zipcode,
-    required this.isBarber,
+   required this.zipcode,
+    required super.uid,
+    required super.name,
+    required super.phone,
+    required super.role,
   });
 
+  
   Map<String, dynamic> toJson() {
     return {
       'uid': uid,
       'name': name,
       'phone': phone,
-      'location': location,
+      'role': role,
       'zipcode': zipcode,
-      'isBarber': isBarber,
+      'location': location,
       'createdAt': DateTime.now(),
     };
   }
 
-  factory Users.fromJson(Map<String, dynamic> json) {
-    return Users(
+  factory ProviderModel.fromJson(Map<String, dynamic> json) {
+    return ProviderModel(
       uid: json['uid'] as String,
       name: json['name'] as String,
       phone: json['phone'] as String,
       location: json['location'] as String,
       zipcode: json['zipcode'] as String,
-      isBarber: json['isBarber'] as bool,
+      role: json['role'] as bool,
     );
   }
 }
+
+

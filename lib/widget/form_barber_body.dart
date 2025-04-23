@@ -2,11 +2,12 @@ import 'package:barber/constants.dart';
 import 'package:barber/cubit/barber_cubit/barber_cubit.dart';
 import 'package:barber/cubit/barber_cubit/barber_state.dart';
 import 'package:barber/helper/help_metod.dart';
+import 'package:barber/models/provider_model.dart';
 import 'package:barber/view/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../models/barber_model.dart';
+import '../models/users_model.dart';
 
 class FormBarberBody extends StatefulWidget {
   const FormBarberBody({super.key, required this.isBarber});
@@ -33,13 +34,13 @@ class _FormBarberBodyState extends State<FormBarberBody> {
 
   void _submit() async {
     if (_formKey.currentState!.validate()) {
-      final barber = Users(
+      final barber = ProviderModel(
         uid: kUid.toString(),
         name: _nameCtrl.text.trim(),
         phone: _phoneCtrl.text.trim(),
         location: _locationCtrl.text.trim(),
         zipcode: _zipcode.text.trim(),
-        isBarber: widget.isBarber,
+        role: widget.isBarber,
       );
 
       await context.read<BarberCubit>().addBarber(barber);

@@ -1,4 +1,3 @@
-import 'package:barber/helper/help_metod.dart';
 
 import 'view/splash_page.dart';
 import 'package:flutter/material.dart';
