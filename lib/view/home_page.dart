@@ -1,5 +1,11 @@
+import 'package:barber/Implementation/provider/firestore_service_repository.dart';
+import 'package:barber/Repository/provider/service_repository.dart';
+import 'package:barber/cubit/service_provider_cubit/service_provider_cubit.dart';
+import 'package:barber/helper/help_metod.dart';
+import 'package:barber/view/provider/services/add_service_page.dart';
 import 'package:barber/view/provider/services/services_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -23,7 +29,7 @@ class _HomePageState extends State<HomePage> {
       body: _screens[_selectedIndex],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          //TODO : add action
+          gotoPage(context, AddServicePage());
         },
         child: Icon(Icons.add),
       ),
@@ -51,10 +57,7 @@ class _HomePageState extends State<HomePage> {
           icon: Icon(Icons.design_services),
           label: 'الخدمات',
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.more_horiz),
-          label: 'المزيد',
-        ),
+        BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'المزيد'),
       ],
     );
   }

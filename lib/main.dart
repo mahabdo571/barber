@@ -1,3 +1,5 @@
+import 'package:barber/Implementation/provider/firestore_service_repository.dart';
+import 'package:barber/cubit/service_provider_cubit/service_provider_cubit.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'view/splash_page.dart';
@@ -18,20 +20,27 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => AuthCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthCubit>(
+          create: (_) => AuthCubit(), // كيوبت الأوث
+        ),
+        BlocProvider<ServiceProviderCubit>(
+          create:
+              (_) =>
+                  ServiceProviderCubit(repository: FirestoreServiceRepository())
+                    ..loadServices(), // كيوبت الخدمات
+        ),
+      ],
       child: const MaterialApp(
-          title: 'حجوزات',
+        title: 'حجوزات',
         locale: const Locale('ar'),
-        supportedLocales: const [
-          Locale('ar'), 
-        ],
+        supportedLocales: const [Locale('ar')],
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-    
 
         debugShowCheckedModeBanner: false,
         home: SplashPage(),
