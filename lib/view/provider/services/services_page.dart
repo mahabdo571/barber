@@ -1,3 +1,4 @@
+import 'package:barber/models/service_model.dart';
 import 'package:barber/widget/provider/service_card.dart';
 import 'package:flutter/material.dart';
 
@@ -19,12 +20,74 @@ class ServicesPage extends StatelessWidget {
       price: 22,
       duration: 11,
     ),
+    Service(
+      id: '2',
+      name: 'حلاقة نسوان',
+      description: 'قص وتحديد وتشذيب بوتكس مع بخار',
+      price: 22,
+      duration: 11,
+    ),
+    Service(
+      id: '2',
+      name: 'حلاقة نسوان',
+      description: 'قص وتحديد وتشذيب بوتكس مع بخار',
+      price: 22,
+      duration: 11,
+    ),
+    Service(
+      id: '2',
+      name: 'حلاقة نسوان',
+      description: 'قص وتحديد وتشذيب بوتكس مع بخار',
+      price: 22,
+      duration: 11,
+    ),
+    Service(
+      id: '2',
+      name: 'حلاقة نسوان',
+      description: 'قص وتحديد وتشذيب بوتكس مع بخار',
+      price: 22,
+      duration: 11,
+    ),
+    Service(
+      id: '2',
+      name: 'حلاقة نسوان',
+      description: 'قص وتحديد وتشذيب بوتكس مع بخار',
+      price: 22,
+      duration: 11,
+    ),
+    Service(
+      id: '2',
+      name: 'حلاقة نسوان',
+      description: 'قص وتحديد وتشذيب بوتكس مع بخار',
+      price: 22,
+      duration: 11,
+    ),
+    Service(
+      id: '2',
+      name: 'حلاقة نسوان',
+      description: 'قص وتحديد وتشذيب بوتكس مع بخار',
+      price: 22,
+      duration: 11,
+    ),
+    Service(
+      id: '2',
+      name: 'حلاقة نسوان',
+      description: 'قص وتحديد وتشذيب بوتكس مع بخار',
+      price: 22,
+      duration: 11,
+    ),
+    Service(
+      id: '2',
+      name: 'حلاقة نسوان',
+      description: 'قص وتحديد وتشذيب بوتكس مع بخار',
+      price: 22,
+      duration: 11,
+    ),
   ];
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      
       itemCount: services.length,
       itemBuilder: (ctx, i) {
         return ServiceCard(

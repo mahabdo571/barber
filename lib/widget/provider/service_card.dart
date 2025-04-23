@@ -1,20 +1,5 @@
+import 'package:barber/models/service_model.dart';
 import 'package:flutter/material.dart';
-
-class Service {
-  final String id;
-  final String name;
-  final String description;
-  final double price;
-  final int duration; // بالدقائق
-
-  Service({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.price,
-    required this.duration,
-  });
-}
 
 class ServiceCard extends StatefulWidget {
   final Service service;
