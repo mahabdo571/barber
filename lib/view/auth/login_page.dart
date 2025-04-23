@@ -1,7 +1,7 @@
 import 'package:barber/helper/help_metod.dart';
 
-import '../cubit/auth/auth_cubit.dart';
-import '../cubit/auth/auth_state.dart';
+import '../../cubit/auth/auth_cubit.dart';
+import '../../cubit/auth/auth_state.dart';
 import 'otp_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

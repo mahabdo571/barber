@@ -1,23 +1,23 @@
 import 'package:barber/constants.dart';
-import 'package:barber/cubit/barber_cubit/barber_cubit.dart';
-import 'package:barber/cubit/barber_cubit/barber_state.dart';
+import 'package:barber/cubit/provider_cubit/provider_cubit.dart';
+import 'package:barber/cubit/provider_cubit/provider_state.dart';
 import 'package:barber/helper/help_metod.dart';
 import 'package:barber/models/provider_model.dart';
 import 'package:barber/view/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../models/users_model.dart';
+import '../../models/users_model.dart';
 
-class FormBarberBody extends StatefulWidget {
-  const FormBarberBody({super.key, required this.role});
-  final String  role;
+class FormProviderBody extends StatefulWidget {
+  const FormProviderBody({super.key, required this.role});
+  final String role;
 
   @override
-  State<FormBarberBody> createState() => _FormBarberBodyState();
+  State<FormProviderBody> createState() => _FormProviderBodyState();
 }
 
-class _FormBarberBodyState extends State<FormBarberBody> {
+class _FormProviderBodyState extends State<FormProviderBody> {
   final _formKey = GlobalKey<FormState>();
   final _nameCtrl = TextEditingController();
   final _phoneCtrl = TextEditingController();
@@ -44,7 +44,7 @@ class _FormBarberBodyState extends State<FormBarberBody> {
         role: widget.role,
       );
 
-      await context.read<BarberCubit>().addBarber(barber);
+      await context.read<ProviderCubit>().addBarber(barber);
     }
   }
 
@@ -63,9 +63,9 @@ class _FormBarberBodyState extends State<FormBarberBody> {
   }
 
   Widget _buildForm(BuildContext context) {
-    return BlocConsumer<BarberCubit, BarberState>(
+    return BlocConsumer<ProviderCubit, ProviderState>(
       listener: (context, state) {
-        if (state is BarberLoading) {
+        if (state is ProviderLoading) {
           showDialog(
             context: context,
             barrierDismissible: false,
@@ -73,13 +73,13 @@ class _FormBarberBodyState extends State<FormBarberBody> {
           );
         } else {
           Navigator.of(context, rootNavigator: true).pop();
-          if (state is BarberSuccess) {
+          if (state is ProviderSuccess) {
             gotoPage(context, HomePage());
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('تم حفظ البيانات بنجاح!')),
             );
             _formKey.currentState?.reset();
-          } else if (state is BarberFailure) {
+          } else if (state is ProviderFailure) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text('خطأ: ${state.error}')));

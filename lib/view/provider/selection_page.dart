@@ -1,7 +1,7 @@
 import 'package:barber/helper/help_metod.dart';
 
-import '../constants.dart';
-import 'barber_data_form.dart';
+import '../../constants.dart';
+import 'provider_data_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

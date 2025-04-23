@@ -5,28 +5,25 @@ import 'package:barber/models/provider_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'barber_state.dart';
+import 'provider_state.dart';
 
-class BarberCubit extends Cubit<BarberState> {
+class ProviderCubit extends Cubit<ProviderState> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  BarberCubit() : super(BarberInitial());
+  ProviderCubit() : super(ProviderInitial());
 
   Future<void> addBarber(ProviderModel barber) async {
     try {
-      emit(BarberLoading());
+      emit(ProviderLoading());
 
       await _firestore
           .collection('Users')
           .doc(kUid.toString())
           .set(barber.toJson());
 
-      emit(BarberSuccess());
+      emit(ProviderSuccess());
     } catch (e) {
-      emit(BarberFailure(e.toString()));
+      emit(ProviderFailure(e.toString()));
     }
   }
-
- 
-
 }
