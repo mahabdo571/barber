@@ -1,3 +1,4 @@
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'view/splash_page.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +16,23 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  
   @override
-  Widget build(BuildContext context)  {
-
-
+  Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => AuthCubit(),
       child: const MaterialApp(
+          title: 'حجوزات',
+        locale: const Locale('ar'),
+           supportedLocales: const [
+          Locale('ar'), // تقدر تضيف en أو لغات ثانية
+        ],
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+    
+
         debugShowCheckedModeBanner: false,
         home: SplashPage(),
       ),
