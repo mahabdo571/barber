@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
       child: const MaterialApp(
           title: 'حجوزات',
         locale: const Locale('ar'),
-           supportedLocales: const [
-          Locale('ar'), // تقدر تضيف en أو لغات ثانية
+        supportedLocales: const [
+          Locale('ar'), 
         ],
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
