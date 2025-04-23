@@ -1,6 +1,6 @@
-import 'package:barber/constants.dart';
-import 'package:barber/helper/help_metod.dart';
-import 'package:barber/view/home_page.dart';
+import '../constants.dart';
+import '../helper/help_metod.dart';
+import 'home_page.dart';
 
 import '../cubit/auth/auth_cubit.dart';
 import '../cubit/auth/auth_state.dart';

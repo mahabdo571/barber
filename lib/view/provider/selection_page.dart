@@ -1,4 +1,4 @@
-import 'package:barber/helper/help_metod.dart';
+import '../../helper/help_metod.dart';
 
 import '../../constants.dart';
 import 'provider_data_form.dart';

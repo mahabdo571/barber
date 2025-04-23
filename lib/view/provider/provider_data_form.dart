@@ -1,4 +1,4 @@
-import 'package:barber/cubit/provider_cubit/provider_cubit.dart';
+import '../../cubit/provider_cubit/provider_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants.dart';

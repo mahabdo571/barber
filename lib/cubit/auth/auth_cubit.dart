@@ -1,5 +1,5 @@
-import 'package:barber/constants.dart';
-import 'package:barber/helper/help_metod.dart';
+import '../../constants.dart';
+import '../../helper/help_metod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';

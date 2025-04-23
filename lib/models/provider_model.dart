@@ -1,4 +1,4 @@
-import 'package:barber/models/users_model.dart';
+import 'users_model.dart';
 
 class ProviderModel extends Users {
   final String location;

@@ -1,6 +1,6 @@
-import 'package:barber/helper/help_metod.dart';
-import 'package:barber/view/provider/selection_page.dart';
-import 'package:barber/view/splash_page.dart';
+import '../../helper/help_metod.dart';
+import '../provider/selection_page.dart';
+import '../splash_page.dart';
 
 import '../../cubit/auth/auth_cubit.dart';
 import '../../cubit/auth/auth_state.dart';

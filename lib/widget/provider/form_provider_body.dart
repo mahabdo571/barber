@@ -1,9 +1,9 @@
-import 'package:barber/constants.dart';
-import 'package:barber/cubit/provider_cubit/provider_cubit.dart';
-import 'package:barber/cubit/provider_cubit/provider_state.dart';
-import 'package:barber/helper/help_metod.dart';
-import 'package:barber/models/provider_model.dart';
-import 'package:barber/view/home_page.dart';
+import '../../constants.dart';
+import '../../cubit/provider_cubit/provider_cubit.dart';
+import '../../cubit/provider_cubit/provider_state.dart';
+import '../../helper/help_metod.dart';
+import '../../models/provider_model.dart';
+import '../../view/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

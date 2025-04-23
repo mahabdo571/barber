@@ -1,4 +1,4 @@
-import 'package:barber/helper/help_metod.dart';
+import 'helper/help_metod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 final kUserAuth = FirebaseAuth.instance.currentUser;

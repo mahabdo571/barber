@@ -1,4 +1,4 @@
-import 'package:barber/helper/help_metod.dart';
+import '../../helper/help_metod.dart';
 
 import '../../cubit/auth/auth_cubit.dart';
 import '../../cubit/auth/auth_state.dart';
