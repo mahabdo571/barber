@@ -15,6 +15,22 @@ class Service extends Equatable {
     required this.duration,
   });
 
+  Service copyWith({
+    String? id,
+    String? name,
+    String? description,
+    double? price,
+    int? duration,
+  }) {
+    return Service(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      price: price ?? this.price,
+      duration: duration ?? this.duration,
+    );
+  }
+
   factory Service.fromJson(Map<String, dynamic> json, String id) => Service(
     id: id,
     name: json['name'] as String,

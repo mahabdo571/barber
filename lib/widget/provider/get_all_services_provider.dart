@@ -1,4 +1,5 @@
 import 'package:barber/cubit/service_provider_cubit/service_provider_cubit.dart';
+import 'package:barber/view/provider/services/update_service_page.dart';
 import 'package:barber/widget/provider/service_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +19,7 @@ class GetAllServicesProvider extends StatelessWidget {
           case ServiceStatus.success:
             final services = state.services;
             if (services.isEmpty) {
-              return Center(child: Text('ما عندك أي خدمات بعد'));
+              return Center(child: Text('لم يتم اضافة خدمات بعد'));
             }
             return ListView.builder(
               itemCount: services.length,
@@ -27,13 +28,16 @@ class GetAllServicesProvider extends StatelessWidget {
                 return ServiceCard(
                   service: service,
                   onDelete: () {
-                 
-                    // عند السحب لليمين
                     context.read<ServiceProviderCubit>().deleteService(
                       service.id,
                     );
                   },
                   onEdit: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => UpdateServicePage(service: service),
+                      ),
+                    );
                     // عند السحب لليسار
                     // TODO: فتح نافذة تعديل الخدمة وإرسال updatedService
                     // context.read<ServiceCubit>().updateService(updatedService);
