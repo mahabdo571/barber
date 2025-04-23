@@ -17,7 +17,7 @@ class ProfileProviderCubit extends Cubit<ProfileProviderState> {
       emit(ProfileProviderLoading());
 
       await _firestore
-          .collection('Users')
+          .collection(kDBUser)
           .doc(kUid.toString())
           .set(barber.toJson());
 

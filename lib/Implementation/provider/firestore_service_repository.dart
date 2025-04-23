@@ -1,4 +1,5 @@
 import 'package:barber/Repository/provider/service_repository.dart';
+import 'package:barber/constants.dart';
 import 'package:barber/models/service_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,7 +14,7 @@ class FirestoreServiceRepository implements ServiceRepository {
         _userId = userId ?? FirebaseAuth.instance.currentUser!.uid;
 
   CollectionReference<Map<String, dynamic>> get _servicesColl => _firestore
-      .collection('users')
+      .collection(kDBUser)
       .doc(_userId)
       .collection('services');
 
