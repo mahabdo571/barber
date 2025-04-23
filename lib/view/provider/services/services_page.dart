@@ -124,6 +124,7 @@ class GetAllServicesProvider extends StatelessWidget {
                 return ServiceCard(
                   service: service,
                   onDelete: () {
+                 
                     // عند السحب لليمين
                     context.read<ServiceProviderCubit>().deleteService(
                       service.id,

@@ -25,16 +25,16 @@ class _ServiceCardState extends State<ServiceCard> {
     return Dismissible(
       key: ValueKey(widget.service.id),
       background: Container(
-        color: Colors.red,
+        color: Colors.blue,
         alignment: Alignment.centerRight,
         padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Icon(Icons.delete, color: Colors.white),
+        child: Icon(Icons.edit, color: Colors.white),
       ),
       secondaryBackground: Container(
-        color: Colors.blue,
+        color: Colors.red,
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Icon(Icons.edit, color: Colors.white),
+        child: Icon(Icons.delete, color: Colors.white),
       ),
       confirmDismiss: (direction) async {
         if (direction == DismissDirection.endToStart) {
