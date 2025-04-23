@@ -1,6 +1,6 @@
-import 'package:barber/cubit/service_provider_cubit/service_provider_cubit.dart';
-import 'package:barber/view/provider/services/update_service_page.dart';
-import 'package:barber/widget/provider/service_card.dart';
+import '../../cubit/service_provider_cubit/service_provider_cubit.dart';
+import '../../view/provider/services/update_service_page.dart';
+import 'service_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

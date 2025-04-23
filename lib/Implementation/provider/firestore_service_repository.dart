@@ -1,6 +1,6 @@
-import 'package:barber/Repository/provider/service_repository.dart';
-import 'package:barber/constants.dart';
-import 'package:barber/models/service_model.dart';
+import '../../Repository/provider/service_repository.dart';
+import '../../constants.dart';
+import '../../models/service_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

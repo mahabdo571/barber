@@ -1,9 +1,9 @@
-import 'package:barber/Implementation/provider/firestore_service_repository.dart';
-import 'package:barber/Repository/provider/service_repository.dart';
-import 'package:barber/cubit/service_provider_cubit/service_provider_cubit.dart';
-import 'package:barber/helper/help_metod.dart';
-import 'package:barber/view/provider/services/add_service_page.dart';
-import 'package:barber/view/provider/services/services_page.dart';
+import '../Implementation/provider/firestore_service_repository.dart';
+import '../Repository/provider/service_repository.dart';
+import '../cubit/service_provider_cubit/service_provider_cubit.dart';
+import '../helper/help_metod.dart';
+import 'provider/services/add_service_page.dart';
+import 'provider/services/services_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

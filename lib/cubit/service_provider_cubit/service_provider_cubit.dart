@@ -1,5 +1,5 @@
-import 'package:barber/Repository/provider/service_repository.dart';
-import 'package:barber/models/service_model.dart';
+import '../../Repository/provider/service_repository.dart';
+import '../../models/service_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 

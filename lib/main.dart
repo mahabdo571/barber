@@ -1,5 +1,5 @@
-import 'package:barber/Implementation/provider/firestore_service_repository.dart';
-import 'package:barber/cubit/service_provider_cubit/service_provider_cubit.dart';
+import 'Implementation/provider/firestore_service_repository.dart';
+import 'cubit/service_provider_cubit/service_provider_cubit.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'view/splash_page.dart';

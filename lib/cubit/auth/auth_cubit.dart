@@ -1,11 +1,11 @@
-import '../../constants.dart';
-import '../../helper/help_metod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'auth_state.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
+
+import '../../helper/help_metod.dart';
+import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final FirebaseAuth _auth = FirebaseAuth.instance;

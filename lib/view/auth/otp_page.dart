@@ -1,13 +1,11 @@
-import '../../helper/help_metod.dart';
-import '../provider/selection_page.dart';
-import '../splash_page.dart';
-
-import '../../cubit/auth/auth_cubit.dart';
-import '../../cubit/auth/auth_state.dart';
-import '../home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+
+import '../../cubit/auth/auth_cubit.dart';
+import '../../cubit/auth/auth_state.dart';
+import '../../helper/help_metod.dart';
+import '../splash_page.dart';
 
 class OtpPage extends StatefulWidget {
   const OtpPage({super.key});

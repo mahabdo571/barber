@@ -1,4 +1,4 @@
-import 'package:barber/models/service_model.dart';
+import '../../models/service_model.dart';
 
 abstract class ServiceRepository {
   Future<List<Service>> fetchServices();

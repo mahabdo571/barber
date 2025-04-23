@@ -1,5 +1,5 @@
-import 'package:barber/cubit/service_provider_cubit/service_provider_cubit.dart';
-import 'package:barber/models/service_model.dart';
+import '../../../cubit/service_provider_cubit/service_provider_cubit.dart';
+import '../../../models/service_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
