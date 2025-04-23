@@ -1,4 +1,4 @@
-import '../../../cubit/provider_cubit/provider_cubit.dart';
+import '../../../cubit/profile_provider_cubit/profile_provider_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../constants.dart';
@@ -13,7 +13,7 @@ class BarberDataForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ProviderCubit(),
+      create: (_) => ProfileProviderCubit(),
       child: Scaffold(
         appBar: AppBar(title: Text(kAppName)),
         body: Center(

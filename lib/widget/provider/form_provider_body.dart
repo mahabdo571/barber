@@ -1,6 +1,6 @@
 import '../../constants.dart';
-import '../../cubit/provider_cubit/provider_cubit.dart';
-import '../../cubit/provider_cubit/provider_state.dart';
+import '../../cubit/profile_provider_cubit/profile_provider_cubit.dart';
+import '../../cubit/profile_provider_cubit/profile_provider_state.dart';
 import '../../helper/help_metod.dart';
 import '../../models/provider_model.dart';
 import '../../view/home_page.dart';
@@ -44,7 +44,7 @@ class _FormProviderBodyState extends State<FormProviderBody> {
         role: widget.role,
       );
 
-      await context.read<ProviderCubit>().addBarber(barber);
+      await context.read<ProfileProviderCubit>().addBarber(barber);
     }
   }
 
@@ -63,9 +63,9 @@ class _FormProviderBodyState extends State<FormProviderBody> {
   }
 
   Widget _buildForm(BuildContext context) {
-    return BlocConsumer<ProviderCubit, ProviderState>(
+    return BlocConsumer<ProfileProviderCubit, ProfileProviderState>(
       listener: (context, state) {
-        if (state is ProviderLoading) {
+        if (state is ProfileProviderLoading) {
           showDialog(
             context: context,
             barrierDismissible: false,
@@ -73,13 +73,13 @@ class _FormProviderBodyState extends State<FormProviderBody> {
           );
         } else {
           Navigator.of(context, rootNavigator: true).pop();
-          if (state is ProviderSuccess) {
+          if (state is ProfileProviderSuccess) {
             gotoPage(context, HomePage());
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('تم حفظ البيانات بنجاح!')),
             );
             _formKey.currentState?.reset();
-          } else if (state is ProviderFailure) {
+          } else if (state is ProfileProviderFailure) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text('خطأ: ${state.error}')));
