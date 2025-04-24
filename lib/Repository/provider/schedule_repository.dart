@@ -19,14 +19,11 @@ abstract class ScheduleRepository {
   Future<void> addSchedule(ScheduleModel schedule);
 
   /// تحديث TimeSlot محدد ضمن جدول يومي
-  Future<void> updateTimeSlot({
-    required String dateId,
-    required TimeSlot slot,
-  });
+  Future<void> updateTimeSlot({required String dateId, required TimeSlot slot});
 
   /// حذف TimeSlot محدد ضمن جدول يومي
-  Future<void> deleteTimeSlot({
-    required String dateId,
-    required String slotId,
-  });
+  Future<void> deleteTimeSlot({required String dateId, required String slotId});
+
+  /// حذف جدول يومي كامل
+  Future<void> deleteSchedule(String dateId);
 }

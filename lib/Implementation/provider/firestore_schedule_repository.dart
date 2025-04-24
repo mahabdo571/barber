@@ -1,4 +1,5 @@
 import 'package:barber/Repository/provider/schedule_repository.dart';
+import 'package:barber/constants.dart';
 import 'package:barber/models/schedule_model.dart';
 import 'package:barber/models/time_slot.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,7 +15,7 @@ class FirestoreScheduleRepository implements ScheduleRepository {
       _userId = userId ?? FirebaseAuth.instance.currentUser!.uid;
 
   CollectionReference<Map<String, dynamic>> get _scheduleColl =>
-      _firestore.collection('users').doc(_userId).collection('schedule');
+      _firestore.collection(kDBUser).doc(_userId).collection('schedule');
 
   @override
   Future<List<ScheduleModel>> fetchSchedules() async {
@@ -48,8 +49,13 @@ class FirestoreScheduleRepository implements ScheduleRepository {
     );
     for (var day in schedules) {
       final dayDoc = _scheduleColl.doc(day.date);
-      final slotsMap = {for (var slot in day.slots) slot.id: slot.toJson()};
-      batch.set(dayDoc, {'date': day.date, 'timeSlots': slotsMap});
+      // حفظ توثيقة التاريخ الرئيسية
+      batch.set(dayDoc, {'date': day.date});
+      // حفظ TimeSlots في subcollection
+      for (var slot in day.slots) {
+        final slotDoc = dayDoc.collection('timeSlots').doc(slot.id);
+        batch.set(slotDoc, slot.toJson());
+      }
     }
     await batch.commit();
   }
@@ -89,5 +95,19 @@ class FirestoreScheduleRepository implements ScheduleRepository {
         .collection('timeSlots')
         .doc(slotId);
     await slotDoc.delete();
+  }
+
+  @override
+  Future<void> deleteSchedule(String dateId) async {
+    final dayDoc = _scheduleColl.doc(dateId);
+    // احذف كل الـ TimeSlots أولاً
+    final slotDocs = await dayDoc.collection('timeSlots').get();
+    final batch = _firestore.batch();
+    for (var doc in slotDocs.docs) {
+      batch.delete(doc.reference);
+    }
+    // ثم احذف الوثيقة الرئيسية
+    batch.delete(dayDoc);
+    await batch.commit();
   }
 }

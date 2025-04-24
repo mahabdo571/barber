@@ -111,4 +111,21 @@ class ScheduleCubit extends Cubit<ScheduleState> {
       );
     }
   }
+
+  /// داخل class ScheduleCubit
+  Future<void> deleteSchedule(String dateId) async {
+    emit(state.copyWith(status: ScheduleStatus.loading));
+    try {
+      await _repository.deleteSchedule(dateId);
+      final data = await _repository.fetchSchedules();
+      await loadSchedules();
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: ScheduleStatus.failure,
+          errorMessage: e.toString(),
+        ),
+      );
+    }
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:barber/view/provider/schedule/add_schedule_page.dart';
 import 'package:barber/view/provider/schedule/schedule_page.dart';
 
 import 'provider/services/add_service_page.dart';
@@ -30,7 +31,9 @@ class _HomePageState extends State<HomePage> {
       ),
       FloatingActionButton(
         onPressed: () {
-          // إضافة من صفحة المواعيد
+          Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (_) => AddSchedulePage()));
         },
         child: Icon(Icons.calendar_month),
       ),
