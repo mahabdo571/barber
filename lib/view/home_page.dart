@@ -22,13 +22,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<FloatingActionButton> _fabs = [
-      FloatingActionButton(
-        onPressed: () {
-          // إضافة من حجوزات اليوم
-        },
-        child: Icon(Icons.today),
-      ),
+    final List<FloatingActionButton?> _fabs = [
+      null,
       FloatingActionButton(
         onPressed: () {
           Navigator.of(
