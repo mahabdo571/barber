@@ -1,3 +1,5 @@
+import 'package:barber/view/provider/schedule/schedule_page.dart';
+
 import 'provider/services/add_service_page.dart';
 import 'provider/services/services_page.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +14,7 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _screens = [
     Center(child: Text('حجوزات اليوم')),
-    Center(child: Text('المواعيد')),
+    Center(child: SchedulePage()),
     Center(child: ServicesPage()),
     Center(child: Text('المزيد')),
   ];

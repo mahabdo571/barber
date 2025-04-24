@@ -1,3 +1,6 @@
+import 'package:barber/Implementation/provider/firestore_schedule_repository.dart';
+import 'package:barber/cubit/schedule_cubit/schedule_cubit.dart';
+
 import 'Implementation/provider/firestore_service_repository.dart';
 import 'cubit/service_provider_cubit/service_provider_cubit.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -22,14 +25,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthCubit>(
-          create: (_) => AuthCubit(), 
-        ),
+        BlocProvider<AuthCubit>(create: (_) => AuthCubit()),
         BlocProvider<ServiceProviderCubit>(
           create:
               (_) =>
                   ServiceProviderCubit(repository: FirestoreServiceRepository())
-                    ..loadServices(), 
+                    ..loadServices(),
+        ),
+        BlocProvider<ScheduleCubit>(
+          create:
+              (_) =>
+                  ScheduleCubit(repository: FirestoreScheduleRepository())
+                    ..loadSchedules(),
         ),
       ],
       child: const MaterialApp(
