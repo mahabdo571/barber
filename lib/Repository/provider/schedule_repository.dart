@@ -1,5 +1,5 @@
-import 'package:barber/models/schedule_model.dart';
-import 'package:barber/models/time_slot.dart';
+import '../../models/schedule_model.dart';
+import '../../models/time_slot.dart';
 import 'package:flutter/material.dart';
 
 abstract class ScheduleRepository {

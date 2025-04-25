@@ -1,5 +1,5 @@
-import 'package:barber/Implementation/provider/firestore_schedule_repository.dart';
-import 'package:barber/cubit/schedule_cubit/schedule_cubit.dart';
+import 'Implementation/provider/firestore_schedule_repository.dart';
+import 'cubit/schedule_cubit/schedule_cubit.dart';
 
 import 'Implementation/provider/firestore_service_repository.dart';
 import 'cubit/service_provider_cubit/service_provider_cubit.dart';

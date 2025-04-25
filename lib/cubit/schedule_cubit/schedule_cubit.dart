@@ -1,7 +1,7 @@
-import 'package:barber/Repository/provider/schedule_repository.dart';
-import 'package:barber/cubit/schedule_cubit/schedule_state.dart';
-import 'package:barber/models/schedule_model.dart';
-import 'package:barber/models/time_slot.dart';
+import '../../Repository/provider/schedule_repository.dart';
+import 'schedule_state.dart';
+import '../../models/schedule_model.dart';
+import '../../models/time_slot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

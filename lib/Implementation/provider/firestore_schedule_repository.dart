@@ -1,7 +1,7 @@
-import 'package:barber/Repository/provider/schedule_repository.dart';
-import 'package:barber/constants.dart';
-import 'package:barber/models/schedule_model.dart';
-import 'package:barber/models/time_slot.dart';
+import '../../Repository/provider/schedule_repository.dart';
+import '../../constants.dart';
+import '../../models/schedule_model.dart';
+import '../../models/time_slot.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

@@ -1,4 +1,4 @@
-import 'package:barber/view/customers/customer_data_form.dart';
+import '../customers/customer_data_form.dart';
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 import '../../helper/help_metod.dart';

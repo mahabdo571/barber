@@ -1,12 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../../constants.dart';
 import '../../cubit/profile_provider_cubit/profile_provider_cubit.dart';
 import '../../cubit/profile_provider_cubit/profile_provider_state.dart';
 import '../../helper/help_metod.dart';
 import '../../models/provider_model.dart';
 import '../../view/home_page.dart';
-import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FormProviderBody extends StatefulWidget {
   const FormProviderBody({super.key, required this.role});

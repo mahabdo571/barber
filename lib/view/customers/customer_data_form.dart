@@ -1,4 +1,4 @@
-import 'package:barber/models/customers_model.dart';
+import '../../models/customers_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -92,46 +92,7 @@ class _CustomerDataFormState extends State<CustomerDataForm> {
                   ),
                   SizedBox(height: 16),
                   // رقم الجوال
-                  TextFormField(
-                    controller: _phoneCtrl,
-                    decoration: InputDecoration(
-                      labelText: 'رقم الجوال',
-                      prefixIcon: Icon(Icons.phone_android),
-                    ),
-                    keyboardType: TextInputType.phone,
-                    validator: (v) {
-                      if (v == null || v.trim().isEmpty) return 'أدخل الرقم';
-                      final regex = RegExp(r'^\+?\d{8,15}$');
-                      if (!regex.hasMatch(v.trim())) return 'رقم غير صالح';
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16),
-                  // تاريخ الانضمام
-                  InkWell(
-                    onTap: _pickJoinDate,
-                    borderRadius: BorderRadius.circular(8),
-                    child: InputDecorator(
-                      decoration: InputDecoration(
-                        labelText: 'تاريخ الانضمام',
-                        prefixIcon: Icon(Icons.calendar_today),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: Text(dateText),
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  // الدور (ثابت)
-                  TextFormField(
-                    initialValue: 'زبون',
-                    decoration: InputDecoration(
-                      labelText: 'الدور',
-                      prefixIcon: Icon(Icons.shield_moon),
-                    ),
-                    readOnly: true,
-                  ),
+                 
                   SizedBox(height: 24),
                   // زر الحفظ
                   SizedBox(

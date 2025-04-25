@@ -1,4 +1,4 @@
-import 'package:barber/models/schedule_model.dart';
+import '../../models/schedule_model.dart';
 import 'package:equatable/equatable.dart';
 
 /// حالات الكيوبت

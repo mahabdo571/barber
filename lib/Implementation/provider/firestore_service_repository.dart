@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import '../../Repository/provider/service_repository.dart';
 import '../../constants.dart';
 import '../../models/service_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 /// Implementation: Firestore
 class FirestoreServiceRepository implements ServiceRepository {

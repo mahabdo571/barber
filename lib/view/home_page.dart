@@ -1,5 +1,5 @@
-import 'package:barber/view/provider/schedule/add_schedule_page.dart';
-import 'package:barber/view/provider/schedule/schedule_page.dart';
+import 'provider/schedule/add_schedule_page.dart';
+import 'provider/schedule/schedule_page.dart';
 
 import 'provider/services/add_service_page.dart';
 import 'provider/services/services_page.dart';

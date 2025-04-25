@@ -1,5 +1,5 @@
-import 'package:barber/helper/help_metod.dart';
-import 'package:barber/widget/provider/form_for_add_edit_service_provider.dart';
+import '../../../helper/help_metod.dart';
+import '../../../widget/provider/form_for_add_edit_service_provider.dart';
 
 import '../../../cubit/service_provider_cubit/service_provider_cubit.dart';
 import '../../../models/service_model.dart';
