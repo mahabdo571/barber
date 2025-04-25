@@ -1,3 +1,4 @@
+import 'package:barber/view/customers/customer_data_form.dart';
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 import '../../helper/help_metod.dart';
@@ -49,7 +50,9 @@ class SelectionPage extends StatelessWidget {
                     label: 'زبون',
                     color: Colors.teal,
                     onTap: () {
-                      // TODO: الانتقال لصفحة بيانات الزبون لاحقًا
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => CustomerDataForm()),
+                      );
                     },
                   ),
                 ],
