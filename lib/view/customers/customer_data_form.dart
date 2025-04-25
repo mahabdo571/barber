@@ -1,6 +1,6 @@
 import '../../models/customers_model.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CustomerDataForm extends StatefulWidget {
@@ -13,27 +13,14 @@ class CustomerDataForm extends StatefulWidget {
 class _CustomerDataFormState extends State<CustomerDataForm> {
   final _formKey = GlobalKey<FormState>();
   final _nameCtrl = TextEditingController();
-  final _phoneCtrl = TextEditingController();
-  DateTime _joinDate = DateTime.now();
+
   bool _isLoading = false;
 
   @override
   void dispose() {
     _nameCtrl.dispose();
-    _phoneCtrl.dispose();
-    super.dispose();
-  }
 
-  Future<void> _pickJoinDate() async {
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: _joinDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null) {
-      setState(() => _joinDate = picked);
-    }
+    super.dispose();
   }
 
   Future<void> _submit() async {
@@ -41,29 +28,18 @@ class _CustomerDataFormState extends State<CustomerDataForm> {
     setState(() => _isLoading = true);
 
     final customer = CustomerModel(
-      id: '', // سيملأّه Firestore تلقائيًا
+
       name: _nameCtrl.text.trim(),
-      phone: _phoneCtrl.text.trim(),
-      joinDate: _joinDate,
+  
+      joinDate: DateTime.now(),
       role: 'customer',
     );
 
-    try {
-      final doc = FirebaseFirestore.instance.collection('customers').doc();
-      await doc.set(customer.copyWith(id: doc.id).toJson());
-      Navigator.of(context).pop(); // العودة بعد الإضافة
-    } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('فشل الحفظ: $e')));
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
-    }
+  
   }
 
   @override
   Widget build(BuildContext context) {
-    final dateText = DateFormat.yMMMd('ar').format(_joinDate);
     return Scaffold(
       appBar: AppBar(title: Text('بيانات الزبون')),
       body: Padding(

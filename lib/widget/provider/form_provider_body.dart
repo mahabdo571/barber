@@ -104,13 +104,13 @@ class _FormProviderBodyState extends State<FormProviderBody> {
             TextFormField(
               controller: _nameCtrl,
               decoration: const InputDecoration(
-                labelText: 'الاسم كامل', // Label on top
-                hintText: 'مثال: محمود داوود',
+                labelText: 'الاسم التجاري', // Label on top
+                hintText: 'مثال لاسم المعرض او الصالون ',
                 prefixIcon: Icon(Icons.person), // clear icon
               ),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'الرجاء إدخال الاسم';
+                  return 'الرجاء إدخال الاسم التجاري';
                 }
                 return null;
               },
@@ -144,7 +144,7 @@ class _FormProviderBodyState extends State<FormProviderBody> {
             TextFormField(
               controller: _locationCtrl,
               decoration: const InputDecoration(
-                labelText: 'موقع الصالون',
+                labelText: 'الموقع',
                 hintText: 'المدينة أو العنوان التفصيلي',
                 prefixIcon: Icon(Icons.location_on),
               ),
