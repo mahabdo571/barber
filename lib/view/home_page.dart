@@ -1,3 +1,7 @@
+import 'package:barber/helper/help_metod.dart';
+import 'package:barber/view/splash_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'provider/schedule/add_schedule_page.dart';
 import 'provider/schedule/schedule_page.dart';
 
@@ -30,7 +34,7 @@ class _HomePageState extends State<HomePage> {
             context,
           ).push(MaterialPageRoute(builder: (_) => AddSchedulePage()));
         },
-        child: Icon(Icons.calendar_month),
+        child: Icon(Icons.edit_calendar),
       ),
       FloatingActionButton(
         onPressed: () {
@@ -42,10 +46,15 @@ class _HomePageState extends State<HomePage> {
         child: Icon(Icons.add_task),
       ),
       FloatingActionButton(
-        onPressed: () {
-          // صفحة المزيد: مثلاً فتح settings
+        onPressed: () async{
+        
+           
+              await FirebaseAuth.instance.signOut();
+              // بعدها مثلاً ترجع لصفحة تسجيل الدخول
+              gotoPage(context, SplashPage());
+          
         },
-        child: Icon(Icons.settings),
+        child: Icon(Icons.logout),
       ),
     ];
 

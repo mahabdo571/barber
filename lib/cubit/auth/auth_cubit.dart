@@ -1,3 +1,4 @@
+import 'package:barber/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -89,37 +90,32 @@ class AuthCubit extends Cubit<AuthState> {
     }
     final latencyMs = stopwatch.elapsedMilliseconds;
 
-  
     if (latencyMs > 2000) {
       emit(AuthSlowConnection(latency: latencyMs));
-      
     }
 
-   
     final user = await getCurrentUser();
     // Future.delayed(Duration(microseconds: 500));
     if (user != null) {
-      
-    await checkIfUserExists(user.uid);
-      
+      await checkIfUserExists(user.uid);
     } else {
       emit(AuthInitial());
     }
   }
 
-     Future<void> checkIfUserExists(String uid) async {
-  final docRef = FirebaseFirestore.instance.collection('Users').doc(uid);
+  Future<void> checkIfUserExists(String uid) async {
+    final docRef = FirebaseFirestore.instance.collection(kDBUser).doc(uid);
 
-  try {
-    final docSnapshot = await docRef.get();
+    try {
+      final docSnapshot = await docRef.get();
 
-    if (docSnapshot.exists) {
-      emit(AuthSuccess()); 
-    } else {
-      emit(AuthIncompleteProfile()); 
+      if (docSnapshot.exists) {
+        emit(AuthSuccess());
+      } else {
+        emit(AuthIncompleteProfile());
+      }
+    } catch (e) {
+      emit(AuthError("فشل جلب بيانات المستخدم"));
     }
-  } catch (e) {
-    emit(AuthError("فشل جلب بيانات المستخدم"));
   }
-}
 }
