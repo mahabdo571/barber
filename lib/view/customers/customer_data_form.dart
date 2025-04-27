@@ -1,7 +1,9 @@
+import 'package:barber/constants.dart';
+import 'package:barber/cubit/customers_cubit/customers_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../models/customers_model.dart';
 import 'package:flutter/material.dart';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CustomerDataForm extends StatefulWidget {
   const CustomerDataForm({Key? key}) : super(key: key);
@@ -28,14 +30,14 @@ class _CustomerDataFormState extends State<CustomerDataForm> {
     setState(() => _isLoading = true);
 
     final customer = CustomerModel(
+      id: kUid as String,
 
       name: _nameCtrl.text.trim(),
-  
+
       joinDate: DateTime.now(),
       role: 'customer',
     );
-
-  
+    await context.read<CustomersCubit>().addCustomer(customer);
   }
 
   @override
@@ -67,8 +69,8 @@ class _CustomerDataFormState extends State<CustomerDataForm> {
                             v == null || v.trim().isEmpty ? 'أدخل الاسم' : null,
                   ),
                   SizedBox(height: 16),
+
                   // رقم الجوال
-                 
                   SizedBox(height: 24),
                   // زر الحفظ
                   SizedBox(
