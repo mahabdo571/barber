@@ -1,16 +1,16 @@
 import 'package:equatable/equatable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class CustomerModel extends Equatable  {
-
+class CustomerModel extends Equatable {
+  final String id;
   final String name;
 
   final DateTime joinDate;
   final String role;
 
   const CustomerModel({
-
     required this.name,
+    required this.id,
 
     required this.joinDate,
     required this.role,
@@ -19,7 +19,7 @@ class CustomerModel extends Equatable  {
   /// تنشئ النموذج من بيانات Firestore
   factory CustomerModel.fromJson(Map<String, dynamic> json, String id) {
     return CustomerModel(
-
+      id: json['id'] as String? ?? '',
       name: json['name'] as String? ?? '',
 
       joinDate: (json['joinDate'] as Timestamp?)?.toDate() ?? DateTime.now(),
@@ -30,6 +30,7 @@ class CustomerModel extends Equatable  {
   /// تحوّل النموذج إلى Map لحفظه في Firestore
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'name': name,
 
       'joinDate': Timestamp.fromDate(joinDate),
@@ -46,8 +47,8 @@ class CustomerModel extends Equatable  {
     String? role,
   }) {
     return CustomerModel(
-
-            name: name ?? this.name,
+      id: id ?? this.id,
+      name: name ?? this.name,
 
       joinDate: joinDate ?? this.joinDate,
       role: role ?? this.role,
@@ -55,5 +56,5 @@ class CustomerModel extends Equatable  {
   }
 
   @override
-  List<Object?> get props => [ name, joinDate, role];
+  List<Object?> get props => [name, joinDate, role];
 }
