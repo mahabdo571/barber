@@ -35,7 +35,10 @@ class FierstoreCustomersRepository implements CustomersRepository {
 
   @override
   Future<void> addCustomer(CustomerModel customer) async {
-    await _customerColl.add(customer.toJson());
+  await _customerColl
+          .doc(kUid.toString())
+          .set(customer.toJson());
+  
   }
 
   @override
