@@ -1,3 +1,4 @@
+import 'package:barber/constants.dart';
 import 'package:barber/helper/help_metod.dart';
 import 'package:barber/view/splash_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -59,7 +60,7 @@ class _HomePageState extends State<HomePage> {
     ];
 
     return Scaffold(
-      appBar: AppBar(title: Text('صالون')),
+      appBar: AppBar(title: Text(kAppName)),
       body: _screens[_selectedIndex],
       floatingActionButton: _fabs[_selectedIndex],
       bottomNavigationBar: _bottomNavigationBar(),

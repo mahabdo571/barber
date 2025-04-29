@@ -1,6 +1,6 @@
 import 'users_model.dart';
 
-class ProviderModel extends Users {
+class ProviderModel extends UsersModel {
   final String location;
   final String zipcode;
   final bool isActive;
