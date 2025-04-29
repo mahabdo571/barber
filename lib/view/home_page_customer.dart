@@ -1,5 +1,6 @@
 import 'package:barber/constants.dart';
 import 'package:barber/helper/help_metod.dart';
+import 'package:barber/view/customers/provider_search_page.dart';
 import 'package:barber/view/splash_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -19,7 +20,7 @@ class _HomePageCustomerState extends State<HomePageCustomer> {
   int _selectedIndex = 0;
 
   final List<Widget> _screensCustomers = [
-    Center(child: Text('بحث')),
+    Center(child: ProviderSearchPage()),
     Center(child: Text('حجوزاتي')),
     Center(child: Text('المفضلة')),
     Center(child: Text('المزيد')),
@@ -27,7 +28,6 @@ class _HomePageCustomerState extends State<HomePageCustomer> {
 
   @override
   Widget build(BuildContext context) {
- 
     final List<FloatingActionButton?> _fabsCustomers = [
       null,
       FloatingActionButton(
@@ -64,7 +64,6 @@ class _HomePageCustomerState extends State<HomePageCustomer> {
       bottomNavigationBar: _bottomNavigationBarCustomers(),
     );
   }
-
 
   BottomNavigationBar _bottomNavigationBarCustomers() {
     return BottomNavigationBar(

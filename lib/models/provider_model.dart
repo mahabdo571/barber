@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'users_model.dart';
 
 class ProviderModel extends UsersModel {
   final String location;
   final String zipcode;
   final bool isActive;
-  final DateTime subscriptionExpirationDate;
+  final Timestamp subscriptionExpirationDate;
 
   ProviderModel({
     required this.location,
@@ -12,12 +14,14 @@ class ProviderModel extends UsersModel {
     required super.name,
     required super.phone,
     required super.role,
+    required super.uid,
     required this.isActive,
     required this.subscriptionExpirationDate,
   });
 
   Map<String, dynamic> toJson() {
     return {
+      'uid': uid,
       'name': name,
       'phone': phone,
       'role': role,
@@ -31,6 +35,7 @@ class ProviderModel extends UsersModel {
 
   factory ProviderModel.fromJson(Map<String, dynamic> json) {
     return ProviderModel(
+      uid: json['uid'] as String,
       name: json['name'] as String,
       phone: json['phone'] as String,
       location: json['location'] as String,
@@ -38,7 +43,7 @@ class ProviderModel extends UsersModel {
       role: json['role'] as String,
       isActive: json['isActive'] as bool,
       subscriptionExpirationDate:
-          json['subscriptionExpirationDate'] as DateTime,
+          json['subscriptionExpirationDate'] as Timestamp,
     );
   }
 }

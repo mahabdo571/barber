@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,13 +40,16 @@ class _FormProviderBodyState extends State<FormProviderBody> {
   void _submit() async {
     if (_formKey.currentState!.validate()) {
       final barber = ProviderModel(
+        uid: kUid.toString(),
         name: _nameCtrl.text.trim(),
         phone: _phoneCtrl.text.trim(),
         location: _locationCtrl.text.trim(),
         zipcode: _zipcode.text.trim(),
         role: widget.role,
         isActive: true,
-        subscriptionExpirationDate: DateTime.now().add(Duration(days: 50)),
+        subscriptionExpirationDate: Timestamp.fromDate(
+          DateTime.now().add(Duration(days: 50)),
+        ),
       );
 
       await context.read<ProfileProviderCubit>().addBarber(barber);

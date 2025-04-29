@@ -1,6 +1,8 @@
 import 'package:barber/Implementation/customers/fierstore_customers_repository.dart';
+import 'package:barber/Implementation/provider/provider_firestore_repository.dart';
 import 'package:barber/constants.dart';
 import 'package:barber/cubit/customers_cubit/customers_cubit.dart';
+import 'package:barber/cubit/provider_search_cubit/provider_search_cubit.dart';
 
 import 'Implementation/provider/firestore_schedule_repository.dart';
 import 'cubit/schedule_cubit/schedule_cubit.dart';
@@ -47,6 +49,12 @@ class MyApp extends StatelessWidget {
               (_) =>
                   CustomersCubit(repository: FierstoreCustomersRepository())
                     ..getCustomerById(kUid.toString()),
+        ),
+        BlocProvider<ProviderSearchCubit>(
+          create:
+              (_) => ProviderSearchCubit(
+                repository: FirestoreProviderRepository(),
+              ),
         ),
       ],
       child: const MaterialApp(
