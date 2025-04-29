@@ -21,7 +21,7 @@ class _OtpPageState extends State<OtpPage> {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is AuthSuccess) {
+        if (state is Authenticated) {
           gotoPage(context, SplashPage());
         } else if (state is AuthError) {
           ScaffoldMessenger.of(

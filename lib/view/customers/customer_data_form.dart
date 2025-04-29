@@ -1,8 +1,12 @@
 import 'package:barber/constants.dart';
+import 'package:barber/cubit/auth/auth_cubit.dart';
+import 'package:barber/cubit/auth/auth_state.dart';
 import 'package:barber/cubit/customers_cubit/customers_cubit.dart';
 import 'package:barber/helper/help_metod.dart';
-import 'package:barber/view/home_page_provider.dart';
+import 'package:barber/view/home_page_customer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../models/customers_model.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +21,7 @@ class CustomerDataForm extends StatefulWidget {
 class _CustomerDataFormState extends State<CustomerDataForm> {
   final _formKey = GlobalKey<FormState>();
   final _nameCtrl = TextEditingController();
+  final _authCubit = GetIt.I<AuthCubit>();
 
   bool _isLoading = false;
 
@@ -28,15 +33,15 @@ class _CustomerDataFormState extends State<CustomerDataForm> {
   }
 
   Future<void> _submit() async {
+    final currentUser = (_authCubit.state as Authenticated).authUser!;
     if (!_formKey.currentState!.validate()) return;
     setState(() => _isLoading = true);
 
     final customer = CustomerModel(
-      id: kUid as String,
-
+      uid: currentUser.uid,
+      phone: currentUser.phoneNumber as String,
       name: _nameCtrl.text.trim(),
-
-      joinDate: DateTime.now(),
+      createdAt: Timestamp.now(),
       role: 'customer',
     );
     await context.read<CustomersCubit>().addCustomer(customer);
@@ -60,7 +65,7 @@ class _CustomerDataFormState extends State<CustomerDataForm> {
             } else {
               Navigator.of(context, rootNavigator: true).pop();
               if (state.status == CustomerStatus.success) {
-                gotoPage(context, HomePageProvider());
+                gotoPage(context, HomePageCustomer());
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('تم حفظ البيانات بنجاح!')),
                 );

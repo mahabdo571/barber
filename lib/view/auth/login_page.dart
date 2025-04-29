@@ -23,7 +23,7 @@ class LoginPage extends StatelessWidget {
           ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
-      builder: (BuildContext context, AuthState state) {
+      builder: ( context,  state) {
         return ScaffoldLogin(phoneController: phoneController);
       },
     );
@@ -109,7 +109,6 @@ class ScaffoldLogin extends StatelessWidget {
                     if (phone.length == 9) {
                       context.read<AuthCubit>().sendOtp(phone);
                     }
-                    print('+970${phoneController.text}');
                   },
                   child: const Text(
                     'إرسال رمز التحقق',

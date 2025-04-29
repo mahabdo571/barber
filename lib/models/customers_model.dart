@@ -1,28 +1,22 @@
-import 'package:equatable/equatable.dart';
+import 'package:barber/models/users_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class CustomerModel extends Equatable {
-  final String id;
-  final String name;
-
-  final DateTime joinDate;
-  final String role;
-
-  const CustomerModel({
-    required this.name,
-    required this.id,
-
-    required this.joinDate,
-    required this.role,
+class CustomerModel extends UsersModel {
+  CustomerModel({
+    required super.name,
+    required super.phone,
+    required super.role,
+    required super.uid,
+    required super.createdAt,
   });
 
   /// تنشئ النموذج من بيانات Firestore
-  factory CustomerModel.fromJson(Map<String, dynamic> json, String id) {
+  factory CustomerModel.fromJson(Map<String, dynamic> json) {
     return CustomerModel(
-      id: json['id'] as String? ?? '',
+      uid: json['uid'] as String? ?? '',
       name: json['name'] as String? ?? '',
-
-      joinDate: (json['joinDate'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      phone: json['phone'] as String? ?? '',
+      createdAt: json['createdAt'] as Timestamp? ?? Timestamp.now(),
       role: json['role'] as String? ?? 'customer',
     );
   }
@@ -30,31 +24,31 @@ class CustomerModel extends Equatable {
   /// تحوّل النموذج إلى Map لحفظه في Firestore
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'uid': uid,
       'name': name,
-
-      'joinDate': Timestamp.fromDate(joinDate),
+      'phone': phone,
+      'createdAt': createdAt,
       'role': role,
     };
   }
 
   /// تنشئ نسخة جديدة مع تعديلات اختيارية
   CustomerModel copyWith({
-    String? id,
+    String? uid,
     String? name,
     String? phone,
-    DateTime? joinDate,
+    Timestamp? createdAt,
     String? role,
   }) {
     return CustomerModel(
-      id: id ?? this.id,
+      uid: uid ?? this.uid,
       name: name ?? this.name,
-
-      joinDate: joinDate ?? this.joinDate,
+      phone: phone ?? this.phone,
+      createdAt: createdAt ?? this.createdAt,
       role: role ?? this.role,
     );
   }
 
   @override
-  List<Object?> get props => [name, joinDate, role];
+  List<Object?> get props => [uid, name, phone, createdAt, role];
 }

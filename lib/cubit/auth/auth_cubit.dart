@@ -4,118 +4,109 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
-
-import '../../helper/help_metod.dart';
 import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
   String? _verificationId;
 
   AuthCubit() : super(AuthInitial());
 
+  /// إرسال OTP
   void sendOtp(String phoneNumber) async {
     emit(AuthLoading());
-
     await _auth.verifyPhoneNumber(
       phoneNumber: '+970$phoneNumber',
       timeout: const Duration(seconds: 60),
-      verificationCompleted: (PhoneAuthCredential credential) async {
-        await _auth.signInWithCredential(credential);
-        emit(AuthSuccess(role: 'other'));
+      verificationCompleted: (cred) async {
+        await _auth.signInWithCredential(cred);
+        // مباشرة بعد المصادقة نتحقق من البيانات في Firestore
+        await _postSignIn();
       },
-      verificationFailed: (FirebaseAuthException e) {
-        emit(AuthError(e.message ?? "حدث خطأ"));
-      },
-      codeSent: (String verificationId, int? resendToken) {
+      verificationFailed: (e) => emit(AuthError(e.message ?? "حدث خطأ")),
+      codeSent: (verificationId, _) {
         _verificationId = verificationId;
         emit(OtpSent());
       },
-      codeAutoRetrievalTimeout: (String verificationId) {
-        _verificationId = verificationId;
-      },
+      codeAutoRetrievalTimeout: (id) => _verificationId = id,
     );
   }
 
+  /// التحقق من OTP
   void verifyOtp(String otpCode) async {
     emit(AuthLoading());
-
     try {
-      final credential = PhoneAuthProvider.credential(
+      final cred = PhoneAuthProvider.credential(
         verificationId: _verificationId!,
         smsCode: otpCode,
       );
-      await _auth.signInWithCredential(credential);
-      emit(AuthSuccess(role: 'other'));
-    } catch (e) {
+      await _auth.signInWithCredential(cred);
+      await _postSignIn();
+    } catch (_) {
       emit(AuthError("رمز التحقق غير صحيح"));
     }
   }
 
-  // void checkAuthStatus() async {
-  //   emit(AuthChecking());
-
-  //   final user = _auth.currentUser;
-  //   await Future.delayed(Duration(seconds: 1));
-
-  //   if (user != null) {
-  //     emit(AuthSuccess());
-  //   } else {
-  //     emit(AuthInitial());
-  //   }
-  // }
-
+  /// فحص حالة المصادقة عند الإقلاع
   Future<void> checkAuthStatus() async {
     emit(AuthChecking());
 
-    var connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult == ConnectivityResult.none) {
+    // 1) تأكد من الاتصال
+    var conn = await Connectivity().checkConnectivity();
+    if (conn == ConnectivityResult.none) {
       emit(AuthNoInternet());
-      await for (final result in Connectivity().onConnectivityChanged) {
+      await for (var result in Connectivity().onConnectivityChanged) {
         if (result != ConnectivityResult.none) break;
       }
-      return checkAuthStatus();
     }
 
-    final stopwatch = Stopwatch()..start();
+    // 2) اختبار استجابة بسيط
+    final sw = Stopwatch()..start();
     try {
       await http
           .get(Uri.parse('https://www.google.com'))
           .timeout(const Duration(seconds: 5));
-      stopwatch.stop();
-    } catch (e) {
+    } catch (_) {
       emit(AuthNoInternet());
       return;
     }
-    final latencyMs = stopwatch.elapsedMilliseconds;
-
-    if (latencyMs > 2000) {
-      emit(AuthSlowConnection(latency: latencyMs));
+    sw.stop();
+    if (sw.elapsedMilliseconds > 2000) {
+      emit(AuthSlowConnection(latency: sw.elapsedMilliseconds));
     }
 
-    final user = await getCurrentUser();
-    // Future.delayed(Duration(microseconds: 500));
+    // 3) فحص الجلسة الحالية
+    final user = _auth.currentUser;
     if (user != null) {
-      await checkIfUserExists(user.uid);
+      await _postSignIn();
     } else {
-      emit(AuthInitial());
+      emit(Unauthenticated());
     }
   }
 
-  Future<void> checkIfUserExists(String uid) async {
-    final docRef = FirebaseFirestore.instance.collection(kDBUser).doc(uid);
-
+  /// بعد المصادقة بنجاح، تحقق إن كان للملف دور أو بيانات ناقصة
+  Future<void> _postSignIn() async {
+    emit(AuthLoading());
+    final authUser = _auth.currentUser!;
+    final doc = FirebaseFirestore.instance
+        .collection(kDBUser)
+        .doc(authUser.uid);
     try {
-      final docSnapshot = await docRef.get();
-    
-      if (docSnapshot.exists) {
-        emit(AuthSuccess(role: docSnapshot.get('role')));
+      final snap = await doc.get();
+      if (snap.exists) {
+        final role = snap.get('role') as String? ?? 'customer';
+        emit(Authenticated(authUser: authUser, role: role));
       } else {
         emit(AuthIncompleteProfile());
       }
-    } catch (e) {
+    } catch (_) {
       emit(AuthError("فشل جلب بيانات المستخدم"));
     }
+  }
+
+  /// تسجيل الخروج
+  Future<void> logout() async {
+    await _auth.signOut();
+    emit(Unauthenticated());
   }
 }

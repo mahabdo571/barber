@@ -12,6 +12,9 @@ import 'provider/services/services_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePageCustomer extends StatefulWidget {
+  final User? authUser;
+
+  const HomePageCustomer({super.key, this.authUser});
   @override
   State<HomePageCustomer> createState() => _HomePageCustomerState();
 }
@@ -49,9 +52,7 @@ class _HomePageCustomerState extends State<HomePageCustomer> {
       ),
       FloatingActionButton(
         onPressed: () async {
-          await FirebaseAuth.instance.signOut();
-          // بعدها مثلاً ترجع لصفحة تسجيل الدخول
-          gotoPage(context, SplashPage());
+      await logout(context);
         },
         child: Icon(Icons.logout),
       ),

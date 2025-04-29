@@ -1,8 +1,11 @@
 import 'package:barber/Implementation/customers/fierstore_customers_repository.dart';
 import 'package:barber/Implementation/provider/provider_firestore_repository.dart';
 import 'package:barber/constants.dart';
+import 'package:barber/cubit/auth/auth_state.dart';
 import 'package:barber/cubit/customers_cubit/customers_cubit.dart';
 import 'package:barber/cubit/provider_search_cubit/provider_search_cubit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get_it/get_it.dart';
 
 import 'Implementation/provider/firestore_schedule_repository.dart';
 import 'cubit/schedule_cubit/schedule_cubit.dart';
@@ -18,10 +21,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'cubit/auth/auth_cubit.dart';
 
+final getIt = GetIt.instance;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await initializeDateFormatting('ar', null);
+  getIt.registerSingleton<AuthCubit>(AuthCubit()..checkAuthStatus());
 
   runApp(MyApp());
 }
@@ -31,7 +37,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthCubit>(create: (_) => AuthCubit()),
+        BlocProvider<AuthCubit>(create: (_) => AuthCubit()..checkAuthStatus()),
         BlocProvider<ServiceProviderCubit>(
           create:
               (_) =>
@@ -44,11 +50,22 @@ class MyApp extends StatelessWidget {
                   ScheduleCubit(repository: FirestoreScheduleRepository())
                     ..loadSchedules(),
         ),
+        // نحذف kUid ونعتمد على AuthCubit.state.userId
         BlocProvider<CustomersCubit>(
-          create:
-              (_) =>
-                  CustomersCubit(repository: FierstoreCustomersRepository())
-                    ..getCustomerById(kUid.toString()),
+          create: (context) {
+            final authState = context.read<AuthCubit>().state;
+            User? user;
+            if (authState is Authenticated) {
+              user = authState.authUser;
+            }
+            final cubit = CustomersCubit(
+              repository: FierstoreCustomersRepository(),
+            );
+            if (user != null) {
+              cubit.getCustomerById(user.uid);
+            }
+            return cubit;
+          },
         ),
         BlocProvider<ProviderSearchCubit>(
           create:

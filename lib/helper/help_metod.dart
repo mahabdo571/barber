@@ -1,3 +1,5 @@
+import 'package:barber/constants.dart';
+import 'package:barber/view/splash_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +17,7 @@ void gotoPage(BuildContext context, Widget widget) {
 }
 
 Future<Map<String, dynamic>?> getUserData() async {
-  final user = await  getCurrentUser();
+  final user = await getCurrentUser();
   final doc =
       await FirebaseFirestore.instance
           .collection('Users')
@@ -35,9 +37,8 @@ Future<User?> getCurrentUser() async {
   return user;
 }
 
+Future<void> logout(BuildContext context) async {
+  await FirebaseAuth.instance.signOut();
 
-
-
-  
-
-
+  gotoPage(context, SplashPage());
+}

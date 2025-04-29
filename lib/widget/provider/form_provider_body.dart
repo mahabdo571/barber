@@ -1,3 +1,5 @@
+import 'package:barber/cubit/auth/auth_cubit.dart';
+import 'package:barber/cubit/auth/auth_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +25,11 @@ class _FormProviderBodyState extends State<FormProviderBody> {
   final _formKey = GlobalKey<FormState>();
   final _nameCtrl = TextEditingController();
   final _phoneCtrl = TextEditingController(
-    text: kUserAuth?.phoneNumber?.substring(1) ?? '',
+    //  text: kUserAuth?.phoneNumber?.substring(1) ?? '',
   );
   final _locationCtrl = TextEditingController();
   final _zipcode = TextEditingController();
+  final _id = TextEditingController();
 
   @override
   void dispose() {
@@ -34,17 +37,19 @@ class _FormProviderBodyState extends State<FormProviderBody> {
     _phoneCtrl.dispose();
     _locationCtrl.dispose();
     _zipcode.dispose();
+    _id.dispose();
     super.dispose();
   }
 
   void _submit() async {
     if (_formKey.currentState!.validate()) {
       final barber = ProviderModel(
-        uid: kUid.toString(),
+        uid: _id.text,
         name: _nameCtrl.text.trim(),
         phone: _phoneCtrl.text.trim(),
         location: _locationCtrl.text.trim(),
         zipcode: _zipcode.text.trim(),
+        createdAt: Timestamp.now(),
         role: widget.role,
         isActive: true,
         subscriptionExpirationDate: Timestamp.fromDate(
@@ -95,12 +100,14 @@ class _FormProviderBodyState extends State<FormProviderBody> {
         }
       },
       builder: (context, state) {
-        return FillForm(); // هنا مكان الفورم تبعك
+        return FillForm();
       },
     );
   }
 
   SingleChildScrollView FillForm() {
+    final authCubit = context.read<AuthCubit>();
+    final currntUser = (authCubit.state as Authenticated).authUser;
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0), // consistent padding
       child: Form(
@@ -131,7 +138,7 @@ class _FormProviderBodyState extends State<FormProviderBody> {
               keyboardType: TextInputType.phone, // numeric keyboard
               decoration: InputDecoration(
                 labelText: 'رقم الهاتف او واتساب',
-                hintText: kUserAuth?.phoneNumber,
+                hintText: currntUser?.phoneNumber,
                 prefixIcon: Icon(Icons.phone),
               ),
               validator: (value) {
@@ -164,7 +171,7 @@ class _FormProviderBodyState extends State<FormProviderBody> {
               },
             ),
             const SizedBox(height: 16),
-
+            TextFormField(controller: _id, initialValue: currntUser?.uid),
             // Location field
             TextFormField(
               controller: _zipcode,

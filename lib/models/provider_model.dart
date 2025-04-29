@@ -16,6 +16,7 @@ class ProviderModel extends UsersModel {
     required super.role,
     required super.uid,
     required this.isActive,
+    required super.createdAt,
     required this.subscriptionExpirationDate,
   });
 
@@ -28,7 +29,7 @@ class ProviderModel extends UsersModel {
       'zipcode': zipcode,
       'location': location,
       'isActive': isActive,
-      'createdAt': DateTime.now(),
+      'createdAt': Timestamp.now(),
       'subscriptionExpirationDate': subscriptionExpirationDate,
     };
   }
@@ -42,6 +43,8 @@ class ProviderModel extends UsersModel {
       zipcode: json['zipcode'] as String,
       role: json['role'] as String,
       isActive: json['isActive'] as bool,
+      createdAt: json['createdAt'] as Timestamp,
+
       subscriptionExpirationDate:
           json['subscriptionExpirationDate'] as Timestamp,
     );

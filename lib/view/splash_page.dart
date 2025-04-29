@@ -1,3 +1,4 @@
+import 'package:barber/view/auth/otp_page.dart';
 import 'package:barber/view/home_page_customer.dart';
 
 import '../constants.dart';
@@ -35,40 +36,66 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is AuthSuccess) {
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, state) {
+        if (state is AuthLoading ||
+            state is AuthChecking ||
+            state is AuthSlowConnection) {
+          return Scaffold(
+            backgroundColor: Color(0xFF1C1C1E),
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+        if (state is Authenticated) {
           final checkRole = state.role;
 
           if (checkRole == 'customer') {
-            gotoPage(context, HomePageCustomer());
+            gotoPage(context, HomePageCustomer(authUser: state.authUser));
           } else if (checkRole == 'provider') {
-            gotoPage(context, HomePageProvider());
-          } else {
-            Center(child: Text('خطأ'));
+            gotoPage(context, HomePageProvider(authUser: state.authUser));
           }
-        } else if (state is AuthInitial || state is AuthError) {
-          gotoPage(context, LoginPage());
-        } else if (state is AuthSlowConnection) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('الاتصال بالانترنت غير مستقر')),
-          );
-        } else if (state is AuthNoInternet) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('لا يوجد اتصال بالانترنت')));
-        } else if (state is AuthIncompleteProfile) {
+        }
+        if (state is AuthIncompleteProfile) {
           gotoPage(context, SelectionPage());
         }
-      },
-      builder: (context, state) {
-        return const Scaffold(
-          backgroundColor: Color(0xFF1C1C1E),
-          body: Center(
-            child: CircularProgressIndicator(color: Color(0xFFDAA520)),
-          ),
-        );
+        if (state is OtpSent) {
+          gotoPage(context, OtpPage());
+        }
+        return LoginPage();
       },
     );
+
+    // return BlocBuilder<AuthCubit, AuthState>(
+
+    //   builder: (context, state) {
+    //     if (state is Authenticated) {
+    //       final checkRole = state.role;
+
+    //       if (checkRole == 'customer') {
+    //         gotoPage(context, HomePageCustomer(authUser: state.authUser));
+    //       } else if (checkRole == 'provider') {
+    //         gotoPage(context, HomePageProvider(authUser: state.authUser));
+    //       }
+    //     } else if (state is AuthInitial || state is AuthError) {
+    //       gotoPage(context, LoginPage());
+    //     } else if (state is AuthSlowConnection) {
+    //       ScaffoldMessenger.of(context).showSnackBar(
+    //         SnackBar(content: Text('الاتصال بالانترنت غير مستقر')),
+    //       );
+    //     } else if (state is AuthNoInternet) {
+    //       ScaffoldMessenger.of(
+    //         context,
+    //       ).showSnackBar(SnackBar(content: Text('لا يوجد اتصال بالانترنت')));
+    //     } else if (state is AuthIncompleteProfile) {
+    //       gotoPage(context, SelectionPage());
+    //     }
+    //     return const Scaffold(
+    //       backgroundColor: Color(0xFF1C1C1E),
+    //       body: Center(
+    //         child: CircularProgressIndicator(color: Color(0xFFDAA520)),
+    //       ),
+    //     );
+    //   },
+    // );
   }
 }

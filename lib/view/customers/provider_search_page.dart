@@ -1,4 +1,5 @@
-import 'package:barber/constants.dart';
+import 'package:barber/cubit/auth/auth_cubit.dart';
+import 'package:barber/cubit/auth/auth_state.dart';
 import 'package:barber/cubit/provider_search_cubit/provider_search_cubit.dart';
 import 'package:barber/cubit/provider_search_cubit/provider_search_state.dart';
 import 'package:barber/helper/qr_scan_helper.dart';
@@ -22,6 +23,8 @@ class _ProviderSearchPageState extends State<ProviderSearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    final authCubit = context.read<AuthCubit>();
+    final currntUser = (authCubit.state as Authenticated).authUser!;
     return Scaffold(
       appBar: AppBar(
         title: Text('البحث عن مزود خدمة'),
@@ -49,7 +52,6 @@ class _ProviderSearchPageState extends State<ProviderSearchPage> {
               controller: _phoneController,
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
-                
                 hintText: '970566123456',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -94,7 +96,7 @@ class _ProviderSearchPageState extends State<ProviderSearchPage> {
                           onPressed: () {
                             context
                                 .read<ProviderSearchCubit>()
-                                .addProviderToFavorites(kUid.toString());
+                                .addProviderToFavorites(currntUser.uid);
                           },
                           child: Text('أضف للمفضلة'),
                         ),

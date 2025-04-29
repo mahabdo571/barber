@@ -31,11 +31,11 @@ class CustomersCubit extends Cubit<CustomersState> {
   /// إضافة خدمة جديدة
   Future<void> addCustomer(CustomerModel customer) async {
     try { 
-      print('testm ${customer.name}');
-      await _repository.addCustomer(customer);
 
+      await _repository.addCustomer(customer);
+ emit(state.copyWith(status: CustomerStatus.success, customer: customer));
     } catch (e) {
-        print('testmc ${customer.name}');
+      
       emit(
         state.copyWith(
           status: CustomerStatus.failure,
@@ -49,6 +49,7 @@ class CustomersCubit extends Cubit<CustomersState> {
   Future<void> updateService(CustomerModel customer) async {
     try {
       await _repository.updateCustomer(customer);
+       emit(state.copyWith(status: CustomerStatus.success, customer: customer));
     } catch (e) {
       emit(
         state.copyWith(
