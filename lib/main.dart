@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: const MaterialApp(
-        title: 'حجوزات',
+        title: kAppName,
         locale: const Locale('ar'),
         supportedLocales: const [Locale('ar')],
         localizationsDelegates: const [

@@ -1,7 +1,7 @@
 import 'package:barber/constants.dart';
 import 'package:barber/cubit/customers_cubit/customers_cubit.dart';
 import 'package:barber/helper/help_metod.dart';
-import 'package:barber/view/home_page.dart';
+import 'package:barber/view/home_page_provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../models/customers_model.dart';
@@ -60,7 +60,7 @@ class _CustomerDataFormState extends State<CustomerDataForm> {
             } else {
               Navigator.of(context, rootNavigator: true).pop();
               if (state.status == CustomerStatus.success) {
-                gotoPage(context, HomePage());
+                gotoPage(context, HomePageProvider());
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('تم حفظ البيانات بنجاح!')),
                 );

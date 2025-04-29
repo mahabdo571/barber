@@ -23,7 +23,7 @@ class AuthCubit extends Cubit<AuthState> {
       timeout: const Duration(seconds: 60),
       verificationCompleted: (PhoneAuthCredential credential) async {
         await _auth.signInWithCredential(credential);
-        emit(AuthSuccess());
+        emit(AuthSuccess(role: 'other'));
       },
       verificationFailed: (FirebaseAuthException e) {
         emit(AuthError(e.message ?? "حدث خطأ"));
@@ -47,7 +47,7 @@ class AuthCubit extends Cubit<AuthState> {
         smsCode: otpCode,
       );
       await _auth.signInWithCredential(credential);
-      emit(AuthSuccess());
+      emit(AuthSuccess(role: 'other'));
     } catch (e) {
       emit(AuthError("رمز التحقق غير صحيح"));
     }
@@ -108,9 +108,9 @@ class AuthCubit extends Cubit<AuthState> {
 
     try {
       final docSnapshot = await docRef.get();
-
+    
       if (docSnapshot.exists) {
-        emit(AuthSuccess());
+        emit(AuthSuccess(role: docSnapshot.get('role')));
       } else {
         emit(AuthIncompleteProfile());
       }

@@ -17,7 +17,11 @@ class AuthSlowConnection extends AuthState {
   AuthSlowConnection({required this.latency});
 }
 
-class AuthSuccess extends AuthState {}
+class AuthSuccess extends AuthState {
+  final String role;
+
+  AuthSuccess({required this.role});
+}
 class AuthIncompleteProfile extends AuthState {}
 
 class AuthChecking extends AuthState {}

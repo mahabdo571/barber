@@ -8,7 +8,7 @@ import '../../cubit/profile_provider_cubit/profile_provider_cubit.dart';
 import '../../cubit/profile_provider_cubit/profile_provider_state.dart';
 import '../../helper/help_metod.dart';
 import '../../models/provider_model.dart';
-import '../../view/home_page.dart';
+import '../../view/home_page_provider.dart';
 
 class FormProviderBody extends StatefulWidget {
   const FormProviderBody({super.key, required this.role});
@@ -78,7 +78,7 @@ class _FormProviderBodyState extends State<FormProviderBody> {
         } else {
           Navigator.of(context, rootNavigator: true).pop();
           if (state is ProfileProviderSuccess) {
-            gotoPage(context, HomePage());
+            gotoPage(context, HomePageProvider());
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('تم حفظ البيانات بنجاح!')),
             );

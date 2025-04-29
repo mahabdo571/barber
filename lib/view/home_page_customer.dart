@@ -10,24 +10,25 @@ import 'provider/services/add_service_page.dart';
 import 'provider/services/services_page.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
+class HomePageCustomer extends StatefulWidget {
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePageCustomer> createState() => _HomePageCustomerState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageCustomerState extends State<HomePageCustomer> {
   int _selectedIndex = 0;
 
-  final List<Widget> _screens = [
-    Center(child: Text('حجوزات اليوم')),
-    Center(child: SchedulePage()),
-    Center(child: ServicesPage()),
+  final List<Widget> _screensCustomers = [
+    Center(child: Text('بحث')),
+    Center(child: Text('حجوزاتي')),
+    Center(child: Text('المفضلة')),
     Center(child: Text('المزيد')),
   ];
 
   @override
   Widget build(BuildContext context) {
-    final List<FloatingActionButton?> _fabs = [
+ 
+    final List<FloatingActionButton?> _fabsCustomers = [
       null,
       FloatingActionButton(
         onPressed: () {
@@ -47,13 +48,10 @@ class _HomePageState extends State<HomePage> {
         child: Icon(Icons.add_task),
       ),
       FloatingActionButton(
-        onPressed: () async{
-        
-           
-              await FirebaseAuth.instance.signOut();
-              // بعدها مثلاً ترجع لصفحة تسجيل الدخول
-              gotoPage(context, SplashPage());
-          
+        onPressed: () async {
+          await FirebaseAuth.instance.signOut();
+          // بعدها مثلاً ترجع لصفحة تسجيل الدخول
+          gotoPage(context, SplashPage());
         },
         child: Icon(Icons.logout),
       ),
@@ -61,13 +59,14 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(title: Text(kAppName)),
-      body: _screens[_selectedIndex],
-      floatingActionButton: _fabs[_selectedIndex],
-      bottomNavigationBar: _bottomNavigationBar(),
+      body: _screensCustomers[_selectedIndex],
+      floatingActionButton: _fabsCustomers[_selectedIndex],
+      bottomNavigationBar: _bottomNavigationBarCustomers(),
     );
   }
 
-  BottomNavigationBar _bottomNavigationBar() {
+
+  BottomNavigationBar _bottomNavigationBarCustomers() {
     return BottomNavigationBar(
       currentIndex: _selectedIndex,
       onTap:
@@ -78,15 +77,9 @@ class _HomePageState extends State<HomePage> {
       selectedItemColor: Colors.teal,
       unselectedItemColor: Colors.grey,
       items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.today), label: 'اليوم'),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.calendar_month),
-          label: 'المواعيد',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.design_services),
-          label: 'الخدمات',
-        ),
+        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'بحث'),
+        BottomNavigationBarItem(icon: Icon(Icons.today), label: 'حجوزاتي'),
+        BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'المفضلة'),
         BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'المزيد'),
       ],
     );

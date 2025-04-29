@@ -1,6 +1,8 @@
+import 'package:barber/view/home_page_customer.dart';
+
 import '../constants.dart';
 import '../helper/help_metod.dart';
-import 'home_page.dart';
+import 'home_page_provider.dart';
 
 import '../cubit/auth/auth_cubit.dart';
 import '../cubit/auth/auth_state.dart';
@@ -36,7 +38,15 @@ class _SplashPageState extends State<SplashPage> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          gotoPage(context, HomePage());
+          final checkRole = state.role;
+
+          if (checkRole == 'customer') {
+            gotoPage(context, HomePageCustomer());
+          } else if (checkRole == 'provider') {
+            gotoPage(context, HomePageProvider());
+          } else {
+            Center(child: Text('خطأ'));
+          }
         } else if (state is AuthInitial || state is AuthError) {
           gotoPage(context, LoginPage());
         } else if (state is AuthSlowConnection) {
