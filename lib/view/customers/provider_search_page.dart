@@ -52,16 +52,20 @@ class _ProviderSearchPageState extends State<ProviderSearchPage> {
               controller: _phoneController,
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
-                hintText: '970566123456',
+                hintText: '0566123456',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
                 suffixIcon: IconButton(
                   icon: Icon(Icons.search),
-                  onPressed:
-                      () => context.read<ProviderSearchCubit>().searchProvider(
-                        _phoneController.text.trim(),
-                      ),
+                  onPressed: () {
+                    context.read<ProviderSearchCubit>().searchProvider(
+                      _phoneController.text.trim(),
+                    );
+                    context.read<ProviderSearchCubit>().checkItsInFavorites(
+                      currntUser.uid,
+                    );
+                  },
                 ),
               ),
             ),
@@ -83,6 +87,8 @@ class _ProviderSearchPageState extends State<ProviderSearchPage> {
                     return Text('خطأ: ${state.errorMessage}');
                   case ProviderSearchStatus.notFound:
                     return Text('لم يتم العثور على مزود خدمة');
+                  case ProviderSearchStatus.ItsInFavorites:
+                    return Text(' هذا المزود تم اضافته للمفضلة مسبقا');
                   case ProviderSearchStatus.success:
                     final provider = state.provider!;
                     return Card(
@@ -97,6 +103,7 @@ class _ProviderSearchPageState extends State<ProviderSearchPage> {
                             context
                                 .read<ProviderSearchCubit>()
                                 .addProviderToFavorites(currntUser.uid);
+                            _phoneController.text = '';
                           },
                           child: Text('أضف للمفضلة'),
                         ),

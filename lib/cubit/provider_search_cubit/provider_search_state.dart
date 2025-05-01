@@ -1,7 +1,7 @@
 import '../../models/provider_model.dart';
 
 /// Possible states of the search feature
-enum ProviderSearchStatus { initial, loading, success, notFound, error }
+enum ProviderSearchStatus { initial,ItsInFavorites, loading, success, notFound, error }
 
 /// State class for ProviderSearchCubit
 class ProviderSearchState {

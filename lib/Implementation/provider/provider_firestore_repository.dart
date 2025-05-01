@@ -41,4 +41,23 @@ class FirestoreProviderRepository implements ProviderRepository {
           'createdAt': FieldValue.serverTimestamp(),
         });
   }
+  
+  @override
+  Future<bool> isProviderInFavorite({
+    required String customerId,
+    required String providerId,
+  }) async {
+    try {
+      final favDoc = await _usersRef
+          .doc(customerId)
+          .collection('favorites')
+          .doc(providerId)
+          .get();
+      return favDoc.exists;
+    } catch (e) {
+
+      return false;
+    }
+  }
+
 }

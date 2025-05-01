@@ -9,4 +9,9 @@ abstract class ProviderRepository {
     required String customerId,
     required ProviderModel provider,
   });
+
+  Future<bool> isProviderInFavorite({
+    required String customerId,
+    required String providerId,
+  });
 }
