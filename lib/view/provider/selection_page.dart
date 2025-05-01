@@ -26,7 +26,7 @@ class _SelectionPageState extends State<SelectionPage> {
   @override
   void initState() {
     super.initState();
-    // عند فتح الصفحة نتأكد من حالة المصادقة
+
     context.read<AuthCubit>().checkAuthStatus();
   }
 
@@ -45,7 +45,6 @@ class _SelectionPageState extends State<SelectionPage> {
         else if (state is OtpSent) {
           gotoPage(context, const OtpPage());
         }
-  
         // مصادق عليه وملفه مكتمل → توجه للرئيسية حسب الدور
         else if (state is Authenticated) {
           final role = state.role;
@@ -58,65 +57,66 @@ class _SelectionPageState extends State<SelectionPage> {
         // أخطاء أو حالات أخرى يمكن معالجتها هنا...
       },
       builder: (ctx, status) {
-        if (status is AuthIncompleteProfile) {
-          return _scaffold(theme, context);
-        }else{
-        return Center(child: CircularProgressIndicator());
-
-        }
+        return _scaffold(theme, context, status);
       },
     );
   }
 
-  Scaffold _scaffold(ThemeData theme, BuildContext context) {
+  Scaffold _scaffold(ThemeData theme, BuildContext context, AuthState status) {
     return Scaffold(
       appBar: AppBar(title: Text(kAppName), centerTitle: true),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              'اختر نوع الحساب',
-              textAlign: TextAlign.center,
-              style: theme.textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 40),
-            Expanded(
-              child: Column(
-                children: [
-                  _buildOptionCard(
-                    context,
-                    icon: Icons.storefront_rounded,
-                    label: 'صاحب عمل',
-                    color: Colors.indigo,
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => BarberDataForm(role: 'provider'),
-                        ),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 24),
-                  _buildOptionCard(
-                    context,
-                    icon: Icons.person_rounded,
-                    label: 'زبون',
-                    color: Colors.teal,
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => CustomerDataForm()),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+        child:
+            (status is AuthIncompleteProfile)
+                ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      'اختر نوع الحساب',
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          _buildOptionCard(
+                            context,
+                            icon: Icons.storefront_rounded,
+                            label: 'صاحب عمل',
+                            color: Colors.indigo,
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder:
+                                      (_) => BarberDataForm(role: 'provider'),
+                                ),
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 24),
+                          _buildOptionCard(
+                            context,
+                            icon: Icons.person_rounded,
+                            label: 'زبون',
+                            color: Colors.teal,
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => CustomerDataForm(),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
+                : const Center(child: CircularProgressIndicator()),
       ),
     );
   }

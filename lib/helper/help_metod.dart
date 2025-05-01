@@ -37,8 +37,4 @@ Future<User?> getCurrentUser() async {
   return user;
 }
 
-Future<void> logout(BuildContext context) async {
-  await FirebaseAuth.instance.signOut();
 
-  gotoPage(context, SelectionPage());
-}

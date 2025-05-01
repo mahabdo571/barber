@@ -29,6 +29,17 @@ class _FormProviderBodyState extends State<FormProviderBody> {
   final _locationCtrl = TextEditingController();
   final _zipcode = TextEditingController();
   final _id = TextEditingController();
+  User? currntUser;
+  @override
+  void initState() {
+    final authCubit = context.read<AuthCubit>();
+    currntUser = (authCubit.state as Authenticated).authUser;
+    if (currntUser?.phoneNumber != null) {
+      _phoneCtrl.text = currntUser!.phoneNumber!.substring(3);
+      _id.text = currntUser!.uid;
+    }
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -103,8 +114,6 @@ class _FormProviderBodyState extends State<FormProviderBody> {
   }
 
   SingleChildScrollView FillForm() {
-    final authCubit = context.read<AuthCubit>();
-    final currntUser = (authCubit.state as Authenticated).authUser;
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0), // consistent padding
       child: Form(
@@ -136,6 +145,7 @@ class _FormProviderBodyState extends State<FormProviderBody> {
             // Phone field
             TextFormField(
               controller: _phoneCtrl,
+              readOnly: true,
               keyboardType: TextInputType.phone, // numeric keyboard
               decoration: InputDecoration(
                 labelText: 'رقم الهاتف او واتساب',
@@ -143,14 +153,14 @@ class _FormProviderBodyState extends State<FormProviderBody> {
                 prefixIcon: Icon(Icons.phone),
               ),
               validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'الرجاء إدخال رقم الهاتف';
-                }
-                // basic phone pattern
-                final reg = RegExp(r'^\d{7,15}$');
-                if (!reg.hasMatch(value.trim())) {
-                  return 'رقم غير صالح';
-                }
+                // if (value == null || value.trim().isEmpty) {
+                //   return 'الرجاء إدخال رقم الهاتف';
+                // }
+                // // basic phone pattern
+                // final reg = RegExp(r'^\d{7,15}$');
+                // if (!reg.hasMatch(value.trim())) {
+                //   return 'رقم غير صالح';
+                // }
                 return null;
               },
             ),

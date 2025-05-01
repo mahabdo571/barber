@@ -1,4 +1,5 @@
 import 'package:barber/constants.dart';
+import 'package:barber/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,7 +15,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   /// إرسال OTP
   void sendOtp(String phoneNumber) async {
-    emit(AuthLoading(authUser: null, role: ''));
+    emit(AuthLoading(authUser: null, role: 'other'));
     await _auth.verifyPhoneNumber(
       phoneNumber: '+970$phoneNumber',
       timeout: const Duration(seconds: 60),
@@ -84,29 +85,35 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  /// بعد المصادقة بنجاح، تحقق إن كان للملف دور أو بيانات ناقصة
   Future<void> _postSignIn() async {
     final authUser = _auth.currentUser!;
-    emit(AuthLoading(authUser: null, role: ''));
+    emit(AuthLoading(authUser: null, role: 'other'));
     final doc = FirebaseFirestore.instance
         .collection(kDBUser)
         .doc(authUser.uid);
     try {
       final snap = await doc.get();
       if (snap.exists) {
-        final role = snap.get('role') as String? ?? 'customer';
+        final role = snap.get('role') as String? ?? 'other';
         emit(Authenticated(authUser: authUser, role: role));
       } else {
-        emit(AuthIncompleteProfile(authUser: authUser, role: ''));
+        emit(AuthIncompleteProfile(authUser: authUser, role: 'other'));
       }
     } catch (_) {
       emit(AuthError("فشل جلب بيانات المستخدم"));
     }
   }
 
-  /// تسجيل الخروج
   Future<void> logout() async {
-    await _auth.signOut();
-    emit(Unauthenticated());
+    try {
+      await _auth.signOut();
+      await getIt.unregister<AuthCubit>();
+      emit(Unauthenticated());
+    } catch (e) {
+      emit(AuthError('خطأ بتسجيل الخروج'));
+   
+    }
+
+    getIt.registerSingleton<AuthCubit>(AuthCubit()..checkAuthStatus());
   }
 }
