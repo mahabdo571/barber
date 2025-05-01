@@ -11,17 +11,16 @@ class FirestoreServiceRepository implements ServiceRepository {
   final String _userId;
 
   FirestoreServiceRepository({FirebaseFirestore? firestore, String? userId})
-      : _firestore = firestore ?? FirebaseFirestore.instance,
-        _userId = userId ?? FirebaseAuth.instance.currentUser!.uid;
+    : _firestore = firestore ?? FirebaseFirestore.instance,
+      _userId = userId ?? FirebaseAuth.instance.currentUser!.uid;
 
-  CollectionReference<Map<String, dynamic>> get _servicesColl => _firestore
-      .collection(kDBUser)
-      .doc(_userId)
-      .collection('services');
+  CollectionReference<Map<String, dynamic>> get _servicesColl =>
+      _firestore.collection(kDBUser);
 
   @override
-  Future<List<Service>> fetchServices() async {
-    final snapshot = await _servicesColl.get();
+  Future<List<Service>> fetchServices(String providerID) async {
+    final serves = _servicesColl.doc(providerID).collection('services');
+    final snapshot = await serves.get();
     return snapshot.docs
         .map((doc) => Service.fromJson(doc.data(), doc.id))
         .toList();
@@ -29,16 +28,22 @@ class FirestoreServiceRepository implements ServiceRepository {
 
   @override
   Future<void> addService(Service service) async {
-    await _servicesColl.add(service.toJson());
+    final serves = _servicesColl.doc(_userId).collection('services');
+
+    await serves.add(service.toJson());
   }
 
   @override
   Future<void> updateService(Service service) async {
-    await _servicesColl.doc(service.id).update(service.toJson());
+    final serves = _servicesColl.doc(_userId).collection('services');
+
+    await serves.doc(service.id).update(service.toJson());
   }
 
   @override
   Future<void> deleteService(String serviceId) async {
-    await _servicesColl.doc(serviceId).delete();
+    final serves = _servicesColl.doc(_userId).collection('services');
+
+    await serves.doc(serviceId).delete();
   }
 }

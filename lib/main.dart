@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
           create:
               (_) =>
                   ServiceProviderCubit(repository: FirestoreServiceRepository())
-                    ..loadServices(),
+                    ..loadServices(''),
         ),
         BlocProvider<ScheduleCubit>(
           create:

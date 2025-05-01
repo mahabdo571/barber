@@ -65,7 +65,7 @@ class _CustomerDataFormState extends State<CustomerDataForm> {
             } else {
               Navigator.of(context, rootNavigator: true).pop();
               if (state.status == CustomerStatus.success) {
-                gotoPage(context, HomePageCustomer());
+                gotoPage_pushReplacement(context, HomePageCustomer());
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('تم حفظ البيانات بنجاح!')),
                 );

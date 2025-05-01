@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GetAllServicesProvider extends StatelessWidget {
-  const GetAllServicesProvider({super.key});
-
+  const GetAllServicesProvider({super.key, required this.uid});
+  final uid;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ServiceProviderCubit, ServiceProviderState>(

@@ -26,18 +26,24 @@ class _OtpPageState extends State<OtpPage> {
         if (state is Authenticated) {
           final role = state.role;
           if (role == 'customer') {
-            gotoPage(context, HomePageCustomer(authUser: state.authUser));
+            gotoPage_pushReplacement(
+              context,
+              HomePageCustomer(authUser: state.authUser),
+            );
           } else if (role == 'provider') {
-            gotoPage(context, HomePageProvider(authUser: state.authUser));
+            gotoPage_pushReplacement(
+              context,
+              HomePageProvider(authUser: state.authUser),
+            );
           } else {
-            gotoPage(context, SelectionPage());
+            gotoPage_pushReplacement(context, SelectionPage());
           }
         } else if (state is AuthError) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(state.message)));
         } else if (state is AuthIncompleteProfile) {
-          gotoPage(context, const SelectionPage());
+          gotoPage_pushReplacement(context, const SelectionPage());
         }
       },
       child: _scaffoldOtp(context),

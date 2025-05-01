@@ -4,8 +4,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-void gotoPage(BuildContext context, Widget widget) {
+void gotoPage_pushReplacement(BuildContext context, Widget widget) {
   Navigator.of(context).pushReplacement(
+    PageRouteBuilder(
+      transitionDuration: const Duration(milliseconds: 500),
+      pageBuilder: (_, __, ___) => widget,
+      transitionsBuilder: (_, animation, __, child) {
+        return FadeTransition(opacity: animation, child: child);
+      },
+    ),
+  );
+}
+
+void gotoPage_push(BuildContext context, Widget widget) {
+  Navigator.of(context).push(
     PageRouteBuilder(
       transitionDuration: const Duration(milliseconds: 500),
       pageBuilder: (_, __, ___) => widget,
@@ -36,5 +48,3 @@ Future<User?> getCurrentUser() async {
 
   return user;
 }
-
-

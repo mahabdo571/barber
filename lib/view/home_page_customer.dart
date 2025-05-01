@@ -40,7 +40,7 @@ class _HomePageCustomerState extends State<HomePageCustomer> {
       FloatingActionButton(
         onPressed: () async {
           await context.read<AuthCubit>().logout();
-          gotoPage(context, SelectionPage());
+          gotoPage_pushReplacement(context, SelectionPage());
         },
         child: Icon(Icons.logout),
       ),

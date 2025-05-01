@@ -39,19 +39,25 @@ class _SelectionPageState extends State<SelectionPage> {
       listener: (context, state) {
         // المستخدم غير موثق بعد → اذهب لصفحة تسجيل الدخول
         if (state is Unauthenticated || state is AuthInitial) {
-          gotoPage(context, const LoginPage());
+          gotoPage_pushReplacement(context, const LoginPage());
         }
         // تم إرسال OTP → اذهب لصفحة إدخال الكود
         else if (state is OtpSent) {
-          gotoPage(context, const OtpPage());
+          gotoPage_pushReplacement(context, const OtpPage());
         }
         // مصادق عليه وملفه مكتمل → توجه للرئيسية حسب الدور
         else if (state is Authenticated) {
           final role = state.role;
           if (role == 'customer') {
-            gotoPage(context, HomePageCustomer(authUser: state.authUser));
+            gotoPage_pushReplacement(
+              context,
+              HomePageCustomer(authUser: state.authUser),
+            );
           } else if (role == 'provider') {
-            gotoPage(context, HomePageProvider(authUser: state.authUser));
+            gotoPage_pushReplacement(
+              context,
+              HomePageProvider(authUser: state.authUser),
+            );
           }
         }
         // أخطاء أو حالات أخرى يمكن معالجتها هنا...

@@ -26,7 +26,7 @@ class _HomePageProviderState extends State<HomePageProvider> {
   final List<Widget> _screensProvider = [
     Center(child: Text('حجوزات اليوم')),
     Center(child: SchedulePage()),
-    Center(child: ServicesPage()),
+    Center(child: ServicesPage(uid: '')),
     Center(child: Text('المزيد')),
   ];
 
@@ -54,7 +54,7 @@ class _HomePageProviderState extends State<HomePageProvider> {
       FloatingActionButton(
         onPressed: () async {
           await context.read<AuthCubit>().logout();
-          gotoPage(context, SelectionPage());
+          gotoPage_pushReplacement(context, SelectionPage());
         },
         child: Icon(Icons.logout),
       ),

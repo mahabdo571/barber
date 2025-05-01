@@ -1,3 +1,7 @@
+import 'package:barber/cubit/auth/auth_cubit.dart';
+import 'package:barber/cubit/auth/auth_state.dart';
+import 'package:get_it/get_it.dart';
+
 import '../../Repository/provider/service_repository.dart';
 import '../../models/service_model.dart';
 import 'package:bloc/bloc.dart';
@@ -5,29 +9,48 @@ import 'package:equatable/equatable.dart';
 
 part 'service_provider_state.dart';
 
-
 /// Cubit: مسؤول عن الواجهة مع ال UI
 class ServiceProviderCubit extends Cubit<ServiceProviderState> {
   final ServiceRepository _repository;
+  final _authCubit = GetIt.I<AuthCubit>();
+  late String _userId;
 
   ServiceProviderCubit({required ServiceRepository repository})
-      : _repository = repository,
-        super(const ServiceProviderState());
+    : _repository = repository,
+      super(const ServiceProviderState()) {
+    // جلب الحالة من AuthCubit
+    final authState = _authCubit.state;
+    if (authState is Authenticated) {
+      // بعد التأكد من النوع نعمل cast
+      _userId = authState.authUser!.uid;
+    } else {
+      _userId = '';
+    }
+
+    // لو حابب تحدث _userId إذا تغيّرت حالة الـ AuthCubit لاحقاً
+    _authCubit.stream.listen((s) {
+      if (s is Authenticated) {
+        _userId = s.authUser!.uid;
+        // مثلاً تطلق إيفنت لتحديث الـ UI أو تجيب بيانات جديدة:
+        // fetchDataForUser(_userId);
+        loadServices(_userId);
+      }
+    });
+  }
 
   /// جلب كل الخدمات
-  Future<void> loadServices() async {
+  Future<void> loadServices(String providerId) async {
     emit(state.copyWith(status: ServiceStatus.loading));
     try {
-      final services = await _repository.fetchServices();
-      emit(state.copyWith(
-        status: ServiceStatus.success,
-        services: services,
-      ));
+      final services = await _repository.fetchServices(providerId);
+      emit(state.copyWith(status: ServiceStatus.success, services: services));
     } catch (e) {
-      emit(state.copyWith(
-        status: ServiceStatus.failure,
-        errorMessage: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: ServiceStatus.failure,
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 
@@ -35,12 +58,14 @@ class ServiceProviderCubit extends Cubit<ServiceProviderState> {
   Future<void> addService(Service service) async {
     try {
       await _repository.addService(service);
-      await loadServices();
+      await loadServices(_userId);
     } catch (e) {
-      emit(state.copyWith(
-        status: ServiceStatus.failure,
-        errorMessage: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: ServiceStatus.failure,
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 
@@ -48,12 +73,14 @@ class ServiceProviderCubit extends Cubit<ServiceProviderState> {
   Future<void> updateService(Service service) async {
     try {
       await _repository.updateService(service);
-      await loadServices();
+      await loadServices(_userId);
     } catch (e) {
-      emit(state.copyWith(
-        status: ServiceStatus.failure,
-        errorMessage: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: ServiceStatus.failure,
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 
@@ -61,12 +88,14 @@ class ServiceProviderCubit extends Cubit<ServiceProviderState> {
   Future<void> deleteService(String serviceId) async {
     try {
       await _repository.deleteService(serviceId);
-      await loadServices();
+      await loadServices(_userId);
     } catch (e) {
-      emit(state.copyWith(
-        status: ServiceStatus.failure,
-        errorMessage: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: ServiceStatus.failure,
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 }
