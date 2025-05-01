@@ -1,6 +1,7 @@
 import 'package:barber/constants.dart';
 import 'package:barber/cubit/auth/auth_cubit.dart';
 import 'package:barber/helper/help_metod.dart';
+import 'package:barber/view/customers/favorit_page.dart';
 import 'package:barber/view/customers/provider_search_page.dart';
 import 'package:barber/view/provider/selection_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,7 +24,7 @@ class _HomePageCustomerState extends State<HomePageCustomer> {
     Center(child: Text('حجوزاتي')),
     Center(child: ProviderSearchPage()),
 
-    Center(child: Text('المفضلة')),
+    Center(child: FavoritListPage()),
     Center(child: Text('المزيد')),
   ];
 
@@ -37,7 +38,7 @@ class _HomePageCustomerState extends State<HomePageCustomer> {
       null,
       FloatingActionButton(
         onPressed: () async {
-        await  context.read<AuthCubit>().logout();
+          await context.read<AuthCubit>().logout();
           gotoPage(context, SelectionPage());
         },
         child: Icon(Icons.logout),
