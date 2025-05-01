@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../constants.dart';
 import '../../cubit/profile_provider_cubit/profile_provider_cubit.dart';
 import '../../cubit/profile_provider_cubit/profile_provider_state.dart';
 import '../../helper/help_metod.dart';
@@ -76,7 +75,7 @@ class _FormProviderBodyState extends State<FormProviderBody> {
   }
 
   Widget _buildForm(BuildContext context) {
-    return BlocConsumer<ProfileProviderCubit, ProfileProviderState>(
+    return BlocListener<ProfileProviderCubit, ProfileProviderState>(
       listener: (context, state) {
         if (state is ProfileProviderLoading) {
           showDialog(
@@ -99,9 +98,7 @@ class _FormProviderBodyState extends State<FormProviderBody> {
           }
         }
       },
-      builder: (context, state) {
-        return FillForm();
-      },
+      child: FillForm(),
     );
   }
 
@@ -129,6 +126,10 @@ class _FormProviderBodyState extends State<FormProviderBody> {
                 }
                 return null;
               },
+            ),
+            Offstage(
+              offstage: true,
+              child: TextFormField(initialValue: currntUser?.uid),
             ),
             const SizedBox(height: 16),
 
@@ -171,7 +172,7 @@ class _FormProviderBodyState extends State<FormProviderBody> {
               },
             ),
             const SizedBox(height: 16),
-            TextFormField(controller: _id, initialValue: currntUser?.uid),
+
             // Location field
             TextFormField(
               controller: _zipcode,

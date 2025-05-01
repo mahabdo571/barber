@@ -13,7 +13,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final phoneController = TextEditingController();
 
-    return BlocConsumer<AuthCubit, AuthState>(
+    return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is OtpSent) {
           gotoPage(context, OtpPage());
@@ -23,9 +23,7 @@ class LoginPage extends StatelessWidget {
           ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
-      builder: ( context,  state) {
-        return ScaffoldLogin(phoneController: phoneController);
-      },
+      child: ScaffoldLogin(phoneController: phoneController),
     );
   }
 }

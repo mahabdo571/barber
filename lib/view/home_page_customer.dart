@@ -1,7 +1,6 @@
 import 'package:barber/constants.dart';
 import 'package:barber/helper/help_metod.dart';
 import 'package:barber/view/customers/provider_search_page.dart';
-import 'package:barber/view/splash_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'provider/schedule/add_schedule_page.dart';

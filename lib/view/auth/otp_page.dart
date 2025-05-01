@@ -1,3 +1,6 @@
+import 'package:barber/view/home_page_customer.dart';
+import 'package:barber/view/home_page_provider.dart';
+import 'package:barber/view/provider/selection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -5,7 +8,6 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../cubit/auth/auth_cubit.dart';
 import '../../cubit/auth/auth_state.dart';
 import '../../helper/help_metod.dart';
-import '../splash_page.dart';
 
 class OtpPage extends StatefulWidget {
   const OtpPage({super.key});
@@ -19,19 +21,26 @@ class _OtpPageState extends State<OtpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthCubit, AuthState>(
+    return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is Authenticated) {
-          gotoPage(context, SplashPage());
+          final role = state.role;
+          if (role == 'customer') {
+            gotoPage(context, HomePageCustomer(authUser: state.authUser));
+          } else if (role == 'provider') {
+            gotoPage(context, HomePageProvider(authUser: state.authUser));
+          } else {
+            gotoPage(context, SelectionPage());
+          }
         } else if (state is AuthError) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(state.message)));
+        } else if (state is AuthIncompleteProfile) {
+          gotoPage(context, const SelectionPage());
         }
       },
-      builder: (BuildContext context, AuthState state) {
-        return _scaffoldOtp(context);
-      },
+      child: _scaffoldOtp(context),
     );
   }
 
@@ -98,8 +107,6 @@ class _OtpPageState extends State<OtpPage> {
                         context.read<AuthCubit>().verifyOtp(otpCode);
                       });
                     }
-
-                    print("تم إدخال الرمز: $otpCode");
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFDAA520),

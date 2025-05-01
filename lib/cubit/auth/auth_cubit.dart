@@ -14,7 +14,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   /// إرسال OTP
   void sendOtp(String phoneNumber) async {
-    emit(AuthLoading());
+    emit(AuthLoading(authUser: null, role: ''));
     await _auth.verifyPhoneNumber(
       phoneNumber: '+970$phoneNumber',
       timeout: const Duration(seconds: 60),
@@ -34,7 +34,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   /// التحقق من OTP
   void verifyOtp(String otpCode) async {
-    emit(AuthLoading());
+    emit(AuthLoading(authUser: null, role: ''));
     try {
       final cred = PhoneAuthProvider.credential(
         verificationId: _verificationId!,
@@ -86,8 +86,8 @@ class AuthCubit extends Cubit<AuthState> {
 
   /// بعد المصادقة بنجاح، تحقق إن كان للملف دور أو بيانات ناقصة
   Future<void> _postSignIn() async {
-    emit(AuthLoading());
     final authUser = _auth.currentUser!;
+    emit(AuthLoading(authUser: null, role: ''));
     final doc = FirebaseFirestore.instance
         .collection(kDBUser)
         .doc(authUser.uid);
@@ -97,7 +97,7 @@ class AuthCubit extends Cubit<AuthState> {
         final role = snap.get('role') as String? ?? 'customer';
         emit(Authenticated(authUser: authUser, role: role));
       } else {
-        emit(AuthIncompleteProfile());
+        emit(AuthIncompleteProfile(authUser: authUser, role: ''));
       }
     } catch (_) {
       emit(AuthError("فشل جلب بيانات المستخدم"));

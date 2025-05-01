@@ -13,7 +13,9 @@ abstract class AuthState {
 class AuthInitial extends AuthState {}
 
 /// أثناء محاولة الاتصال بالإنترنت أو إرسال OTP
-class AuthLoading extends AuthState {}
+class AuthLoading extends Authenticated {
+  AuthLoading({required super.authUser, required super.role});
+}
 
 /// تم إرسال الـ OTP بنجاح
 class OtpSent extends AuthState {}
@@ -31,7 +33,9 @@ class AuthSlowConnection extends AuthState {
 }
 
 /// التوثيق غير مكتمل (مثلاً لا توجد بيانات البروفايل)
-class AuthIncompleteProfile extends AuthState {}
+class AuthIncompleteProfile extends Authenticated {
+  AuthIncompleteProfile({required super.authUser, required super.role});
+}
 
 /// حالة توثيق ناجح
 class Authenticated extends AuthState {

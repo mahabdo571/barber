@@ -1,5 +1,5 @@
 import 'package:barber/constants.dart';
-import 'package:barber/view/splash_page.dart';
+import 'package:barber/view/provider/selection_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -40,5 +40,5 @@ Future<User?> getCurrentUser() async {
 Future<void> logout(BuildContext context) async {
   await FirebaseAuth.instance.signOut();
 
-  gotoPage(context, SplashPage());
+  gotoPage(context, SelectionPage());
 }

@@ -4,6 +4,7 @@ import 'package:barber/constants.dart';
 import 'package:barber/cubit/auth/auth_state.dart';
 import 'package:barber/cubit/customers_cubit/customers_cubit.dart';
 import 'package:barber/cubit/provider_search_cubit/provider_search_cubit.dart';
+import 'package:barber/view/provider/selection_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 
@@ -14,7 +15,6 @@ import 'Implementation/provider/firestore_service_repository.dart';
 import 'cubit/service_provider_cubit/service_provider_cubit.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'view/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -85,7 +85,7 @@ class MyApp extends StatelessWidget {
         ],
 
         debugShowCheckedModeBanner: false,
-        home: SplashPage(),
+        home: SelectionPage(),
       ),
     );
   }
