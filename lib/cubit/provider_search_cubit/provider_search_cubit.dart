@@ -1,7 +1,6 @@
 import 'package:barber/Repository/provider/provider_pepository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'provider_search_state.dart';
-import '../../models/provider_model.dart';
 
 /// Cubit to manage provider search & favorites
 class ProviderSearchCubit extends Cubit<ProviderSearchState> {
@@ -12,21 +11,34 @@ class ProviderSearchCubit extends Cubit<ProviderSearchState> {
       super(ProviderSearchState.initial());
 
   /// Search for a provider by phone
-  Future<void> searchProvider(String phone) async {
+  Future<void> searchProvider(String phone, String customerId) async {
     emit(state.copyWith(status: ProviderSearchStatus.loading));
     try {
       final provider = await _repository.searchProviderByPhone(phone);
       if (provider != null) {
-        emit(
-          state.copyWith(
-            status: ProviderSearchStatus.success,
-            provider: provider,
-          ),
-        );
+        if (await _repository.isProviderInFavorite(
+          customerId: customerId,
+          providerId: provider.uid,
+        )) {
+          emit(
+            state.copyWith(
+              status: ProviderSearchStatus.ItsInFavorites,
+              provider: provider,
+            ),
+          );
+        } else {
+          emit(
+            state.copyWith(
+              status: ProviderSearchStatus.success,
+              provider: provider,
+            ),
+          );
+        }
       } else {
         emit(state.copyWith(status: ProviderSearchStatus.notFound));
       }
     } catch (e) {
+      print('eeeeee ${e.toString()}');
       emit(
         state.copyWith(
           status: ProviderSearchStatus.error,
@@ -46,22 +58,9 @@ class ProviderSearchCubit extends Cubit<ProviderSearchState> {
       emit(
         state.copyWith(
           addedToFavorites: true,
-          status: ProviderSearchStatus.success,
+          status: ProviderSearchStatus.added,
         ),
       );
-    }
-  }
-
-  Future<void> checkItsInFavorites(String customerId) async {
-    if (state.provider != null) {
-      if (await _repository.isProviderInFavorite(
-        customerId: customerId,
-        providerId: state.provider!.uid,
-      )) {
-        emit(state.copyWith(status: ProviderSearchStatus.ItsInFavorites));
-      } else {
-        emit(state.copyWith(status: ProviderSearchStatus.notFound));
-      }
     }
   }
 

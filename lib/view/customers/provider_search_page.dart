@@ -3,6 +3,7 @@ import 'package:barber/cubit/auth/auth_state.dart';
 import 'package:barber/cubit/provider_search_cubit/provider_search_cubit.dart';
 import 'package:barber/cubit/provider_search_cubit/provider_search_state.dart';
 import 'package:barber/helper/qr_scan_helper.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,7 +25,7 @@ class _ProviderSearchPageState extends State<ProviderSearchPage> {
   @override
   Widget build(BuildContext context) {
     final authCubit = context.read<AuthCubit>();
-    final currntUser = (authCubit.state as Authenticated).authUser!;
+    User? currntUser = (authCubit.state as Authenticated).authUser;
     return Scaffold(
       appBar: AppBar(
         title: Text('البحث عن مزود خدمة'),
@@ -37,7 +38,12 @@ class _ProviderSearchPageState extends State<ProviderSearchPage> {
               final result = await scanQRCode(context);
               if (result != null) {
                 _phoneController.text = result;
-                context.read<ProviderSearchCubit>().searchProvider(result);
+                if (currntUser != null) {
+                  context.read<ProviderSearchCubit>().searchProvider(
+                    result,
+                    currntUser.uid,
+                  );
+                }
               }
             },
           ),
@@ -61,19 +67,18 @@ class _ProviderSearchPageState extends State<ProviderSearchPage> {
                   onPressed: () {
                     context.read<ProviderSearchCubit>().searchProvider(
                       _phoneController.text.trim(),
-                    );
-                    context.read<ProviderSearchCubit>().checkItsInFavorites(
-                      currntUser.uid,
+                      currntUser!.uid,
                     );
                   },
                 ),
               ),
             ),
             SizedBox(height: 20),
-            // Search results & add button
+
             BlocConsumer<ProviderSearchCubit, ProviderSearchState>(
               listener: (context, state) {
-                if (state.addedToFavorites) {
+                if (state.addedToFavorites &&
+                    state.status == ProviderSearchStatus.added) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('تمت الإضافة إلى المفضلة')),
                   );
@@ -89,6 +94,8 @@ class _ProviderSearchPageState extends State<ProviderSearchPage> {
                     return Text('لم يتم العثور على مزود خدمة');
                   case ProviderSearchStatus.ItsInFavorites:
                     return Text(' هذا المزود تم اضافته للمفضلة مسبقا');
+                  case ProviderSearchStatus.added:
+                    return Text('تمت الاضافة بنجاح');
                   case ProviderSearchStatus.success:
                     final provider = state.provider!;
                     return Card(
@@ -102,7 +109,7 @@ class _ProviderSearchPageState extends State<ProviderSearchPage> {
                           onPressed: () {
                             context
                                 .read<ProviderSearchCubit>()
-                                .addProviderToFavorites(currntUser.uid);
+                                .addProviderToFavorites(currntUser!.uid);
                             _phoneController.text = '';
                           },
                           child: Text('أضف للمفضلة'),
