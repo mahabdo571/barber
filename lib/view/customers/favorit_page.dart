@@ -1,4 +1,6 @@
+import 'package:barber/Implementation/customers/fierstore_favorit_repository.dart';
 import 'package:barber/cubit/favorit_cubit/favorit_cubit_cubit.dart';
+import 'package:barber/models/favorit_repository.dart';
 import 'package:barber/widget/customer/favorit_list_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,38 +22,41 @@ class _FavoritListPageState extends State<FavoritListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('قائمة الأشخاص'), centerTitle: true),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'ابحث بالاسم...',
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+    return BlocProvider(
+      create:
+          (context) =>
+              FavoritCubitCubit(repository: FierstoreFavoritRepository())
+                ..loadFavoritByCoustomerId(),
+      child: Scaffold(
+        appBar: AppBar(title: const Text('قائمة الأشخاص'), centerTitle: true),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: 'ابحث بالاسم...',
+                  prefixIcon: const Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
                 ),
               ),
             ),
-          ),
-          BlocConsumer<FavoritCubitCubit, FavoritCubitState>(
-            listener: (context, state) {
-              // TODO: implement listener
-            },
-            builder: (context, state) {
-              if (state is FavoritSuccess) {
-                final model = state.favorits;
+            BlocBuilder<FavoritCubitCubit, FavoritCubitState>(
+              builder: (context, state) {
+                if (state is FavoritSuccess) {
+                  final model = state.favorits;
 
-                return Expanded(
-                  child: ListView.builder(
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const AlwaysScrollableScrollPhysics(),
                     itemCount: model.length,
                     itemBuilder: (context, index) {
                       final person = model[index];
                       return Dismissible(
-                        key: Key(person.name),
+                        key: Key(person.phone),
                         direction: DismissDirection.endToStart,
                         onDismissed: (direction) {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -77,14 +82,18 @@ class _FavoritListPageState extends State<FavoritListPage> {
                         child: FavoritListCard(provider: model[index]),
                       );
                     },
-                  ),
-                );
-              } else {
-                return Text('dddd');
-              }
-            },
-          ),
-        ],
+                  );
+                } else if (state is FavoritLoading) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (state is FavoritFailure) {
+                  return Center(child: Text('خطأ ${state.error}'));
+                } else {
+                  return SizedBox(height: 1);
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

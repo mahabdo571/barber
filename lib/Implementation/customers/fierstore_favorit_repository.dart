@@ -1,6 +1,6 @@
-
 import 'package:barber/constants.dart';
 import 'package:barber/cubit/auth/auth_cubit.dart';
+import 'package:barber/cubit/auth/auth_state.dart';
 import 'package:barber/models/favorit_model.dart';
 import 'package:barber/models/favorit_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,14 +28,13 @@ class FierstoreFavoritRepository implements FavoritRepository {
   }
 
   @override
-  Future<List<FavoritModel>> getFavoritByCustomerId(String customerId)async {
+  Future<List<FavoritModel>> getFavoritByCustomerId() async {
+    final uid = (_authCubit.state as Authenticated).authUser!.uid;
 
-    final userDoc = _firestore.doc(customerId);
-    final favCollection = userDoc.collection('favorites');
+    final userDoc = await _customerColl.doc(uid);
+    final favCollection = await userDoc.collection('favorites');
     final snapshot = await favCollection.get();
-    return snapshot.docs
-        .map((doc) => FavoritModel.fromFirestore(doc))
-        .toList();
+    return snapshot.docs.map((doc) => FavoritModel.fromFirestore(doc)).toList();
   }
 
   @override
@@ -49,6 +48,4 @@ class FierstoreFavoritRepository implements FavoritRepository {
     // TODO: implement updateFavorit
     throw UnimplementedError();
   }
- 
-
 }

@@ -12,10 +12,10 @@ class FavoritCubitCubit extends Cubit<FavoritCubitState> {
     : _repository = repository,
       super(FavoritCubitInitial());
 
-  Future<void> loadFavoritByCoustomerId(String customerId) async {
+  Future<void> loadFavoritByCoustomerId() async {
     emit(FavoritLoading());
     try {
-      final favorits = await _repository.getFavoritByCustomerId(customerId);
+      final favorits = await _repository.getFavoritByCustomerId();
       emit(FavoritSuccess(favorits: favorits));
     } catch (e) {
       emit(FavoritFailure(e.toString()));
