@@ -1,5 +1,6 @@
 import 'package:barber/constants.dart';
 import 'package:barber/cubit/auth/auth_cubit.dart';
+import 'package:barber/cubit/auth/auth_state.dart';
 import 'package:barber/helper/help_metod.dart';
 import 'package:barber/view/customers/favorit_page.dart';
 import 'package:barber/view/customers/provider_search_page.dart';

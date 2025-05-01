@@ -1,4 +1,6 @@
 import 'package:barber/Implementation/customers/fierstore_favorit_repository.dart';
+import 'package:barber/cubit/auth/auth_cubit.dart';
+import 'package:barber/cubit/auth/auth_state.dart';
 import 'package:barber/cubit/favorit_cubit/favorit_cubit_cubit.dart';
 import 'package:barber/widget/customer/list_favorit_bloc.dart';
 import 'package:flutter/material.dart';
@@ -21,31 +23,27 @@ class _FavoritListPageState extends State<FavoritListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create:
-          (context) =>
-              FavoritCubitCubit(repository: FierstoreFavoritRepository())
-                ..loadFavoritByCoustomerId(),
-      child: Scaffold(
-        appBar: AppBar(title: const Text('المفضلة'), centerTitle: true),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: 'ابحث بالاسم...',
-                  prefixIcon: const Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
+    final authState = context.watch<AuthCubit>().state;
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('المفضلة'), centerTitle: true),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'ابحث بالاسم...',
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
             ),
-            ListFavoritBloc(),
-          ],
-        ),
+          ),
+          authState is Authenticated ? ListFavoritBloc() : SizedBox(),
+        ],
       ),
     );
   }

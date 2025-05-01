@@ -1,8 +1,10 @@
 import 'package:barber/Implementation/customers/fierstore_customers_repository.dart';
+import 'package:barber/Implementation/customers/fierstore_favorit_repository.dart';
 import 'package:barber/Implementation/provider/provider_firestore_repository.dart';
 import 'package:barber/constants.dart';
 import 'package:barber/cubit/auth/auth_state.dart';
 import 'package:barber/cubit/customers_cubit/customers_cubit.dart';
+import 'package:barber/cubit/favorit_cubit/favorit_cubit_cubit.dart';
 import 'package:barber/cubit/provider_search_cubit/provider_search_cubit.dart';
 import 'package:barber/view/provider/selection_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -72,6 +74,12 @@ class MyApp extends StatelessWidget {
               (_) => ProviderSearchCubit(
                 repository: FirestoreProviderRepository(),
               ),
+        ),
+        BlocProvider<FavoritCubitCubit>(
+          create:
+              (_) =>
+                  FavoritCubitCubit(repository: FierstoreFavoritRepository())
+                    ..loadFavoritByCoustomerId(),
         ),
       ],
       child: const MaterialApp(

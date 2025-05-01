@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ListFavoritBloc extends StatelessWidget {
-  const ListFavoritBloc({
-    super.key,
-  });
+  const ListFavoritBloc({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +12,7 @@ class ListFavoritBloc extends StatelessWidget {
       builder: (context, state) {
         if (state is FavoritSuccess) {
           final model = state.favorits;
-    
+
           return ListView.builder(
             shrinkWrap: true,
             physics: const AlwaysScrollableScrollPhysics(),
@@ -38,14 +36,15 @@ class ListFavoritBloc extends StatelessWidget {
                     children: const [
                       Icon(Icons.delete, color: Colors.white),
                       SizedBox(width: 8),
-                      Text(
-                        'حذف',
-                        style: TextStyle(color: Colors.white),
-                      ),
+                      Text('حذف', style: TextStyle(color: Colors.white)),
                     ],
                   ),
                 ),
-                child: FavoritListCard(provider: model[index]),
+                child: GestureDetector(
+                  
+                  onTap: () {},
+                  child: FavoritListCard(provider: model[index]),
+                ),
               );
             },
           );
