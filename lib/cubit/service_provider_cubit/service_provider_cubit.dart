@@ -41,8 +41,15 @@ class ServiceProviderCubit extends Cubit<ServiceProviderState> {
   /// جلب كل الخدمات
   Future<void> loadServices(String providerId) async {
     emit(state.copyWith(status: ServiceStatus.loading));
+    final services;
     try {
-      final services = await _repository.fetchServices(providerId);
+      if(providerId != _userId){
+       services = await _repository.fetchServices(providerId);
+
+      }else{
+         services = await _repository.fetchServices(_userId);
+
+      }
       emit(state.copyWith(status: ServiceStatus.success, services: services));
     } catch (e) {
       emit(

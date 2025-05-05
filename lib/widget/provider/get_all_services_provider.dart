@@ -9,6 +9,8 @@ class GetAllServicesProvider extends StatelessWidget {
   final uid;
   @override
   Widget build(BuildContext context) {
+    
+    context.read<ServiceProviderCubit>().loadServices(uid);
     return BlocBuilder<ServiceProviderCubit, ServiceProviderState>(
       builder: (context, state) {
         switch (state.status) {
