@@ -37,6 +37,9 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+final authCubit = GetIt.instance<AuthCubit>().state;
+
+final userId = authCubit is Authenticated ? authCubit.authUser?.uid:'';
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(create: (_) => AuthCubit()..checkAuthStatus()),
@@ -44,7 +47,7 @@ class MyApp extends StatelessWidget {
           create:
               (_) =>
                   ServiceProviderCubit(repository: FirestoreServiceRepository())
-                    ..loadServices('XSTr5U2qJ0VmEqe8XoagbH1MECS2'),
+                    ..loadServices(userId.toString()),
         ),
         BlocProvider<ScheduleCubit>(
           create:
@@ -84,9 +87,9 @@ class MyApp extends StatelessWidget {
       ],
       child: const MaterialApp(
         title: kAppName,
-        locale: const Locale('ar'),
-        supportedLocales: const [Locale('ar')],
-        localizationsDelegates: const [
+        locale:  Locale('ar'),
+        supportedLocales:  [Locale('ar')],
+        localizationsDelegates:  [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
