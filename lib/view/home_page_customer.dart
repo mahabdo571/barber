@@ -1,6 +1,7 @@
 import 'package:barber/constants.dart';
 import 'package:barber/cubit/auth/auth_cubit.dart';
 import 'package:barber/cubit/auth/auth_state.dart';
+import 'package:barber/helper/app_router.dart';
 import 'package:barber/helper/help_metod.dart';
 import 'package:barber/view/customers/favorit_page.dart';
 import 'package:barber/view/customers/provider_search_page.dart';
@@ -8,6 +9,7 @@ import 'package:barber/view/provider/selection_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePageCustomer extends StatefulWidget {
   final User? authUser;
@@ -40,7 +42,8 @@ class _HomePageCustomerState extends State<HomePageCustomer> {
       FloatingActionButton(
         onPressed: () async {
           await context.read<AuthCubit>().logout();
-          gotoPage_pushReplacement(context, SelectionPage());
+          context.goNamed(AppRouter.selectionRoute);
+          //  gotoPage_pushReplacement(context, SelectionPage());
         },
         child: Icon(Icons.logout),
       ),

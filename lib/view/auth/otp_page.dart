@@ -1,8 +1,10 @@
+import 'package:barber/helper/app_router.dart';
 import 'package:barber/view/home_page_customer.dart';
 import 'package:barber/view/home_page_provider.dart';
 import 'package:barber/view/provider/selection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../cubit/auth/auth_cubit.dart';
@@ -26,24 +28,29 @@ class _OtpPageState extends State<OtpPage> {
         if (state is Authenticated) {
           final role = state.role;
           if (role == 'customer') {
-            gotoPage_pushReplacement(
-              context,
-              HomePageCustomer(authUser: state.authUser),
-            );
+            context.goNamed('${AppRouter.homeCustomerRoute}/${state.authUser}');
+            // gotoPage_pushReplacement(
+            //   context,
+            //   HomePageCustomer(authUser: state.authUser),
+            // );
           } else if (role == 'provider') {
-            gotoPage_pushReplacement(
-              context,
-              HomePageProvider(authUser: state.authUser),
-            );
+            context.goNamed('${AppRouter.homeProviderRoute}/${state.authUser}');
+            // gotoPage_pushReplacement(
+            //   context,
+            //   HomePageProvider(authUser: state.authUser),
+            // );
           } else {
-            gotoPage_pushReplacement(context, SelectionPage());
+            context.goNamed(AppRouter.selectionRoute);
+            //gotoPage_pushReplacement(context, SelectionPage());
           }
         } else if (state is AuthError) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(state.message)));
         } else if (state is AuthIncompleteProfile) {
-          gotoPage_pushReplacement(context, const SelectionPage());
+                      context.goNamed(AppRouter.selectionRoute);
+
+          //gotoPage_pushReplacement(context, const SelectionPage());
         }
       },
       child: _scaffoldOtp(context),

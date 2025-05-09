@@ -1,9 +1,11 @@
 import 'package:barber/cubit/auth/auth_cubit.dart';
 import 'package:barber/cubit/auth/auth_state.dart';
+import 'package:barber/helper/app_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../cubit/profile_provider_cubit/profile_provider_cubit.dart';
@@ -97,7 +99,8 @@ class _FormProviderBodyState extends State<FormProviderBody> {
         } else {
           Navigator.of(context, rootNavigator: true).pop();
           if (state is ProfileProviderSuccess) {
-            gotoPage_pushReplacement(context, HomePageProvider());
+            context.goNamed(AppRouter.homeProviderRoute);
+           // gotoPage_pushReplacement(context, HomePageProvider());
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('تم حفظ البيانات بنجاح!')),
             );

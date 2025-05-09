@@ -1,6 +1,7 @@
 import 'package:barber/constants.dart';
 import 'package:barber/cubit/auth/auth_cubit.dart';
 import 'package:barber/cubit/auth/auth_state.dart';
+import 'package:barber/helper/app_router.dart';
 import 'package:barber/helper/help_metod.dart';
 import 'package:barber/view/auth/login_page.dart';
 import 'package:barber/view/auth/otp_page.dart';
@@ -9,6 +10,7 @@ import 'package:barber/view/home_page_customer.dart';
 import 'package:barber/view/home_page_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import 'profile/provider_data_form.dart';
 
@@ -39,25 +41,33 @@ class _SelectionPageState extends State<SelectionPage> {
       listener: (context, state) {
         // المستخدم غير موثق بعد → اذهب لصفحة تسجيل الدخول
         if (state is Unauthenticated || state is AuthInitial) {
-          gotoPage_pushReplacement(context, const LoginPage());
+          context.goNamed(AppRouter.loginRoute);
+
+          // gotoPage_pushReplacement(context, const LoginPage());
         }
         // تم إرسال OTP → اذهب لصفحة إدخال الكود
         else if (state is OtpSent) {
-          gotoPage_pushReplacement(context, const OtpPage());
+          context.goNamed(AppRouter.otpRoute);
+
+          // gotoPage_pushReplacement(context, const OtpPage());
         }
         // مصادق عليه وملفه مكتمل → توجه للرئيسية حسب الدور
         else if (state is Authenticated) {
           final role = state.role;
           if (role == 'customer') {
-            gotoPage_pushReplacement(
-              context,
-              HomePageCustomer(authUser: state.authUser),
-            );
+            context.goNamed('${AppRouter.homeCustomerRoute}/${state.authUser}');
+
+            // gotoPage_pushReplacement(
+            //   context,
+            //   HomePageCustomer(authUser: state.authUser),
+            // );
           } else if (role == 'provider') {
-            gotoPage_pushReplacement(
-              context,
-              HomePageProvider(authUser: state.authUser),
-            );
+            context.goNamed('${AppRouter.homeProviderRoute}/${state.authUser}');
+
+            // gotoPage_pushReplacement(
+            //   context,
+            //   HomePageProvider(authUser: state.authUser),
+            // );
           }
         }
         // أخطاء أو حالات أخرى يمكن معالجتها هنا...

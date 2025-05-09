@@ -1,9 +1,11 @@
 import 'package:barber/constants.dart';
 import 'package:barber/cubit/auth/auth_cubit.dart';
+import 'package:barber/helper/app_router.dart';
 import 'package:barber/helper/help_metod.dart';
 import 'package:barber/view/provider/selection_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import 'provider/schedule/add_schedule_page.dart';
 import 'provider/schedule/schedule_page.dart';
@@ -54,7 +56,8 @@ class _HomePageProviderState extends State<HomePageProvider> {
       FloatingActionButton(
         onPressed: () async {
           await context.read<AuthCubit>().logout();
-          gotoPage_pushReplacement(context, SelectionPage());
+          context.goNamed(AppRouter.selectionRoute);
+          // gotoPage_pushReplacement(context, SelectionPage());
         },
         child: Icon(Icons.logout),
       ),

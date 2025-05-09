@@ -1,0 +1,70 @@
+import 'package:barber/view/auth/login_page.dart';
+import 'package:barber/view/auth/otp_page.dart';
+import 'package:barber/view/home_page_customer.dart';
+import 'package:barber/view/home_page_provider.dart';
+import 'package:barber/view/provider/selection_page.dart';
+import 'package:barber/view/provider/services/services_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+abstract class AppRouter {
+  static const selectionRoute = '/';
+  static const loginRoute = '/login';
+  static const otpRoute = '/otp';
+  static const homeCustomerRoute = '/homeCustomerRoute/:user';
+  static const homeProviderRoute = '/homeProviderRoute/:user';
+  static const servicesRoute = '/servicesRoute/:uid';
+
+  static final GoRouter router = GoRouter(
+    routes: [
+      _buildRoute(
+        path: selectionRoute,
+        builderFn: (_) => const SelectionPage(),
+      ),
+      _buildRoute(path: loginRoute, builderFn: (_) => const LoginPage()),
+      _buildRoute(path: otpRoute, builderFn: (_) => const OtpPage()),
+      _buildRoute(
+        path: homeCustomerRoute,
+        builderFn: (state) {
+          User? user = state.pathParameters['user'] as User;
+          return HomePageCustomer(authUser: user);
+        },
+      ),
+      _buildRoute(
+        path: homeProviderRoute,
+        builderFn: (state) {
+          User? user = state.pathParameters['user'] as User;
+          return HomePageProvider(authUser: user);
+        },
+      ),
+      _buildRoute(
+        path: servicesRoute,
+        builderFn: (state) {
+          String? id = state.pathParameters['uid'] as String;
+          return ServicesPage(uid: id);
+        },
+      ),
+    ],
+  );
+
+  static GoRoute _buildRoute({
+    required String path,
+    required Widget Function(GoRouterState state) builderFn,
+  }) {
+    return GoRoute(
+      path: path,
+      builder: (context, state) => builderFn(state),
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: builderFn(state),
+          transitionDuration: const Duration(milliseconds: 500),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+        );
+      },
+    );
+  }
+}

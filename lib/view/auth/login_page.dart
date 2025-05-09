@@ -1,5 +1,7 @@
+import 'package:barber/helper/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../cubit/auth/auth_cubit.dart';
 import '../../cubit/auth/auth_state.dart';
@@ -16,7 +18,8 @@ class LoginPage extends StatelessWidget {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is OtpSent) {
-          gotoPage_pushReplacement(context, OtpPage());
+          context.goNamed(AppRouter.otpRoute);
+          //gotoPage_pushReplacement(context, OtpPage());
         } else if (state is AuthError) {
           ScaffoldMessenger.of(
             context,

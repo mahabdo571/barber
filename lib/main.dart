@@ -6,6 +6,7 @@ import 'package:barber/cubit/auth/auth_state.dart';
 import 'package:barber/cubit/customers_cubit/customers_cubit.dart';
 import 'package:barber/cubit/favorit_cubit/favorit_cubit_cubit.dart';
 import 'package:barber/cubit/provider_search_cubit/provider_search_cubit.dart';
+import 'package:barber/helper/app_router.dart';
 import 'package:barber/view/provider/selection_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
@@ -37,9 +38,9 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-final authCubit = GetIt.instance<AuthCubit>().state;
+    final authCubit = GetIt.instance<AuthCubit>().state;
 
-final userId = authCubit is Authenticated ? authCubit.authUser?.uid:'';
+    final userId = authCubit is Authenticated ? authCubit.authUser?.uid : '';
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(create: (_) => AuthCubit()..checkAuthStatus()),
@@ -85,18 +86,18 @@ final userId = authCubit is Authenticated ? authCubit.authUser?.uid:'';
                     ..loadFavoritByCoustomerId(),
         ),
       ],
-      child: const MaterialApp(
+      child: MaterialApp.router(
+        routerConfig: AppRouter.router,
         title: kAppName,
-        locale:  Locale('ar'),
-        supportedLocales:  [Locale('ar')],
-        localizationsDelegates:  [
+        locale: Locale('ar'),
+        supportedLocales: [Locale('ar')],
+        localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
 
         debugShowCheckedModeBanner: false,
-        home: SelectionPage(),
       ),
     );
   }

@@ -2,11 +2,13 @@ import 'package:barber/constants.dart';
 import 'package:barber/cubit/auth/auth_cubit.dart';
 import 'package:barber/cubit/auth/auth_state.dart';
 import 'package:barber/cubit/customers_cubit/customers_cubit.dart';
+import 'package:barber/helper/app_router.dart';
 import 'package:barber/helper/help_metod.dart';
 import 'package:barber/view/home_page_customer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../models/customers_model.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +67,9 @@ class _CustomerDataFormState extends State<CustomerDataForm> {
             } else {
               Navigator.of(context, rootNavigator: true).pop();
               if (state.status == CustomerStatus.success) {
-                gotoPage_pushReplacement(context, HomePageCustomer());
+                           context.goNamed(AppRouter.homeCustomerRoute);
+
+                //gotoPage_pushReplacement(context, HomePageCustomer());
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('تم حفظ البيانات بنجاح!')),
                 );

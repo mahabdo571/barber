@@ -1,9 +1,11 @@
 import 'package:barber/cubit/favorit_cubit/favorit_cubit_cubit.dart';
+import 'package:barber/helper/app_router.dart';
 import 'package:barber/helper/help_metod.dart';
 import 'package:barber/view/provider/services/services_page.dart';
 import 'package:barber/widget/customer/favorit_list_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class ListFavoritBloc extends StatelessWidget {
   const ListFavoritBloc({super.key});
@@ -44,7 +46,11 @@ class ListFavoritBloc extends StatelessWidget {
                 ),
                 child: GestureDetector(
                   onTap: () {
-                    gotoPage_push(context, ServicesPage(uid: model[index].uid));
+                    context.goNamed(
+                      '${AppRouter.servicesRoute}/${model[index].uid}',
+                    );
+
+                   // gotoPage_push(context, ServicesPage(uid: model[index].uid));
                   },
                   child: FavoritListCard(provider: model[index]),
                 ),
