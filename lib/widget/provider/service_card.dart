@@ -29,12 +29,15 @@ class _ServiceCardState extends State<ServiceCard> {
       direction:
           (getCurrentUserId() == widget.service.ownerId)
               ? DismissDirection.horizontal
-              : DismissDirection.endToStart,
+              : DismissDirection.startToEnd,
       background: Container(
         color: Colors.blue,
         alignment: Alignment.centerRight,
         padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Icon(Icons.edit, color: Colors.white),
+        child:
+            (getCurrentUserId() == widget.service.ownerId)
+                ? Icon(Icons.edit, color: Colors.white)
+                : Icon(Icons.calendar_today, color: Colors.white),
       ),
       secondaryBackground: Container(
         color: Colors.red,

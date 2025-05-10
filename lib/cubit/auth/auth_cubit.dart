@@ -107,12 +107,12 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logout() async {
     try {
       await _auth.signOut();
-      await getIt.reset();
+    //  await getIt.reset();
       emit(Unauthenticated());
     } catch (e) {
       emit(AuthError('خطأ بتسجيل الخروج'));
     }
 
-    getIt.registerSingleton<AuthCubit>(AuthCubit()..checkAuthStatus());
+  //  getIt.registerSingleton<AuthCubit>(AuthCubit()..checkAuthStatus());
   }
 }

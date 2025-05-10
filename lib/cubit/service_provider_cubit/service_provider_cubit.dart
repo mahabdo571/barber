@@ -43,12 +43,10 @@ class ServiceProviderCubit extends Cubit<ServiceProviderState> {
     emit(state.copyWith(status: ServiceStatus.loading));
     final services;
     try {
-      if(providerId != _userId){
-       services = await _repository.fetchServices(providerId);
-
-      }else{
-         services = await _repository.fetchServices(_userId);
-
+      if (providerId != _userId) {
+        services = await _repository.fetchServices(providerId);
+      } else {
+        services = await _repository.fetchServices(_userId);
       }
       emit(state.copyWith(status: ServiceStatus.success, services: services));
     } catch (e) {
@@ -92,7 +90,7 @@ class ServiceProviderCubit extends Cubit<ServiceProviderState> {
   }
 
   /// حذف خدمة
-  Future<void> deleteService(String serviceId) async {
+  Future<void> deleteServiceFromOwner(String serviceId) async {
     try {
       await _repository.deleteService(serviceId);
       await loadServices(_userId);
@@ -105,4 +103,5 @@ class ServiceProviderCubit extends Cubit<ServiceProviderState> {
       );
     }
   }
+
 }

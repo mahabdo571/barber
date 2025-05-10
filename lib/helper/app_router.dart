@@ -1,3 +1,5 @@
+import 'package:barber/view/provider/schedule/schedule_page.dart';
+
 import '../view/auth/login_page.dart';
 import '../view/auth/otp_page.dart';
 import '../view/home_page_customer.dart';
@@ -15,6 +17,7 @@ abstract class AppRouter {
   static const homeCustomerRoute = '/homeCustomerRoute';
   static const homeProviderRoute = '/homeProviderRoute';
   static const servicesRoute = '/servicesRoute/:uid';
+  static const schedulePage = '/schedulePage';
 
   static final GoRouter router = GoRouter(
     routes: [
@@ -22,6 +25,7 @@ abstract class AppRouter {
         path: selectionRoute,
         builderFn: (_) => const SelectionPage(),
       ),
+      _buildRoute(path: schedulePage, builderFn: (_) => SchedulePage()),
       _buildRoute(path: loginRoute, builderFn: (_) => const LoginPage()),
       _buildRoute(path: otpRoute, builderFn: (_) => const OtpPage()),
       _buildRoute(

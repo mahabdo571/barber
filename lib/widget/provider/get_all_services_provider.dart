@@ -1,3 +1,7 @@
+import 'package:barber/helper/app_router.dart';
+import 'package:barber/helper/help_metod.dart';
+import 'package:go_router/go_router.dart';
+
 import '../../cubit/service_provider_cubit/service_provider_cubit.dart';
 import '../../view/provider/services/update_service_page.dart';
 import 'service_card.dart';
@@ -29,19 +33,22 @@ class GetAllServicesProvider extends StatelessWidget {
                 return ServiceCard(
                   service: service,
                   onDelete: () {
-                    context.read<ServiceProviderCubit>().deleteService(
-                      service.id,
-                    );
+                    if (getCurrentUserId() == service.ownerId) {
+                      context
+                          .read<ServiceProviderCubit>()
+                          .deleteServiceFromOwner(service.id);
+                    } else {}
                   },
                   onEdit: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => UpdateServicePage(service: service),
-                      ),
-                    );
-                    // عند السحب لليسار
-                    // TODO: فتح نافذة تعديل الخدمة وإرسال updatedService
-                    // context.read<ServiceCubit>().updateService(updatedService);
+                    if (getCurrentUserId() == service.ownerId) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => UpdateServicePage(service: service),
+                        ),
+                      );
+                    } else {
+                      context.push(AppRouter.schedulePage);
+                    }
                   },
                 );
               },
