@@ -9,7 +9,6 @@ class GetAllServicesProvider extends StatelessWidget {
   final uid;
   @override
   Widget build(BuildContext context) {
-    
     context.read<ServiceProviderCubit>().loadServices(uid);
     return BlocBuilder<ServiceProviderCubit, ServiceProviderState>(
       builder: (context, state) {
@@ -17,7 +16,7 @@ class GetAllServicesProvider extends StatelessWidget {
           case ServiceStatus.loading:
             return Center(child: CircularProgressIndicator());
           case ServiceStatus.failure:
-            return Center(child: Text('حدث خطأ: ${state.errorMessage}'));
+            return Center(child: Text('حدث خط1أ: ${state.errorMessage}'));
           case ServiceStatus.success:
             final services = state.services;
             if (services.isEmpty) {

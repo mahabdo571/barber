@@ -23,7 +23,7 @@ class Service extends Equatable {
     String? description,
     double? price,
     int? duration,
-    String? ownerId
+    String? ownerId,
   }) {
     return Service(
       id: id ?? this.id,
@@ -53,5 +53,5 @@ class Service extends Equatable {
   };
 
   @override
-  List<Object> get props => [id, name, description, price, duration,ownerId];
+  List<Object> get props => [id, name, description, price, duration, ownerId];
 }

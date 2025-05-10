@@ -1,3 +1,6 @@
+import 'package:barber/cubit/auth/auth_cubit.dart';
+import 'package:get_it/get_it.dart';
+
 import '../constants.dart';
 import 'app_router.dart';
 import '../view/provider/selection_page.dart';
@@ -49,4 +52,9 @@ Future<User?> getCurrentUser() async {
   final user = await FirebaseAuth.instance.idTokenChanges().first;
 
   return user;
+}
+
+String? getCurrentUserId() {
+  final authCubit = GetIt.I<AuthCubit>();
+  return authCubit.state.authUser?.uid;
 }

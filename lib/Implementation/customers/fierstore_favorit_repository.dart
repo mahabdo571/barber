@@ -29,7 +29,7 @@ class FierstoreFavoritRepository implements FavoritRepository {
 
   @override
   Future<List<FavoritModel>> getFavoritByCustomerId() async {
-    final uid = (_authCubit.state as Authenticated).authUser!.uid;
+    final uid = _authCubit.state.authUser!.uid;
 
     final userDoc = await _customerColl.doc(uid);
     final favCollection = await userDoc.collection('favorites');

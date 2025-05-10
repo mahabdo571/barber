@@ -1,4 +1,5 @@
-import '../../../helper/help_metod.dart';
+import 'package:barber/helper/help_metod.dart';
+
 import '../../../widget/provider/form_for_add_edit_service_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,6 +41,7 @@ class _AddServicePageState extends State<AddServicePage> {
         description: description,
         price: price,
         duration: duration,
+        ownerId: getCurrentUserId() ?? '-1',
       );
 
       context.read<ServiceProviderCubit>().addService(service);
