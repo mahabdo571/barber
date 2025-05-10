@@ -41,7 +41,7 @@ abstract class AppRouter {
       _buildRoute(
         path: servicesRoute,
         builderFn: (state) {
-          String? id = state.pathParameters['uid'] as String;
+          String? id = state.extra as String;
           return ServicesPage(uid: id);
         },
       ),

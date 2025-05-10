@@ -1,7 +1,5 @@
 import '../../cubit/favorit_cubit/favorit_cubit_cubit.dart';
 import '../../helper/app_router.dart';
-import '../../helper/help_metod.dart';
-import '../../view/provider/services/services_page.dart';
 import 'favorit_list_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,8 +44,8 @@ class ListFavoritBloc extends StatelessWidget {
                 ),
                 child: GestureDetector(
                   onTap: () {
-                    context.go(
-                      '${AppRouter.servicesRoute}/${model[index].uid}',
+                    context.push(
+                      AppRouter.servicesRoute,extra: model[index].uid
                     );
 
                    // gotoPage_push(context, ServicesPage(uid: model[index].uid));

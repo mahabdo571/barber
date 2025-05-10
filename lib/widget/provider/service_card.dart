@@ -25,6 +25,9 @@ class _ServiceCardState extends State<ServiceCard> {
   Widget build(BuildContext context) {
     return Dismissible(
       key: ValueKey(widget.service.id),
+      direction: (1!=1) 
+      ? DismissDirection.horizontal         
+      : DismissDirection.endToStart, 
       background: Container(
         color: Colors.blue,
         alignment: Alignment.centerRight,
