@@ -19,6 +19,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 
 class AppointmentApp extends StatelessWidget {
+  const AppointmentApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     final authCubit = GetIt.instance<AuthCubit>().state;
