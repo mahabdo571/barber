@@ -12,8 +12,8 @@ abstract class AppRouter {
   static const selectionRoute = '/';
   static const loginRoute = '/login';
   static const otpRoute = '/otp';
-  static const homeCustomerRoute = '/homeCustomerRoute/:user';
-  static const homeProviderRoute = '/homeProviderRoute/:user';
+  static const homeCustomerRoute = '/homeCustomerRoute';
+  static const homeProviderRoute = '/homeProviderRoute';
   static const servicesRoute = '/servicesRoute/:uid';
 
   static final GoRouter router = GoRouter(
@@ -27,14 +27,14 @@ abstract class AppRouter {
       _buildRoute(
         path: homeCustomerRoute,
         builderFn: (state) {
-          User? user = state.pathParameters['user'] as User;
+          final user = state.extra as User;
           return HomePageCustomer(authUser: user);
         },
       ),
       _buildRoute(
         path: homeProviderRoute,
         builderFn: (state) {
-          User? user = state.pathParameters['user'] as User;
+          final user = state.extra as User;
           return HomePageProvider(authUser: user);
         },
       ),

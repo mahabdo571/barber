@@ -24,13 +24,17 @@ class HomePageProvider extends StatefulWidget {
 
 class _HomePageProviderState extends State<HomePageProvider> {
   int _selectedIndex = 0;
-
-  final List<Widget> _screensProvider = [
-    Center(child: Text('حجوزات اليوم')),
-    Center(child: SchedulePage()),
-    Center(child: ServicesPage(uid: '')),
-    Center(child: Text('المزيد')),
-  ];
+  List<Widget> _screensProvider = [];
+  @override
+  void initState() {
+    _screensProvider = [
+      Center(child: Text('حجوزات اليوم')),
+      Center(child: SchedulePage()),
+      Center(child: ServicesPage(uid: widget.authUser?.uid)),
+      Center(child: Text('المزيد')),
+    ];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

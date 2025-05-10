@@ -53,14 +53,14 @@ class _SelectionPageState extends State<SelectionPage> {
         else if (state is Authenticated) {
           final role = state.role;
           if (role == 'customer') {
-            context.go('${AppRouter.homeCustomerRoute}/${state.authUser}');
+            context.go(AppRouter.homeCustomerRoute, extra: state.authUser);
 
             // gotoPage_pushReplacement(
             //   context,
             //   HomePageCustomer(authUser: state.authUser),
             // );
           } else if (role == 'provider') {
-            context.go('${AppRouter.homeProviderRoute}/${state.authUser}');
+            context.go(AppRouter.homeProviderRoute, extra: state.authUser);
 
             // gotoPage_pushReplacement(
             //   context,
