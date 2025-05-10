@@ -28,19 +28,19 @@ class _OtpPageState extends State<OtpPage> {
         if (state is Authenticated) {
           final role = state.role;
           if (role == 'customer') {
-            context.goNamed('${AppRouter.homeCustomerRoute}/${state.authUser}');
+            context.go('${AppRouter.homeCustomerRoute}/${state.authUser}');
             // gotoPage_pushReplacement(
             //   context,
             //   HomePageCustomer(authUser: state.authUser),
             // );
           } else if (role == 'provider') {
-            context.goNamed('${AppRouter.homeProviderRoute}/${state.authUser}');
+            context.go('${AppRouter.homeProviderRoute}/${state.authUser}');
             // gotoPage_pushReplacement(
             //   context,
             //   HomePageProvider(authUser: state.authUser),
             // );
           } else {
-            context.goNamed(AppRouter.selectionRoute);
+            context.go(AppRouter.selectionRoute);
             //gotoPage_pushReplacement(context, SelectionPage());
           }
         } else if (state is AuthError) {
@@ -48,7 +48,7 @@ class _OtpPageState extends State<OtpPage> {
             context,
           ).showSnackBar(SnackBar(content: Text(state.message)));
         } else if (state is AuthIncompleteProfile) {
-                      context.goNamed(AppRouter.selectionRoute);
+                      context.go(AppRouter.selectionRoute);
 
           //gotoPage_pushReplacement(context, const SelectionPage());
         }

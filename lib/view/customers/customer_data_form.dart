@@ -67,7 +67,7 @@ class _CustomerDataFormState extends State<CustomerDataForm> {
             } else {
               Navigator.of(context, rootNavigator: true).pop();
               if (state.status == CustomerStatus.success) {
-                           context.goNamed(AppRouter.homeCustomerRoute);
+                           context.go(AppRouter.homeCustomerRoute);
 
                 //gotoPage_pushReplacement(context, HomePageCustomer());
                 ScaffoldMessenger.of(context).showSnackBar(

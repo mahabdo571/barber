@@ -99,7 +99,7 @@ class _FormProviderBodyState extends State<FormProviderBody> {
         } else {
           Navigator.of(context, rootNavigator: true).pop();
           if (state is ProfileProviderSuccess) {
-            context.goNamed(AppRouter.homeProviderRoute);
+            context.go(AppRouter.homeProviderRoute);
            // gotoPage_pushReplacement(context, HomePageProvider());
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('تم حفظ البيانات بنجاح!')),

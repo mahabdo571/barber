@@ -46,7 +46,7 @@ class ListFavoritBloc extends StatelessWidget {
                 ),
                 child: GestureDetector(
                   onTap: () {
-                    context.goNamed(
+                    context.go(
                       '${AppRouter.servicesRoute}/${model[index].uid}',
                     );
 

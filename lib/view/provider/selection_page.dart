@@ -39,15 +39,13 @@ class _SelectionPageState extends State<SelectionPage> {
 
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        // المستخدم غير موثق بعد → اذهب لصفحة تسجيل الدخول
         if (state is Unauthenticated || state is AuthInitial) {
-          context.goNamed(AppRouter.loginRoute);
-
+          context.go(AppRouter.loginRoute);
           // gotoPage_pushReplacement(context, const LoginPage());
         }
         // تم إرسال OTP → اذهب لصفحة إدخال الكود
         else if (state is OtpSent) {
-          context.goNamed(AppRouter.otpRoute);
+          context.go(AppRouter.otpRoute);
 
           // gotoPage_pushReplacement(context, const OtpPage());
         }
@@ -55,14 +53,14 @@ class _SelectionPageState extends State<SelectionPage> {
         else if (state is Authenticated) {
           final role = state.role;
           if (role == 'customer') {
-            context.goNamed('${AppRouter.homeCustomerRoute}/${state.authUser}');
+            context.go('${AppRouter.homeCustomerRoute}/${state.authUser}');
 
             // gotoPage_pushReplacement(
             //   context,
             //   HomePageCustomer(authUser: state.authUser),
             // );
           } else if (role == 'provider') {
-            context.goNamed('${AppRouter.homeProviderRoute}/${state.authUser}');
+            context.go('${AppRouter.homeProviderRoute}/${state.authUser}');
 
             // gotoPage_pushReplacement(
             //   context,

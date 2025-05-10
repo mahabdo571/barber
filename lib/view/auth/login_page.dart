@@ -18,7 +18,7 @@ class LoginPage extends StatelessWidget {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is OtpSent) {
-          context.goNamed(AppRouter.otpRoute);
+          context.go(AppRouter.otpRoute);
           //gotoPage_pushReplacement(context, OtpPage());
         } else if (state is AuthError) {
           ScaffoldMessenger.of(
