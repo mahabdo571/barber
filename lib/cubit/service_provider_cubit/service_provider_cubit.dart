@@ -1,3 +1,5 @@
+import 'package:barber/Implementation/provider/firestore_service_repository.dart';
+
 import '../auth/auth_cubit.dart';
 import '../auth/auth_state.dart';
 import 'package:get_it/get_it.dart';
@@ -11,7 +13,7 @@ part 'service_provider_state.dart';
 
 /// Cubit: مسؤول عن الواجهة مع ال UI
 class ServiceProviderCubit extends Cubit<ServiceProviderState> {
-  final ServiceRepository _repository;
+  ServiceRepository _repository;
   final _authCubit = GetIt.I<AuthCubit>();
   late String _userId;
 
@@ -40,6 +42,7 @@ class ServiceProviderCubit extends Cubit<ServiceProviderState> {
 
   /// جلب كل الخدمات
   Future<void> loadServices(String providerId) async {
+    print(providerId);
     emit(state.copyWith(status: ServiceStatus.loading));
     final services;
     try {
@@ -57,6 +60,11 @@ class ServiceProviderCubit extends Cubit<ServiceProviderState> {
         ),
       );
     }
+  }
+
+  void changeRepository(ServiceRepository newRepo, String userId) {
+    _repository = newRepo;
+    loadServices(userId);
   }
 
   /// إضافة خدمة جديدة
@@ -103,5 +111,4 @@ class ServiceProviderCubit extends Cubit<ServiceProviderState> {
       );
     }
   }
-
 }

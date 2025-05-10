@@ -1,3 +1,5 @@
+import 'package:barber/Implementation/provider/firestore_schedule_repository.dart';
+
 import '../../Repository/provider/schedule_repository.dart';
 import 'schedule_state.dart';
 import '../../models/schedule_model.dart';
@@ -6,12 +8,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ScheduleCubit extends Cubit<ScheduleState> {
-  final ScheduleRepository _repository;
+   ScheduleRepository _repository;
 
   ScheduleCubit({required ScheduleRepository repository})
     : _repository = repository,
       super(const ScheduleState());
-
+  void changeRepository(FirestoreScheduleRepository newRepo) {
+    _repository = newRepo;
+    
+    loadSchedules();
+  }
   /// جلب كل الجداول الزمنية
   Future<void> loadSchedules() async {
     emit(state.copyWith(status: ScheduleStatus.loading));

@@ -29,7 +29,7 @@ class _HomePageProviderState extends State<HomePageProvider> {
   void initState() {
     _screensProvider = [
       Center(child: Text('حجوزات اليوم')),
-      Center(child: SchedulePage()),
+      Center(child: SchedulePage(isAdmin: true)),
       Center(child: ServicesPage(uid: widget.authUser?.uid)),
       Center(child: Text('المزيد')),
     ];

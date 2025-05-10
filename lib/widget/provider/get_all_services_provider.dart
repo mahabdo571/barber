@@ -1,3 +1,6 @@
+import 'package:barber/Implementation/provider/firestore_schedule_repository.dart';
+import 'package:barber/Implementation/provider/firestore_service_repository.dart';
+import 'package:barber/cubit/schedule_cubit/schedule_cubit.dart';
 import 'package:barber/helper/app_router.dart';
 import 'package:barber/helper/help_metod.dart';
 import 'package:go_router/go_router.dart';
@@ -37,7 +40,7 @@ class GetAllServicesProvider extends StatelessWidget {
                       context
                           .read<ServiceProviderCubit>()
                           .deleteServiceFromOwner(service.id);
-                    } else {}
+                    }
                   },
                   onEdit: () {
                     if (getCurrentUserId() == service.ownerId) {
@@ -47,6 +50,10 @@ class GetAllServicesProvider extends StatelessWidget {
                         ),
                       );
                     } else {
+                      final newRepo = FirestoreScheduleRepository(
+                        userId: service.ownerId,
+                      );
+                      context.read<ScheduleCubit>().changeRepository(newRepo);
                       context.push(AppRouter.schedulePage);
                     }
                   },

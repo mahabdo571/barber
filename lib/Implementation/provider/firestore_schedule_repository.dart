@@ -9,7 +9,7 @@ import '../../models/time_slot.dart';
 
 class FirestoreScheduleRepository implements ScheduleRepository {
   final FirebaseFirestore _firestore;
-  final String _userId;
+  final String? _userId;
 
   FirestoreScheduleRepository({FirebaseFirestore? firestore, String? userId})
     : _firestore = firestore ?? FirebaseFirestore.instance,
@@ -18,6 +18,8 @@ class FirestoreScheduleRepository implements ScheduleRepository {
   CollectionReference<Map<String, dynamic>> get _scheduleColl =>
       _firestore.collection(kDBUser).doc(_userId).collection('schedule');
 
+
+  
   @override
   Future<List<ScheduleModel>> fetchSchedules() async {
     final dayDocs = await _scheduleColl.get();
