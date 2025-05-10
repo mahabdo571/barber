@@ -1,8 +1,8 @@
-import 'package:barber/cubit/auth/auth_cubit.dart';
-import 'package:barber/cubit/auth/auth_state.dart';
-import 'package:barber/cubit/provider_search_cubit/provider_search_cubit.dart';
-import 'package:barber/cubit/provider_search_cubit/provider_search_state.dart';
-import 'package:barber/helper/qr_scan_helper.dart';
+import '../../cubit/auth/auth_cubit.dart';
+import '../../cubit/auth/auth_state.dart';
+import '../../cubit/provider_search_cubit/provider_search_cubit.dart';
+import '../../cubit/provider_search_cubit/provider_search_state.dart';
+import '../../helper/qr_scan_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,9 +1,9 @@
-import 'package:barber/view/auth/login_page.dart';
-import 'package:barber/view/auth/otp_page.dart';
-import 'package:barber/view/home_page_customer.dart';
-import 'package:barber/view/home_page_provider.dart';
-import 'package:barber/view/provider/selection_page.dart';
-import 'package:barber/view/provider/services/services_page.dart';
+import '../view/auth/login_page.dart';
+import '../view/auth/otp_page.dart';
+import '../view/home_page_customer.dart';
+import '../view/home_page_provider.dart';
+import '../view/provider/selection_page.dart';
+import '../view/provider/services/services_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

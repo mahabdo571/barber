@@ -1,6 +1,6 @@
-import 'package:barber/Repository/provider/provider_pepository.dart';
-import 'package:barber/constants.dart';
-import 'package:barber/models/provider_model.dart';
+import '../../Repository/provider/provider_pepository.dart';
+import '../../constants.dart';
+import '../../models/provider_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// Firestore implementation of ProviderRepository

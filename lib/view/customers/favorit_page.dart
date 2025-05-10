@@ -1,8 +1,8 @@
-import 'package:barber/Implementation/customers/fierstore_favorit_repository.dart';
-import 'package:barber/cubit/auth/auth_cubit.dart';
-import 'package:barber/cubit/auth/auth_state.dart';
-import 'package:barber/cubit/favorit_cubit/favorit_cubit_cubit.dart';
-import 'package:barber/widget/customer/list_favorit_bloc.dart';
+import '../../Implementation/customers/fierstore_favorit_repository.dart';
+import '../../cubit/auth/auth_cubit.dart';
+import '../../cubit/auth/auth_state.dart';
+import '../../cubit/favorit_cubit/favorit_cubit_cubit.dart';
+import '../../widget/customer/list_favorit_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

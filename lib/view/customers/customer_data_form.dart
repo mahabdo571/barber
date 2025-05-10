@@ -1,10 +1,10 @@
-import 'package:barber/constants.dart';
-import 'package:barber/cubit/auth/auth_cubit.dart';
-import 'package:barber/cubit/auth/auth_state.dart';
-import 'package:barber/cubit/customers_cubit/customers_cubit.dart';
-import 'package:barber/helper/app_router.dart';
-import 'package:barber/helper/help_metod.dart';
-import 'package:barber/view/home_page_customer.dart';
+import '../../constants.dart';
+import '../../cubit/auth/auth_cubit.dart';
+import '../../cubit/auth/auth_state.dart';
+import '../../cubit/customers_cubit/customers_cubit.dart';
+import '../../helper/app_router.dart';
+import '../../helper/help_metod.dart';
+import '../home_page_customer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';

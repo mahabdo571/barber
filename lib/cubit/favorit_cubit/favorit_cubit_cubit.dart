@@ -1,5 +1,5 @@
-import 'package:barber/models/favorit_model.dart';
-import 'package:barber/models/favorit_repository.dart';
+import '../../models/favorit_model.dart';
+import '../../models/favorit_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 

@@ -1,8 +1,8 @@
-import 'package:barber/cubit/favorit_cubit/favorit_cubit_cubit.dart';
-import 'package:barber/helper/app_router.dart';
-import 'package:barber/helper/help_metod.dart';
-import 'package:barber/view/provider/services/services_page.dart';
-import 'package:barber/widget/customer/favorit_list_card.dart';
+import '../../cubit/favorit_cubit/favorit_cubit_cubit.dart';
+import '../../helper/app_router.dart';
+import '../../helper/help_metod.dart';
+import '../../view/provider/services/services_page.dart';
+import 'favorit_list_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';

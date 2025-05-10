@@ -1,4 +1,4 @@
-import 'package:barber/models/customers_model.dart';
+import '../../models/customers_model.dart';
 
 abstract class CustomersRepository {
   Future<CustomerModel> getCustomerById(String customerId);

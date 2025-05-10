@@ -1,4 +1,4 @@
-import 'package:barber/constants.dart';
+import '../../../constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../../widget/provider/get_all_services_provider.dart';

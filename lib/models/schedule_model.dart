@@ -1,8 +1,9 @@
 
-import 'time_slot.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import 'time_slot.dart';
 
 class ScheduleModel extends Equatable {
   final String date; // بصيغة 'yyyy-MM-dd'

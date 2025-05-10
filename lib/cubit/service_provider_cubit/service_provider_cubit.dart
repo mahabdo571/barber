@@ -1,5 +1,5 @@
-import 'package:barber/cubit/auth/auth_cubit.dart';
-import 'package:barber/cubit/auth/auth_state.dart';
+import '../auth/auth_cubit.dart';
+import '../auth/auth_state.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../Repository/provider/service_repository.dart';

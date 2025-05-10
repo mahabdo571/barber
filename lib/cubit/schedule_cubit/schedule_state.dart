@@ -1,5 +1,6 @@
-import '../../models/schedule_model.dart';
 import 'package:equatable/equatable.dart';
+
+import '../../models/schedule_model.dart';
 
 /// حالات الكيوبت
 enum ScheduleStatus { initial, loading, success, failure }

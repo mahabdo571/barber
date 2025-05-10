@@ -1,6 +1,6 @@
-import 'package:barber/cubit/auth/auth_cubit.dart';
-import 'package:barber/cubit/auth/auth_state.dart';
-import 'package:barber/helper/app_router.dart';
+import '../../cubit/auth/auth_cubit.dart';
+import '../../cubit/auth/auth_state.dart';
+import '../../helper/app_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,6 @@
-import '../../models/service_model.dart';
 import 'package:flutter/material.dart';
+
+import '../../models/service_model.dart';
 
 class ServiceCard extends StatefulWidget {
   final Service service;

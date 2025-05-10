@@ -1,7 +1,7 @@
-import 'package:barber/helper/app_router.dart';
-import 'package:barber/view/home_page_customer.dart';
-import 'package:barber/view/home_page_provider.dart';
-import 'package:barber/view/provider/selection_page.dart';
+import '../../helper/app_router.dart';
+import '../home_page_customer.dart';
+import '../home_page_provider.dart';
+import '../provider/selection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';

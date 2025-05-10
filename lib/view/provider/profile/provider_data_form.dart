@@ -1,10 +1,9 @@
-import '../../../cubit/profile_provider_cubit/profile_provider_cubit.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../constants.dart';
+import '../../../cubit/profile_provider_cubit/profile_provider_cubit.dart';
 import '../../../widget/provider/form_provider_body.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class BarberDataForm extends StatelessWidget {
   const BarberDataForm({super.key, required this.role});

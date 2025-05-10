@@ -1,4 +1,4 @@
-import 'package:barber/Repository/provider/provider_pepository.dart';
+import '../../Repository/provider/provider_pepository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'provider_search_state.dart';
 

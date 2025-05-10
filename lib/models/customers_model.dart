@@ -1,4 +1,4 @@
-import 'package:barber/models/users_model.dart';
+import 'users_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CustomerModel extends UsersModel {

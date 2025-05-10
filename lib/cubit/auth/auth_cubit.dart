@@ -1,5 +1,5 @@
-import 'package:barber/constants.dart';
-import 'package:barber/main.dart';
+import '../../constants.dart';
+import '../../main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';

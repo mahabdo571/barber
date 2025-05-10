@@ -1,8 +1,8 @@
-import 'package:barber/constants.dart';
-import 'package:barber/cubit/auth/auth_cubit.dart';
-import 'package:barber/cubit/auth/auth_state.dart';
-import 'package:barber/models/favorit_model.dart';
-import 'package:barber/models/favorit_repository.dart';
+import '../../constants.dart';
+import '../../cubit/auth/auth_cubit.dart';
+import '../../cubit/auth/auth_state.dart';
+import '../../models/favorit_model.dart';
+import '../../models/favorit_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 

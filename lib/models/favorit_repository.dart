@@ -1,4 +1,4 @@
-import 'package:barber/models/favorit_model.dart';
+import 'favorit_model.dart';
 
 abstract class FavoritRepository {
   Future<List<FavoritModel>> getFavoritByCustomerId();

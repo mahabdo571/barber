@@ -1,8 +1,8 @@
-import 'package:barber/constants.dart';
-import 'package:barber/cubit/auth/auth_cubit.dart';
-import 'package:barber/helper/app_router.dart';
-import 'package:barber/helper/help_metod.dart';
-import 'package:barber/view/provider/selection_page.dart';
+import '../constants.dart';
+import '../cubit/auth/auth_cubit.dart';
+import '../helper/app_router.dart';
+import '../helper/help_metod.dart';
+import 'provider/selection_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';

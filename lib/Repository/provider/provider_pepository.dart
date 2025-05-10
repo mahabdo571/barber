@@ -1,4 +1,4 @@
-import 'package:barber/models/provider_model.dart';
+import '../../models/provider_model.dart';
 
 abstract class ProviderRepository {
   /// Search a provider by phone number

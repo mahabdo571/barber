@@ -1,5 +1,5 @@
-import 'package:barber/models/favorit_model.dart';
-import 'package:barber/models/provider_model.dart';
+import '../../models/favorit_model.dart';
+import '../../models/provider_model.dart';
 
 import 'package:flutter/material.dart';
 

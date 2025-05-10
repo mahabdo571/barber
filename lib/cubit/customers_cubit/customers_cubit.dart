@@ -1,5 +1,5 @@
-import 'package:barber/Repository/customers/customers_repository.dart';
-import 'package:barber/models/customers_model.dart';
+import '../../Repository/customers/customers_repository.dart';
+import '../../models/customers_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

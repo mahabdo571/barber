@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
+
 import '../../models/schedule_model.dart';
 import '../../models/time_slot.dart';
-import 'package:flutter/material.dart';
 
 abstract class ScheduleRepository {
   /// جلب كل الجداول الزمنية (اليومية) للمستخدم
