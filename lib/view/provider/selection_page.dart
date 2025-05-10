@@ -67,6 +67,8 @@ class _SelectionPageState extends State<SelectionPage> {
             //   HomePageProvider(authUser: state.authUser),
             // );
           }
+        } else if (state is AuthError) {
+          print('Error in Auth ${state.message}');
         }
         // أخطاء أو حالات أخرى يمكن معالجتها هنا...
       },
