@@ -51,11 +51,12 @@ class BusinessProfileUpdated extends BusinessState {
 // Services States
 class BusinessServicesLoaded extends BusinessState {
   final List<Service> services;
+  final Business business;
 
-  const BusinessServicesLoaded(this.services);
+  const BusinessServicesLoaded(this.services, this.business);
 
   @override
-  List<Object?> get props => [services];
+  List<Object?> get props => [services, business];
 }
 
 // Time Slots States
@@ -70,11 +71,12 @@ class BusinessTimeSlotsGenerated extends BusinessState {
 
 class BusinessTimeSlotsLoaded extends BusinessState {
   final List<TimeSlot> slots;
+  final Business business;
 
-  const BusinessTimeSlotsLoaded(this.slots);
+  const BusinessTimeSlotsLoaded(this.slots, this.business);
 
   @override
-  List<Object?> get props => [slots];
+  List<Object?> get props => [slots, business];
 }
 
 class BusinessTimeSlotUpdated extends BusinessState {}

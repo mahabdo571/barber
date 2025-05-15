@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../../domain/entities/business.dart';
 import '../cubit/business_cubit.dart';
 
 class TimeSlotGeneratorDialog extends StatefulWidget {
-  const TimeSlotGeneratorDialog({super.key});
+  final Business business;
+
+  const TimeSlotGeneratorDialog({super.key, required this.business});
 
   @override
   State<TimeSlotGeneratorDialog> createState() =>
@@ -17,63 +20,8 @@ class _TimeSlotGeneratorDialogState extends State<TimeSlotGeneratorDialog> {
   DateTime _startDate = DateTime.now();
   DateTime _endDate = DateTime.now().add(const Duration(days: 7));
   TimeOfDay _startTime = const TimeOfDay(hour: 9, minute: 0);
-  TimeOfDay _endTime = const TimeOfDay(hour: 21, minute: 0);
+  TimeOfDay _endTime = const TimeOfDay(hour: 17, minute: 0);
   int _intervalMinutes = 30;
-
-  Future<void> _selectStartDate() async {
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: _startDate,
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 365)),
-    );
-    if (picked != null) {
-      setState(() {
-        _startDate = picked;
-        if (_endDate.isBefore(_startDate)) {
-          _endDate = _startDate;
-        }
-      });
-    }
-  }
-
-  Future<void> _selectEndDate() async {
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: _endDate,
-      firstDate: _startDate,
-      lastDate: DateTime.now().add(const Duration(days: 365)),
-    );
-    if (picked != null) {
-      setState(() {
-        _endDate = picked;
-      });
-    }
-  }
-
-  Future<void> _selectStartTime() async {
-    final picked = await showTimePicker(
-      context: context,
-      initialTime: _startTime,
-    );
-    if (picked != null) {
-      setState(() {
-        _startTime = picked;
-      });
-    }
-  }
-
-  Future<void> _selectEndTime() async {
-    final picked = await showTimePicker(
-      context: context,
-      initialTime: _endTime,
-    );
-    if (picked != null) {
-      setState(() {
-        _endTime = picked;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,62 +29,104 @@ class _TimeSlotGeneratorDialogState extends State<TimeSlotGeneratorDialog> {
       title: const Text('إنشاء مواعيد جديدة'),
       content: Form(
         key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: ListTile(
-                    title: const Text('من تاريخ'),
-                    subtitle: Text(DateFormat('yyyy-MM-dd').format(_startDate)),
-                    onTap: _selectStartDate,
-                  ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: const Text('تاريخ البداية'),
+                subtitle: Text(DateFormat('yyyy-MM-dd').format(_startDate)),
+                trailing: const Icon(Icons.calendar_today),
+                onTap: () async {
+                  final date = await showDatePicker(
+                    context: context,
+                    initialDate: _startDate,
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime.now().add(const Duration(days: 365)),
+                  );
+                  if (date != null) {
+                    setState(() {
+                      _startDate = date;
+                      if (_endDate.isBefore(_startDate)) {
+                        _endDate = _startDate;
+                      }
+                    });
+                  }
+                },
+              ),
+              ListTile(
+                title: const Text('تاريخ النهاية'),
+                subtitle: Text(DateFormat('yyyy-MM-dd').format(_endDate)),
+                trailing: const Icon(Icons.calendar_today),
+                onTap: () async {
+                  final date = await showDatePicker(
+                    context: context,
+                    initialDate: _endDate,
+                    firstDate: _startDate,
+                    lastDate: DateTime.now().add(const Duration(days: 365)),
+                  );
+                  if (date != null) {
+                    setState(() {
+                      _endDate = date;
+                    });
+                  }
+                },
+              ),
+              ListTile(
+                title: const Text('وقت البداية'),
+                subtitle: Text(_startTime.format(context)),
+                trailing: const Icon(Icons.access_time),
+                onTap: () async {
+                  final time = await showTimePicker(
+                    context: context,
+                    initialTime: _startTime,
+                  );
+                  if (time != null) {
+                    setState(() {
+                      _startTime = time;
+                    });
+                  }
+                },
+              ),
+              ListTile(
+                title: const Text('وقت النهاية'),
+                subtitle: Text(_endTime.format(context)),
+                trailing: const Icon(Icons.access_time),
+                onTap: () async {
+                  final time = await showTimePicker(
+                    context: context,
+                    initialTime: _endTime,
+                  );
+                  if (time != null) {
+                    setState(() {
+                      _endTime = time;
+                    });
+                  }
+                },
+              ),
+              const SizedBox(height: 16),
+              DropdownButtonFormField<int>(
+                value: _intervalMinutes,
+                decoration: const InputDecoration(
+                  labelText: 'مدة الموعد',
+                  border: OutlineInputBorder(),
                 ),
-                Expanded(
-                  child: ListTile(
-                    title: const Text('إلى تاريخ'),
-                    subtitle: Text(DateFormat('yyyy-MM-dd').format(_endDate)),
-                    onTap: _selectEndDate,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: ListTile(
-                    title: const Text('من الساعة'),
-                    subtitle: Text(_startTime.format(context)),
-                    onTap: _selectStartTime,
-                  ),
-                ),
-                Expanded(
-                  child: ListTile(
-                    title: const Text('إلى الساعة'),
-                    subtitle: Text(_endTime.format(context)),
-                    onTap: _selectEndTime,
-                  ),
-                ),
-              ],
-            ),
-            DropdownButtonFormField<int>(
-              value: _intervalMinutes,
-              decoration: const InputDecoration(labelText: 'مدة الفترة'),
-              items:
-                  [15, 30, 45, 60].map((minutes) {
-                    return DropdownMenuItem<int>(
-                      value: minutes,
-                      child: Text('$minutes دقيقة'),
-                    );
-                  }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  _intervalMinutes = value!;
-                });
-              },
-            ),
-          ],
+                items: const [
+                  DropdownMenuItem(value: 15, child: Text('15 دقيقة')),
+                  DropdownMenuItem(value: 30, child: Text('30 دقيقة')),
+                  DropdownMenuItem(value: 45, child: Text('45 دقيقة')),
+                  DropdownMenuItem(value: 60, child: Text('60 دقيقة')),
+                ],
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      _intervalMinutes = value;
+                    });
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
       actions: [
@@ -164,7 +154,7 @@ class _TimeSlotGeneratorDialogState extends State<TimeSlotGeneratorDialog> {
               );
 
               context.read<BusinessCubit>().generateTimeSlots(
-                businessId: 'business_id', // TODO: Get from business
+                businessId: widget.business.id,
                 startDate: startDateTime,
                 endDate: endDateTime,
                 startTime: startDateTime,

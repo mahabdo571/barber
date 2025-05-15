@@ -46,7 +46,7 @@ class _CustomerHomePageState extends State<CustomerHomePage>
         bottom: TabBar(
           controller: _tabController,
           tabs: const [
-            Tab(text: 'الصالونات'),
+            Tab(icon: Icon(Icons.access_time, color: Colors.white)),
             Tab(text: 'حجوزاتي'),
             Tab(text: 'المفضلة'),
           ],

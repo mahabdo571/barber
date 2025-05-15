@@ -6,8 +6,9 @@ import '../cubit/business_cubit.dart';
 
 class ServiceFormDialog extends StatefulWidget {
   final Service? service;
+  final String businessId;
 
-  const ServiceFormDialog({super.key, this.service});
+  const ServiceFormDialog({super.key, this.service, required this.businessId});
 
   @override
   State<ServiceFormDialog> createState() => _ServiceFormDialogState();
@@ -122,9 +123,7 @@ class _ServiceFormDialogState extends State<ServiceFormDialog> {
             if (_formKey.currentState!.validate()) {
               final service = Service(
                 id: widget.service?.id ?? '',
-                businessId:
-                    widget.service?.businessId ??
-                    'business_id', // TODO: Get from business
+                businessId: widget.service?.businessId ?? widget.businessId,
                 name: _nameController.text,
                 price: double.parse(_priceController.text),
                 duration: int.parse(_durationController.text),

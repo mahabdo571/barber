@@ -36,4 +36,8 @@ abstract class BusinessRepository {
     bool isBooked,
     String? bookingId,
   );
+
+  // Add new method for deleting time slots
+  Future<void> deleteTimeSlot(String id);
+  Future<void> deleteTimeSlotsByDate(String businessId, DateTime date);
 }

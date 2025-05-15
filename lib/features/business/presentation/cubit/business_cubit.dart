@@ -73,7 +73,8 @@ class BusinessCubit extends Cubit<BusinessState> {
       final services = await _repository.getBusinessServices(
         service.businessId,
       );
-      emit(BusinessServicesLoaded(services));
+      final business = await _repository.getBusiness(service.businessId);
+      emit(BusinessServicesLoaded(services, business));
     } catch (e) {
       emit(BusinessError(e.toString()));
     }
@@ -86,7 +87,8 @@ class BusinessCubit extends Cubit<BusinessState> {
       final services = await _repository.getBusinessServices(
         service.businessId,
       );
-      emit(BusinessServicesLoaded(services));
+      final business = await _repository.getBusiness(service.businessId);
+      emit(BusinessServicesLoaded(services, business));
     } catch (e) {
       emit(BusinessError(e.toString()));
     }
@@ -97,7 +99,8 @@ class BusinessCubit extends Cubit<BusinessState> {
       emit(BusinessLoading());
       await _repository.deleteService(id);
       final services = await _repository.getBusinessServices(businessId);
-      emit(BusinessServicesLoaded(services));
+      final business = await _repository.getBusiness(businessId);
+      emit(BusinessServicesLoaded(services, business));
     } catch (e) {
       emit(BusinessError(e.toString()));
     }
@@ -105,10 +108,14 @@ class BusinessCubit extends Cubit<BusinessState> {
 
   Future<void> loadBusinessServices(String businessId) async {
     try {
+      print('Loading services for business: $businessId'); // Debug log
       emit(BusinessLoading());
       final services = await _repository.getBusinessServices(businessId);
-      emit(BusinessServicesLoaded(services));
+      final business = await _repository.getBusiness(businessId);
+      print('Services loaded successfully: ${services.length}'); // Debug log
+      emit(BusinessServicesLoaded(services, business));
     } catch (e) {
+      print('Error loading services: $e'); // Debug log
       emit(BusinessError(e.toString()));
     }
   }
@@ -122,7 +129,8 @@ class BusinessCubit extends Cubit<BusinessState> {
       emit(BusinessLoading());
       await _repository.updateServiceStatus(id, isActive);
       final services = await _repository.getBusinessServices(businessId);
-      emit(BusinessServicesLoaded(services));
+      final business = await _repository.getBusiness(businessId);
+      emit(BusinessServicesLoaded(services, business));
     } catch (e) {
       emit(BusinessError(e.toString()));
     }
@@ -147,7 +155,8 @@ class BusinessCubit extends Cubit<BusinessState> {
         endTime: endTime,
         intervalMinutes: intervalMinutes,
       );
-      emit(BusinessTimeSlotsGenerated(slots));
+      final business = await _repository.getBusiness(businessId);
+      emit(BusinessTimeSlotsLoaded(slots, business));
     } catch (e) {
       emit(BusinessError(e.toString()));
     }
@@ -157,7 +166,8 @@ class BusinessCubit extends Cubit<BusinessState> {
     try {
       emit(BusinessLoading());
       final slots = await _repository.getAvailableTimeSlots(businessId, date);
-      emit(BusinessTimeSlotsLoaded(slots));
+      final business = await _repository.getBusiness(businessId);
+      emit(BusinessTimeSlotsLoaded(slots, business));
     } catch (e) {
       emit(BusinessError(e.toString()));
     }
@@ -167,7 +177,8 @@ class BusinessCubit extends Cubit<BusinessState> {
     try {
       emit(BusinessLoading());
       final slots = await _repository.getBookedTimeSlots(businessId, date);
-      emit(BusinessTimeSlotsLoaded(slots));
+      final business = await _repository.getBusiness(businessId);
+      emit(BusinessTimeSlotsLoaded(slots, business));
     } catch (e) {
       emit(BusinessError(e.toString()));
     }
@@ -184,6 +195,66 @@ class BusinessCubit extends Cubit<BusinessState> {
       emit(BusinessTimeSlotUpdated());
     } catch (e) {
       emit(BusinessError(e.toString()));
+    }
+  }
+
+  Future<void> deleteTimeSlot(
+    String id,
+    String businessId,
+    DateTime date,
+  ) async {
+    try {
+      emit(BusinessLoading());
+      await _repository.deleteTimeSlot(id);
+
+      // تحديث القائمة بعد الحذف
+      await _reloadTimeSlots(businessId);
+    } catch (e) {
+      print('Error in deleteTimeSlot: $e');
+      emit(BusinessError('فشل في حذف الموعد'));
+    }
+  }
+
+  Future<void> deleteTimeSlotsByDate(String businessId, DateTime date) async {
+    try {
+      emit(BusinessLoading());
+
+      print('Starting deletion process for date: ${date.toString()}');
+
+      // حذف المواعيد
+      await _repository.deleteTimeSlotsByDate(businessId, date);
+
+      // تأخير قصير للتأكد من اكتمال عملية الحذف
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      // إعادة تحميل المواعيد المتاحة
+      final slots = await _repository.getAvailableTimeSlots(
+        businessId,
+        DateTime.now(),
+      );
+      final business = await _repository.getBusiness(businessId);
+
+      print('Reloaded ${slots.length} available slots after deletion');
+
+      emit(BusinessTimeSlotsLoaded(slots, business));
+    } catch (e) {
+      print('Error in deleteTimeSlotsByDate: $e');
+      emit(BusinessError('فشل في حذف المواعيد'));
+    }
+  }
+
+  // دالة مساعدة لإعادة تحميل المواعيد
+  Future<void> _reloadTimeSlots(String businessId) async {
+    try {
+      final slots = await _repository.getAvailableTimeSlots(
+        businessId,
+        DateTime.now(),
+      );
+      final business = await _repository.getBusiness(businessId);
+      emit(BusinessTimeSlotsLoaded(slots, business));
+    } catch (e) {
+      print('Error in _reloadTimeSlots: $e');
+      emit(BusinessError('فشل في تحديث المواعيد'));
     }
   }
 }

@@ -30,6 +30,7 @@ class AppConstants {
   static const String colBookings = 'bookings';
   static const String colChats = 'chats';
   static const String colMessages = 'messages';
+  static const String colTimeSlots = 'timeSlots';
 
   // Time Slots
   static const int defaultSlotDuration = 30; // minutes

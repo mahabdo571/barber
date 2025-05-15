@@ -9,6 +9,9 @@ class TimeSlot extends Equatable {
   final String? bookingId;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final String? customerName;
+  final String? serviceName;
+  final String? notes;
 
   const TimeSlot({
     required this.id,
@@ -19,6 +22,9 @@ class TimeSlot extends Equatable {
     this.bookingId,
     required this.createdAt,
     required this.updatedAt,
+    this.customerName,
+    this.serviceName,
+    this.notes,
   });
 
   TimeSlot copyWith({
@@ -30,6 +36,9 @@ class TimeSlot extends Equatable {
     String? bookingId,
     DateTime? createdAt,
     DateTime? updatedAt,
+    String? customerName,
+    String? serviceName,
+    String? notes,
   }) {
     return TimeSlot(
       id: id ?? this.id,
@@ -40,6 +49,9 @@ class TimeSlot extends Equatable {
       bookingId: bookingId ?? this.bookingId,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      customerName: customerName ?? this.customerName,
+      serviceName: serviceName ?? this.serviceName,
+      notes: notes ?? this.notes,
     );
   }
 
