@@ -161,9 +161,69 @@ class CustomerRepositoryImpl implements CustomerRepository {
 
   @override
   Future<void> cancelBooking(String bookingId) async {
-    await _firestore.collection(AppConstants.colBookings).doc(bookingId).update(
-      {'status': 'cancelled', 'updatedAt': DateTime.now().toIso8601String()},
-    );
+    // Get the booking to identify the associated time slot
+    final bookingDoc =
+        await _firestore
+            .collection(AppConstants.colBookings)
+            .doc(bookingId)
+            .get();
+    if (!bookingDoc.exists) {
+      throw Exception('Booking not found');
+    }
+
+    final bookingData = bookingDoc.data()!;
+    final timeSlotId = bookingData['timeSlotId'] as String;
+
+    // Use a transaction to ensure both updates happen atomically
+    await _firestore.runTransaction((transaction) async {
+      // 1. Update booking status to cancelled
+      transaction.update(
+        _firestore.collection(AppConstants.colBookings).doc(bookingId),
+        {'status': 'cancelled', 'updatedAt': DateTime.now().toIso8601String()},
+      );
+
+      // 2. Release the time slot
+      transaction.update(
+        _firestore.collection(AppConstants.colTimeSlots).doc(timeSlotId),
+        {
+          'isBooked': false,
+          'bookingId': null,
+          'bookedBy': null,
+          'updatedAt': DateTime.now().toIso8601String(),
+        },
+      );
+    });
+  }
+
+  @override
+  Stream<List<Booking>> streamCustomerBookings(String customerId) {
+    return _firestore
+        .collection(AppConstants.colBookings)
+        .where('customerId', isEqualTo: customerId)
+        .orderBy('startTime', descending: true)
+        .snapshots()
+        .map((snapshot) {
+          return snapshot.docs
+              .map((doc) => Booking.fromMap(doc.data()..['id'] = doc.id))
+              .toList();
+        });
+  }
+
+  @override
+  Stream<List<Booking>> streamCustomerUpcomingBookings(String customerId) {
+    final now = DateTime.now();
+    return _firestore
+        .collection(AppConstants.colBookings)
+        .where('customerId', isEqualTo: customerId)
+        .where('startTime', isGreaterThanOrEqualTo: now.toIso8601String())
+        .where('status', whereIn: ['pending', 'confirmed'])
+        .orderBy('startTime')
+        .snapshots()
+        .map((snapshot) {
+          return snapshot.docs
+              .map((doc) => Booking.fromMap(doc.data()..['id'] = doc.id))
+              .toList();
+        });
   }
 
   @override
@@ -191,7 +251,7 @@ class CustomerRepositoryImpl implements CustomerRepository {
             .doc(businessId)
             .get();
     if (!doc.exists) {
-      throw Exception('لم يتم العثور على الصالون');
+      throw Exception('Business not found');
     }
     return Business.fromMap(doc.data()!..['id'] = doc.id);
   }
@@ -202,6 +262,7 @@ class CustomerRepositoryImpl implements CustomerRepository {
         await _firestore
             .collection(AppConstants.colServices)
             .where('businessId', isEqualTo: businessId)
+            .orderBy('createdAt', descending: true)
             .get();
 
     return querySnapshot.docs
@@ -233,5 +294,49 @@ class CustomerRepositoryImpl implements CustomerRepository {
     return querySnapshot.docs
         .map((doc) => TimeSlot.fromMap(doc.data()..['id'] = doc.id))
         .toList();
+  }
+
+  @override
+  Future<Booking> updateBookingNotes(String bookingId, String notes) async {
+    final now = DateTime.now();
+    await _firestore.collection(AppConstants.colBookings).doc(bookingId).update(
+      {'notes': notes, 'updatedAt': now.toIso8601String()},
+    );
+
+    final doc =
+        await _firestore
+            .collection(AppConstants.colBookings)
+            .doc(bookingId)
+            .get();
+    return Booking.fromMap(doc.data()!..['id'] = doc.id);
+  }
+
+  @override
+  Future<void> cleanupPastBookings(String customerId) async {
+    final now = DateTime.now();
+    final twentyFourHoursAgo = now.subtract(const Duration(hours: 24));
+
+    // Get bookings that have ended at least 24 hours ago and are still in pending/confirmed state
+    final querySnapshot =
+        await _firestore
+            .collection(AppConstants.colBookings)
+            .where('customerId', isEqualTo: customerId)
+            .where('endTime', isLessThan: twentyFourHoursAgo.toIso8601String())
+            .where('status', whereIn: ['pending', 'confirmed'])
+            .get();
+
+    if (querySnapshot.docs.isEmpty) return;
+
+    // Use a batch to update all these bookings efficiently
+    final batch = _firestore.batch();
+
+    for (final doc in querySnapshot.docs) {
+      batch.update(
+        _firestore.collection(AppConstants.colBookings).doc(doc.id),
+        {'status': 'completed', 'updatedAt': now.toIso8601String()},
+      );
+    }
+
+    await batch.commit();
   }
 }

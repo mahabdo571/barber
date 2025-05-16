@@ -167,6 +167,8 @@ class CustomerCubit extends Cubit<CustomerState> {
     try {
       emit(const CustomerLoading());
       await _repository.cancelBooking(bookingId);
+
+      // After cancellation, we reload the upcoming bookings
       final bookings = await _repository.getCustomerUpcomingBookings(
         customerId,
       );
@@ -178,6 +180,63 @@ class CustomerCubit extends Cubit<CustomerState> {
       );
     } catch (e) {
       emit(CustomerError(e.toString()));
+    }
+  }
+
+  Stream<List<Booking>> streamCustomerBookings(String customerId) {
+    return _repository.streamCustomerBookings(customerId);
+  }
+
+  Stream<List<Booking>> streamCustomerUpcomingBookings(String customerId) {
+    return _repository.streamCustomerUpcomingBookings(customerId);
+  }
+
+  Future<void> updateBookingNotes(
+    String bookingId,
+    String notes,
+    String customerId,
+  ) async {
+    try {
+      emit(const CustomerLoading());
+      await _repository.updateBookingNotes(bookingId, notes);
+
+      // After updating, reload bookings
+      final bookings = await _repository.getCustomerBookings(customerId);
+      emit(
+        CustomerBookingsLoaded(
+          bookings,
+          message: 'Notes updated successfully.',
+        ),
+      );
+    } catch (e) {
+      emit(CustomerError(e.toString()));
+    }
+  }
+
+  Future<Business> getBusinessById(String businessId) async {
+    try {
+      return await _repository.getBusinessById(businessId);
+    } catch (e) {
+      emit(CustomerError(e.toString()));
+      rethrow;
+    }
+  }
+
+  Future<List<Service>> getBusinessServices(String businessId) async {
+    try {
+      return await _repository.getBusinessServices(businessId);
+    } catch (e) {
+      emit(CustomerError(e.toString()));
+      rethrow;
+    }
+  }
+
+  Future<void> cleanupPastBookings(String customerId) async {
+    try {
+      await _repository.cleanupPastBookings(customerId);
+    } catch (e) {
+      // Silently handle errors - this is a background cleanup task
+      print('Error cleaning up past bookings: $e');
     }
   }
 }

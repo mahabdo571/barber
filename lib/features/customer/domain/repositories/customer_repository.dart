@@ -29,4 +29,8 @@ abstract class CustomerRepository {
   Future<List<Booking>> getCustomerBookings(String customerId);
   Future<List<Booking>> getCustomerUpcomingBookings(String customerId);
   Future<void> cancelBooking(String bookingId);
+  Stream<List<Booking>> streamCustomerBookings(String customerId);
+  Stream<List<Booking>> streamCustomerUpcomingBookings(String customerId);
+  Future<Booking> updateBookingNotes(String bookingId, String notes);
+  Future<void> cleanupPastBookings(String customerId);
 }

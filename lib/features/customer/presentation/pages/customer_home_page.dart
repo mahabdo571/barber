@@ -10,6 +10,7 @@ import '../cubit/customer_cubit.dart';
 import '../../domain/entities/booking.dart';
 import '../../domain/entities/customer.dart';
 import '../../domain/entities/business.dart';
+import '../../domain/entities/service.dart';
 import '../../presentation/pages/salon_services_page.dart';
 
 class CustomerHomePage extends StatefulWidget {
@@ -41,6 +42,7 @@ class _CustomerHomePageState extends State<CustomerHomePage>
     if (authState is AuthAuthenticated) {
       final cubit = context.read<CustomerCubit>();
       cubit.loadCustomer(authState.userId);
+      cubit.loadCustomerBookings(authState.userId);
     }
   }
 
@@ -369,26 +371,433 @@ class _BusinessCard extends StatelessWidget {
   }
 }
 
-class _BookingsTab extends StatelessWidget {
+class _BookingsTab extends StatefulWidget {
+  @override
+  State<_BookingsTab> createState() => _BookingsTabState();
+}
+
+class _BookingsTabState extends State<_BookingsTab>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+
+    // Cleanup past bookings when tab is first opened
+    final authState = context.read<AuthCubit>().state;
+    if (authState is AuthAuthenticated) {
+      context.read<CustomerCubit>().cleanupPastBookings(authState.userId);
+    }
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CustomerCubit, CustomerState>(
-      builder: (context, state) {
-        if (state is CustomerBookingsLoaded) {
-          return state.bookings.isEmpty
-              ? const Center(child: Text('لا توجد حجوزات'))
-              : ListView.builder(
-                padding: const EdgeInsets.all(16),
-                itemCount: state.bookings.length,
-                itemBuilder: (context, index) {
-                  final booking = state.bookings[index];
-                  return _BookingCard(booking: booking);
+    final authState = context.read<AuthCubit>().state;
+    if (authState is! AuthAuthenticated) {
+      return const Center(child: Text('Please log in to view bookings'));
+    }
+
+    return Column(
+      children: [
+        TabBar(
+          controller: _tabController,
+          labelColor: Theme.of(context).primaryColor,
+          unselectedLabelColor: Colors.grey,
+          tabs: const [
+            Tab(text: 'الحجوزات القادمة'),
+            Tab(text: 'جميع الحجوزات'),
+          ],
+        ),
+        Expanded(
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              // Upcoming bookings
+              StreamBuilder<List<Booking>>(
+                stream: context
+                    .read<CustomerCubit>()
+                    .streamCustomerUpcomingBookings(authState.userId),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+
+                  final bookings = snapshot.data ?? [];
+
+                  if (bookings.isEmpty) {
+                    return const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.calendar_today,
+                            size: 64,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(height: 16),
+                          Text(
+                            'لا توجد حجوزات قادمة',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            'ابحث عن صالون وقم بحجز موعد',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: bookings.length,
+                    itemBuilder: (context, index) {
+                      final booking = bookings[index];
+                      return _BookingCard(
+                        booking: booking,
+                        showCancelButton: true,
+                      );
+                    },
+                  );
                 },
-              );
-        }
-        return const SizedBox();
-      },
+              ),
+
+              // All bookings
+              StreamBuilder<List<Booking>>(
+                stream: context.read<CustomerCubit>().streamCustomerBookings(
+                  authState.userId,
+                ),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+
+                  final bookings = snapshot.data ?? [];
+
+                  if (bookings.isEmpty) {
+                    return const Center(child: Text('لا توجد حجوزات'));
+                  }
+
+                  return ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: bookings.length,
+                    itemBuilder: (context, index) {
+                      final booking = bookings[index];
+                      // Only show cancel button for pending/confirmed and future bookings
+                      final now = DateTime.now();
+                      final showCancel =
+                          (booking.status == 'pending' ||
+                              booking.status == 'confirmed') &&
+                          booking.startTime.isAfter(now);
+
+                      return _BookingCard(
+                        booking: booking,
+                        showCancelButton: showCancel,
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
     );
+  }
+}
+
+class _BookingCard extends StatelessWidget {
+  final Booking booking;
+  final bool showCancelButton;
+
+  const _BookingCard({required this.booking, this.showCancelButton = false});
+
+  @override
+  Widget build(BuildContext context) {
+    final dateFormat = DateFormat('EEEE, d MMMM', 'ar');
+    final timeFormat = DateFormat('h:mm a', 'ar');
+    final isPastBooking = booking.startTime.isBefore(DateTime.now());
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Salon name header
+            Row(
+              children: [
+                const Icon(Icons.store, color: Colors.grey),
+                const SizedBox(width: 8),
+                FutureBuilder<Business>(
+                  future: context.read<CustomerCubit>().getBusinessById(
+                    booking.businessId,
+                  ),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Text('جاري التحميل...');
+                    }
+
+                    if (snapshot.hasError || !snapshot.hasData) {
+                      return Text(booking.businessId);
+                    }
+
+                    return Text(
+                      snapshot.data!.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    );
+                  },
+                ),
+                const Spacer(),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: _getStatusColor(booking.status),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    _getStatusText(booking.status),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            const Divider(),
+
+            // Service details
+            Row(
+              children: [
+                const Icon(Icons.design_services, color: Colors.grey),
+                const SizedBox(width: 8),
+                FutureBuilder<List<Service>>(
+                  future: context.read<CustomerCubit>().getBusinessServices(
+                    booking.businessId,
+                  ),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Text('جاري التحميل...');
+                    }
+
+                    if (snapshot.hasError || !snapshot.hasData) {
+                      return Text(booking.serviceId);
+                    }
+
+                    final service = snapshot.data!.firstWhere(
+                      (s) => s.id == booking.serviceId,
+                      orElse:
+                          () => Service(
+                            id: booking.serviceId,
+                            businessId: booking.businessId,
+                            name: 'غير معروف',
+                            price: 0,
+                            duration: 0,
+                            isActive: true,
+                            createdAt: DateTime.now(),
+                            updatedAt: DateTime.now(),
+                          ),
+                    );
+
+                    return Text(service.name);
+                  },
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 8),
+
+            // Date and time
+            Row(
+              children: [
+                const Icon(Icons.access_time, color: Colors.grey),
+                const SizedBox(width: 8),
+                Text(
+                  '${dateFormat.format(booking.startTime)} - ${timeFormat.format(booking.startTime)}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: isPastBooking ? Colors.grey : Colors.black,
+                  ),
+                ),
+              ],
+            ),
+
+            if (booking.notes?.isNotEmpty == true) ...[
+              const SizedBox(height: 8),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.note, color: Colors.grey),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      booking.notes!,
+                      style: const TextStyle(
+                        fontStyle: FontStyle.italic,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+
+            const SizedBox(height: 16),
+
+            if (showCancelButton || !isPastBooking)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  if (showCancelButton)
+                    TextButton.icon(
+                      onPressed: () => _showCancelDialog(context),
+                      icon: const Icon(Icons.cancel, color: Colors.red),
+                      label: const Text(
+                        'إلغاء الحجز',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  const SizedBox(width: 8),
+                  if (!isPastBooking)
+                    TextButton.icon(
+                      onPressed: () => _showEditNotesDialog(context),
+                      icon: const Icon(Icons.edit_note),
+                      label: const Text('تعديل الملاحظات'),
+                    ),
+                ],
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showCancelDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('إلغاء الحجز'),
+            content: const Text('هل أنت متأكد من رغبتك في إلغاء هذا الحجز؟'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('إلغاء'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  final authState = context.read<AuthCubit>().state;
+                  if (authState is AuthAuthenticated) {
+                    context.read<CustomerCubit>().cancelBooking(
+                      booking.id,
+                      authState.userId,
+                    );
+                  }
+                },
+                style: TextButton.styleFrom(foregroundColor: Colors.red),
+                child: const Text('تأكيد الإلغاء'),
+              ),
+            ],
+          ),
+    );
+  }
+
+  void _showEditNotesDialog(BuildContext context) {
+    final notesController = TextEditingController(text: booking.notes);
+
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('تعديل الملاحظات'),
+            content: TextField(
+              controller: notesController,
+              decoration: const InputDecoration(
+                hintText: 'أضف ملاحظات للصالون حول حجزك',
+                border: OutlineInputBorder(),
+              ),
+              maxLines: 3,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('إلغاء'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  final authState = context.read<AuthCubit>().state;
+                  if (authState is AuthAuthenticated) {
+                    context.read<CustomerCubit>().updateBookingNotes(
+                      booking.id,
+                      notesController.text,
+                      authState.userId,
+                    );
+                  }
+                },
+                child: const Text('حفظ'),
+              ),
+            ],
+          ),
+    );
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'pending':
+        return Colors.orange;
+      case 'confirmed':
+        return Colors.green;
+      case 'cancelled':
+        return Colors.red;
+      case 'completed':
+        return Colors.blue;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  String _getStatusText(String status) {
+    switch (status) {
+      case 'pending':
+        return 'قيد الانتظار';
+      case 'confirmed':
+        return 'مؤكد';
+      case 'cancelled':
+        return 'ملغي';
+      case 'completed':
+        return 'مكتمل';
+      default:
+        return status;
+    }
   }
 }
 
@@ -817,48 +1226,5 @@ class _CreateProfileFormState extends State<_CreateProfileForm> {
         );
       },
     );
-  }
-}
-
-class _BookingCard extends StatelessWidget {
-  final Booking booking;
-
-  const _BookingCard({required this.booking});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        title: Text(DateFormat('yyyy-MM-dd HH:mm').format(booking.startTime)),
-        subtitle: Text('الحالة: ${_getStatusText(booking.status)}'),
-        trailing:
-            booking.status == 'pending' || booking.status == 'confirmed'
-                ? TextButton(
-                  onPressed: () {
-                    context.read<CustomerCubit>().cancelBooking(
-                      booking.id,
-                      booking.customerId,
-                    );
-                  },
-                  child: const Text('إلغاء'),
-                )
-                : null,
-      ),
-    );
-  }
-
-  String _getStatusText(String status) {
-    switch (status) {
-      case 'pending':
-        return 'قيد الانتظار';
-      case 'confirmed':
-        return 'مؤكد';
-      case 'cancelled':
-        return 'ملغي';
-      case 'completed':
-        return 'مكتمل';
-      default:
-        return status;
-    }
   }
 }
