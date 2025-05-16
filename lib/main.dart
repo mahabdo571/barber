@@ -50,6 +50,7 @@ class BarberApp extends StatelessWidget {
       child: MaterialApp.router(
         title: AppConstants.appName,
         theme: AppTheme.lightTheme,
+        debugShowCheckedModeBanner: false,
         darkTheme: AppTheme.darkTheme,
         themeMode: ThemeMode.light,
         routerConfig: appRouter,

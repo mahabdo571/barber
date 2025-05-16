@@ -660,100 +660,162 @@ class _AvailabilityTabState extends State<_AvailabilityTab> {
 }
 
 class _TodayAppointmentsTab extends StatelessWidget {
+  String _getRemainingTime(DateTime appointmentTime) {
+    final now = DateTime.now();
+    final difference = appointmentTime.difference(now);
+
+    if (difference.isNegative) {
+      return 'انتهى الموعد';
+    }
+
+    if (difference.inDays > 0) {
+      return 'متبقي ${difference.inDays} يوم';
+    } else if (difference.inHours > 0) {
+      return 'متبقي ${difference.inHours} ساعة';
+    } else if (difference.inMinutes > 0) {
+      return 'متبقي ${difference.inMinutes} دقيقة';
+    } else {
+      return 'الموعد الآن';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BusinessCubit, BusinessState>(
       builder: (context, state) {
+        if (state is BusinessLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
         final slots = state is BusinessTimeSlotsLoaded ? state.slots : [];
 
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child:
-              slots.isEmpty
-                  ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.event_available_outlined, size: 64),
-                        SizedBox(height: 16),
-                        Text('لا توجد حجوزات لليوم'),
-                      ],
-                    ),
-                  )
-                  : ListView.builder(
-                    itemCount: slots.length,
-                    itemBuilder: (context, index) {
-                      final slot = slots[index];
-                      return Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  const Icon(Icons.access_time),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    DateFormat('HH:mm').format(slot.startTime),
-                                    style:
-                                        Theme.of(context).textTheme.titleLarge,
-                                  ),
-                                ],
-                              ),
-                              const Divider(),
-                              if (slot.customerName != null) ...[
+        // ترتيب المواعيد حسب الوقت
+        slots.sort((a, b) => a.startTime.compareTo(b.startTime));
+
+        return RefreshIndicator(
+          onRefresh: () async {
+            if (state is BusinessTimeSlotsLoaded) {
+              await context.read<BusinessCubit>().loadBookedTimeSlots(
+                state.business.id,
+                DateTime.now(),
+              );
+            }
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child:
+                slots.isEmpty
+                    ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.event_available_outlined, size: 64),
+                          SizedBox(height: 16),
+                          Text('لا توجد حجوزات لليوم'),
+                        ],
+                      ),
+                    )
+                    : ListView.builder(
+                      itemCount: slots.length,
+                      itemBuilder: (context, index) {
+                        final slot = slots[index];
+                        return Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
                                 Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Icon(Icons.person),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      'العميل: ${slot.customerName}',
-                                      style:
-                                          Theme.of(context).textTheme.bodyLarge,
+                                    Row(
+                                      children: [
+                                        const Icon(Icons.access_time),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          DateFormat(
+                                            'HH:mm',
+                                          ).format(slot.startTime),
+                                          style:
+                                              Theme.of(
+                                                context,
+                                              ).textTheme.titleLarge,
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                              ],
-                              if (slot.serviceName != null) ...[
-                                Row(
-                                  children: [
-                                    const Icon(Icons.design_services),
-                                    const SizedBox(width: 8),
                                     Text(
-                                      'الخدمة: ${slot.serviceName}',
-                                      style:
-                                          Theme.of(context).textTheme.bodyLarge,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                              ],
-                              if (slot.notes != null &&
-                                  slot.notes!.isNotEmpty) ...[
-                                Row(
-                                  children: [
-                                    const Icon(Icons.note),
-                                    const SizedBox(width: 8),
-                                    Expanded(
-                                      child: Text(
-                                        'ملاحظات: ${slot.notes}',
-                                        style:
-                                            Theme.of(
-                                              context,
-                                            ).textTheme.bodyMedium,
+                                      _getRemainingTime(slot.startTime),
+                                      style: TextStyle(
+                                        color:
+                                            slot.startTime.isBefore(
+                                                  DateTime.now(),
+                                                )
+                                                ? Colors.red
+                                                : Colors.green,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ],
                                 ),
+                                const Divider(),
+                                if (slot.customerName != null) ...[
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.person),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        'العميل: ${slot.customerName}',
+                                        style:
+                                            Theme.of(
+                                              context,
+                                            ).textTheme.bodyLarge,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+                                ],
+                                if (slot.serviceName != null) ...[
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.design_services),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        'الخدمة: ${slot.serviceName}',
+                                        style:
+                                            Theme.of(
+                                              context,
+                                            ).textTheme.bodyLarge,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+                                ],
+                                if (slot.notes != null &&
+                                    slot.notes!.isNotEmpty) ...[
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.note),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text(
+                                          'ملاحظات: ${slot.notes}',
+                                          style:
+                                              Theme.of(
+                                                context,
+                                              ).textTheme.bodyMedium,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ],
-                            ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
+                        );
+                      },
+                    ),
+          ),
         );
       },
     );
@@ -763,24 +825,83 @@ class _TodayAppointmentsTab extends StatelessWidget {
 class _SettingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Always create the logout button widget
+    final logoutButton = Card(
+      child: ListTile(
+        leading: const Icon(Icons.logout, color: Colors.red),
+        title: const Text('تسجيل الخروج', style: TextStyle(color: Colors.red)),
+        onTap: () {
+          showDialog(
+            context: context,
+            builder:
+                (context) => AlertDialog(
+                  title: const Text('تسجيل الخروج'),
+                  content: const Text('هل أنت متأكد من تسجيل الخروج؟'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('إلغاء'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        context.read<AuthCubit>().signOut();
+                      },
+                      style: TextButton.styleFrom(foregroundColor: Colors.red),
+                      child: const Text('تسجيل الخروج'),
+                    ),
+                  ],
+                ),
+          );
+        },
+      ),
+    );
+
     return BlocBuilder<BusinessCubit, BusinessState>(
       builder: (context, state) {
-        Business? business;
+        if (state is BusinessLoading) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                const Expanded(
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+                logoutButton,
+              ],
+            ),
+          );
+        }
 
+        Business? business;
         if (state is BusinessProfileLoaded) {
           business = state.business;
         } else if (state is BusinessProfileUpdated) {
           business = state.business;
+        } else if (state is BusinessServicesLoaded) {
+          business = state.business;
+        } else if (state is BusinessTimeSlotsLoaded) {
+          business = state.business;
         }
 
         if (business == null) {
-          return const Center(
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.error_outline, size: 64),
-                SizedBox(height: 16),
-                Text('لا يمكن تحميل الإعدادات'),
+                const Expanded(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.error_outline, size: 64),
+                        SizedBox(height: 16),
+                        Text('لا يمكن تحميل الإعدادات'),
+                      ],
+                    ),
+                  ),
+                ),
+                logoutButton,
               ],
             ),
           );
@@ -834,41 +955,7 @@ class _SettingsTab extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.logout, color: Colors.red),
-                title: const Text(
-                  'تسجيل الخروج',
-                  style: TextStyle(color: Colors.red),
-                ),
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder:
-                        (context) => AlertDialog(
-                          title: const Text('تسجيل الخروج'),
-                          content: const Text('هل أنت متأكد من تسجيل الخروج؟'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('إلغاء'),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                context.read<AuthCubit>().signOut();
-                              },
-                              style: TextButton.styleFrom(
-                                foregroundColor: Colors.red,
-                              ),
-                              child: const Text('تسجيل الخروج'),
-                            ),
-                          ],
-                        ),
-                  );
-                },
-              ),
-            ),
+            logoutButton,
           ],
         );
       },

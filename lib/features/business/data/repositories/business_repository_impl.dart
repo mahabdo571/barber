@@ -285,62 +285,75 @@ class BusinessRepositoryImpl implements BusinessRepository {
     final endOfDay = startOfDay.add(const Duration(days: 1));
 
     try {
-      // جلب المواعيد المحجوزة
-      final querySnapshot = await _firestore
-          .collection(AppConstants.colTimeSlots)
-          .where('businessId', isEqualTo: businessId)
-          .where('isBooked', isEqualTo: true)
-          .where(
-            'startTime',
-            isGreaterThanOrEqualTo: startOfDay.toIso8601String(),
-          )
-          .where('startTime', isLessThan: endOfDay.toIso8601String())
-          .orderBy('startTime')
-          .get();
+      print('Fetching booked slots for date: ${date.toString()}');
+
+      // جلب المواعيد المحجوزة فقط
+      final querySnapshot =
+          await _firestore
+              .collection(AppConstants.colTimeSlots)
+              .where('businessId', isEqualTo: businessId)
+              .where('isBooked', isEqualTo: true)
+              .where(
+                'startTime',
+                isGreaterThanOrEqualTo: startOfDay.toIso8601String(),
+              )
+              .where('startTime', isLessThan: endOfDay.toIso8601String())
+              .orderBy('startTime')
+              .get();
+
+      print('Found ${querySnapshot.docs.length} booked slots');
 
       final slots = await Future.wait(
         querySnapshot.docs.map((doc) async {
-          final timeSlot = TimeSlot.fromMap(doc.data()..['id'] = doc.id);
-          
+          final timeSlot = TimeSlot.fromMap({...doc.data(), 'id': doc.id});
+
           if (timeSlot.bookingId != null) {
-            // جلب معلومات الحجز
-            final bookingDoc = await _firestore
-                .collection(AppConstants.colBookings)
-                .doc(timeSlot.bookingId)
-                .get();
-                
-            if (bookingDoc.exists) {
-              final bookingData = bookingDoc.data()!;
-              bookingData['id'] = bookingDoc.id;
-              final booking = Booking.fromMap(bookingData);
-              
-              // جلب معلومات المستخدم
-              final userDoc = await _firestore
-                  .collection(AppConstants.colUsers)
-                  .doc(booking.customerId)
-                  .get();
-                  
-              // جلب معلومات الخدمة
-              final serviceDoc = await _firestore
-                  .collection(AppConstants.colServices)
-                  .doc(booking.serviceId)
-                  .get();
+            try {
+              // جلب معلومات الحجز
+              final bookingDoc =
+                  await _firestore
+                      .collection(AppConstants.colBookings)
+                      .doc(timeSlot.bookingId)
+                      .get();
 
-              final userData = userDoc.data();
-              final serviceData = serviceDoc.data();
+              if (bookingDoc.exists) {
+                final bookingData = bookingDoc.data()!;
+                bookingData['id'] = bookingDoc.id;
+                final booking = Booking.fromMap(bookingData);
 
-              return timeSlot.copyWith(
-                customerName: userData != null ? userData['name'] as String? ?? 'غير معروف' : 'غير معروف',
-                serviceName: serviceData != null ? serviceData['name'] as String? ?? 'غير معروف' : 'غير معروف',
-                notes: booking.notes,
-              );
+                // جلب معلومات المستخدم
+                final userDoc =
+                    await _firestore
+                        .collection(AppConstants.colUsers)
+                        .doc(booking.customerId)
+                        .get();
+
+                // جلب معلومات الخدمة
+                final serviceDoc =
+                    await _firestore
+                        .collection(AppConstants.colServices)
+                        .doc(booking.serviceId)
+                        .get();
+
+                final userData = userDoc.data();
+                final serviceData = serviceDoc.data();
+
+                return timeSlot.copyWith(
+                  customerName: userData?['name'] as String? ?? 'غير معروف',
+                  serviceName: serviceData?['name'] as String? ?? 'غير معروف',
+                  notes: booking.notes,
+                );
+              }
+            } catch (e) {
+              print('Error fetching booking details: $e');
             }
           }
           return timeSlot;
         }),
       );
 
-      return slots;
+      // فلترة المواعيد التي لديها معلومات العميل فقط
+      return slots.where((slot) => slot.customerName != null).toList();
     } catch (e) {
       print('Error in getBookedTimeSlots: $e');
       return [];

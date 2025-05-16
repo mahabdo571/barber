@@ -18,10 +18,11 @@ class AppConstants {
   static const String routeInitial = '/';
   static const String routeLogin = '/login';
   static const String routeRoleSelection = '/role-selection';
-  static const String routeBusinessProfile = '/business-profile';
-  static const String routeCustomerProfile = '/customer-profile';
+  static const String routeBusinessProfile = '/business/profile';
+  static const String routeCustomerProfile = '/customer/profile';
   static const String routeBusinessHome = '/business';
   static const String routeCustomerHome = '/customer';
+  static const String routeBusinessDetails = '/business/details';
 
   // Collections
   static const String colUsers = 'users';
@@ -30,7 +31,7 @@ class AppConstants {
   static const String colBookings = 'bookings';
   static const String colChats = 'chats';
   static const String colMessages = 'messages';
-  static const String colTimeSlots = 'timeSlots';
+  static const String colTimeSlots = 'time_slots';
 
   // Time Slots
   static const int defaultSlotDuration = 30; // minutes

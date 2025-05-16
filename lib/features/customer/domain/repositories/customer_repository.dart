@@ -1,12 +1,27 @@
 import '../entities/customer.dart';
 import '../entities/booking.dart';
+import '../entities/business.dart';
+import '../entities/service.dart';
+import '../entities/time_slot.dart';
 
 abstract class CustomerRepository {
   // Customer Profile
   Future<Customer> createCustomer(Customer customer);
   Future<Customer> updateCustomer(Customer customer);
   Future<Customer> getCustomer(String id);
-  Future<void> toggleFavoriteBusiness(String customerId, String businessId);
+
+  // Favorites Management
+  Future<bool> toggleFavoriteBusiness(String customerId, String businessId);
+  Future<List<Business>> getFavoriteBusinesses(String customerId);
+
+  // Business Search
+  Future<Business> searchBusinessByPhone(String phone);
+  Future<Business> getBusinessById(String businessId);
+  Future<List<Service>> getBusinessServices(String businessId);
+  Future<List<TimeSlot>> getBusinessAvailableTimeSlots(
+    String businessId,
+    DateTime date,
+  );
 
   // Bookings
   Future<Booking> createBooking(Booking booking);

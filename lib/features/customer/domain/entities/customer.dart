@@ -4,7 +4,6 @@ class Customer extends Equatable {
   final String id;
   final String name;
   final String phone;
-  final List<String> favoriteBusinessIds;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -12,7 +11,6 @@ class Customer extends Equatable {
     required this.id,
     required this.name,
     required this.phone,
-    required this.favoriteBusinessIds,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -21,7 +19,6 @@ class Customer extends Equatable {
     String? id,
     String? name,
     String? phone,
-    List<String>? favoriteBusinessIds,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -29,7 +26,6 @@ class Customer extends Equatable {
       id: id ?? this.id,
       name: name ?? this.name,
       phone: phone ?? this.phone,
-      favoriteBusinessIds: favoriteBusinessIds ?? this.favoriteBusinessIds,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -40,7 +36,6 @@ class Customer extends Equatable {
       'id': id,
       'name': name,
       'phone': phone,
-      'favoriteBusinessIds': favoriteBusinessIds,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };
@@ -51,19 +46,11 @@ class Customer extends Equatable {
       id: map['id'] as String,
       name: map['name'] as String,
       phone: map['phone'] as String,
-      favoriteBusinessIds: List<String>.from(map['favoriteBusinessIds']),
       createdAt: DateTime.parse(map['createdAt'] as String),
       updatedAt: DateTime.parse(map['updatedAt'] as String),
     );
   }
 
   @override
-  List<Object?> get props => [
-    id,
-    name,
-    phone,
-    favoriteBusinessIds,
-    createdAt,
-    updatedAt,
-  ];
+  List<Object?> get props => [id, name, phone, createdAt, updatedAt];
 }

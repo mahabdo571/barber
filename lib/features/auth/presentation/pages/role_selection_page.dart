@@ -21,9 +21,12 @@ class RoleSelectionPage extends StatelessWidget {
               context.go(AppConstants.routeCustomerProfile);
             }
           } else if (state is AuthError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Colors.red,
+              ),
+            );
           }
         },
         builder: (context, state) {
@@ -42,10 +45,13 @@ class RoleSelectionPage extends StatelessWidget {
                   title: 'صاحب صالون',
                   description: 'إدارة صالونك وحجوزات عملائك',
                   icon: Icons.business,
-                  onTap:
-                      () => context.read<AuthCubit>().setUserRole(
+                  onTap: () {
+                    if (state is! AuthLoading) {
+                      context.read<AuthCubit>().setUserRole(
                         AppConstants.roleBusiness,
-                      ),
+                      );
+                    }
+                  },
                   isLoading: state is AuthLoading,
                 ),
                 const SizedBox(height: 16),
@@ -53,10 +59,13 @@ class RoleSelectionPage extends StatelessWidget {
                   title: 'عميل',
                   description: 'احجز موعدك في أفضل الصالونات',
                   icon: Icons.person,
-                  onTap:
-                      () => context.read<AuthCubit>().setUserRole(
+                  onTap: () {
+                    if (state is! AuthLoading) {
+                      context.read<AuthCubit>().setUserRole(
                         AppConstants.roleCustomer,
-                      ),
+                      );
+                    }
+                  },
                   isLoading: state is AuthLoading,
                 ),
               ],
