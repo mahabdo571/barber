@@ -63,15 +63,19 @@ class Business extends Equatable {
 
   factory Business.fromMap(Map<String, dynamic> map) {
     return Business(
-      id: map['id'] as String,
-      ownerId: map['ownerId'] as String,
-      name: map['name'] as String,
-      phone: map['phone'] as String,
-      address: map['address'] as String,
-      description: map['description'] as String,
-      isActive: map['isActive'] as bool,
-      createdAt: DateTime.parse(map['createdAt'] as String),
-      updatedAt: DateTime.parse(map['updatedAt'] as String),
+      id: map['id'] as String? ?? '',
+      ownerId: map['ownerId'] as String? ?? '',
+      name: map['name'] as String? ?? '',
+      phone: map['phone'] as String? ?? '',
+      address: map['address'] as String? ?? '',
+      description: map['description'] as String? ?? '',
+      isActive: map['isActive'] as bool? ?? false,
+      createdAt:
+          DateTime.tryParse(map['createdAt'] as String? ?? '') ??
+          DateTime.now(),
+      updatedAt:
+          DateTime.tryParse(map['updatedAt'] as String? ?? '') ??
+          DateTime.now(),
     );
   }
 

@@ -58,14 +58,22 @@ class TimeSlot extends Equatable {
 
   factory TimeSlot.fromMap(Map<String, dynamic> map) {
     return TimeSlot(
-      id: map['id'] as String,
-      businessId: map['businessId'] as String,
-      startTime: DateTime.parse(map['startTime'] as String),
-      endTime: DateTime.parse(map['endTime'] as String),
-      isBooked: map['isBooked'] as bool,
+      id: map['id'] as String? ?? '',
+      businessId: map['businessId'] as String? ?? '',
+      startTime:
+          DateTime.tryParse(map['startTime'] as String? ?? '') ??
+          DateTime.now(),
+      endTime:
+          DateTime.tryParse(map['endTime'] as String? ?? '') ??
+          DateTime.now().add(const Duration(minutes: 30)),
+      isBooked: map['isBooked'] as bool? ?? false,
       bookingId: map['bookingId'] as String?,
-      createdAt: DateTime.parse(map['createdAt'] as String),
-      updatedAt: DateTime.parse(map['updatedAt'] as String),
+      createdAt:
+          DateTime.tryParse(map['createdAt'] as String? ?? '') ??
+          DateTime.now(),
+      updatedAt:
+          DateTime.tryParse(map['updatedAt'] as String? ?? '') ??
+          DateTime.now(),
     );
   }
 

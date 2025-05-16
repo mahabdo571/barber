@@ -18,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   final _otpController = TextEditingController();
   bool _codeSent = false;
   String? _verificationId;
+  String? _errorMessage;
 
   @override
   void dispose() {
@@ -32,10 +33,16 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(title: const Text('تسجيل الدخول'), centerTitle: true),
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is AuthCodeSent) {
+          if (state is AuthLoading) {
+            // Hide any previous error when loading starts
+            setState(() {
+              _errorMessage = null;
+            });
+          } else if (state is AuthCodeSent) {
             setState(() {
               _codeSent = true;
               _verificationId = state.verificationId;
+              _errorMessage = null;
             });
           } else if (state is AuthNeedsRole) {
             context.go(AppConstants.routeRoleSelection);
@@ -46,17 +53,37 @@ class _LoginPageState extends State<LoginPage> {
               context.go(AppConstants.routeCustomerHome);
             }
           } else if (state is AuthError) {
+            setState(() {
+              _errorMessage = state.message;
+            });
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
         builder: (context, state) {
+          final isLoading = state is AuthLoading;
+
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                if (_errorMessage != null) ...[
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.red.shade100,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      _errorMessage!,
+                      style: TextStyle(color: Colors.red.shade900),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                ],
                 if (!_codeSent) ...[
                   TextFormField(
                     controller: _phoneController,
@@ -65,21 +92,39 @@ class _LoginPageState extends State<LoginPage> {
                       labelText: 'رقم الهاتف',
                       hintText: '+966XXXXXXXXX',
                     ),
+                    enabled: !isLoading,
                   ),
                   const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed:
-                        state is AuthLoading
-                            ? null
-                            : () {
-                              context.read<AuthCubit>().signInWithPhone(
-                                _phoneController.text,
-                              );
-                            },
-                    child:
-                        state is AuthLoading
-                            ? const CircularProgressIndicator()
-                            : const Text('إرسال رمز التحقق'),
+                  Text(
+                    'تأكد من إدخال رقم الهاتف بالصيغة الصحيحة مع رمز البلد مثل: +966XXXXXXXXX',
+                    style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed:
+                          isLoading
+                              ? null
+                              : () {
+                                final phone = _phoneController.text.trim();
+                                if (phone.isEmpty) {
+                                  setState(() {
+                                    _errorMessage = 'يرجى إدخال رقم الهاتف';
+                                  });
+                                  return;
+                                }
+                                context.read<AuthCubit>().signInWithPhone(
+                                  phone,
+                                );
+                              },
+                      child:
+                          isLoading
+                              ? const CircularProgressIndicator()
+                              : const Text('إرسال رمز التحقق'),
+                    ),
                   ),
                 ] else ...[
                   const Text(
@@ -93,6 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                     length: 6,
                     controller: _otpController,
                     onChanged: (value) {},
+                    enabled: !isLoading,
                     onCompleted: (otp) {
                       if (_verificationId != null) {
                         context.read<AuthCubit>().verifyOTP(
@@ -102,17 +148,39 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     },
                   ),
-                  const SizedBox(height: 16),
-                  TextButton(
-                    onPressed: () {
-                      setState(() {
-                        _codeSent = false;
-                        _verificationId = null;
-                        _otpController.clear();
-                      });
-                    },
-                    child: const Text('تغيير رقم الهاتف'),
-                  ),
+                  const SizedBox(height: 24),
+                  if (isLoading)
+                    const Center(child: CircularProgressIndicator())
+                  else
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              _codeSent = false;
+                              _verificationId = null;
+                              _otpController.clear();
+                              _errorMessage = null;
+                            });
+                          },
+                          child: const Text('تغيير رقم الهاتف'),
+                        ),
+                        const SizedBox(width: 16),
+                        TextButton(
+                          onPressed: () {
+                            if (_verificationId != null &&
+                                _otpController.text.length == 6) {
+                              context.read<AuthCubit>().verifyOTP(
+                                _verificationId!,
+                                _otpController.text,
+                              );
+                            }
+                          },
+                          child: const Text('التحقق'),
+                        ),
+                      ],
+                    ),
                 ],
               ],
             ),

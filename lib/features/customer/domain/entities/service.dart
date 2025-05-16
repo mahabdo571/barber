@@ -58,14 +58,18 @@ class Service extends Equatable {
 
   factory Service.fromMap(Map<String, dynamic> map) {
     return Service(
-      id: map['id'] as String,
-      businessId: map['businessId'] as String,
-      name: map['name'] as String,
-      price: (map['price'] as num).toDouble(),
-      duration: map['duration'] as int,
-      isActive: map['isActive'] as bool,
-      createdAt: DateTime.parse(map['createdAt'] as String),
-      updatedAt: DateTime.parse(map['updatedAt'] as String),
+      id: map['id'] as String? ?? '',
+      businessId: map['businessId'] as String? ?? '',
+      name: map['name'] as String? ?? '',
+      price: map['price'] == null ? 0.0 : (map['price'] as num).toDouble(),
+      duration: map['duration'] as int? ?? 30,
+      isActive: map['isActive'] as bool? ?? true,
+      createdAt:
+          DateTime.tryParse(map['createdAt'] as String? ?? '') ??
+          DateTime.now(),
+      updatedAt:
+          DateTime.tryParse(map['updatedAt'] as String? ?? '') ??
+          DateTime.now(),
     );
   }
 

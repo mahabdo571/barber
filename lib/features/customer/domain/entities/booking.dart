@@ -73,17 +73,25 @@ class Booking extends Equatable {
 
   factory Booking.fromMap(Map<String, dynamic> map) {
     return Booking(
-      id: map['id'] as String ,
-      customerId: map['customerId'] as String,
-      businessId: map['businessId'] as String,
-      serviceId: map['serviceId'] as String,
-      timeSlotId: map['timeSlotId'] as String,
-      startTime: DateTime.parse(map['startTime'] as String),
-      endTime: DateTime.parse(map['endTime'] as String),
-      status: map['status'] as String ,
+      id: map['id'] as String? ?? '',
+      customerId: map['customerId'] as String? ?? '',
+      businessId: map['businessId'] as String? ?? '',
+      serviceId: map['serviceId'] as String? ?? '',
+      timeSlotId: map['timeSlotId'] as String? ?? '',
+      startTime:
+          DateTime.tryParse(map['startTime'] as String? ?? '') ??
+          DateTime.now(),
+      endTime:
+          DateTime.tryParse(map['endTime'] as String? ?? '') ??
+          DateTime.now().add(const Duration(minutes: 30)),
+      status: map['status'] as String? ?? 'pending',
       notes: map['notes'] as String? ?? '-',
-      createdAt: DateTime.parse(map['createdAt'] as String),
-      updatedAt: DateTime.parse(map['updatedAt'] as String),
+      createdAt:
+          DateTime.tryParse(map['createdAt'] as String? ?? '') ??
+          DateTime.now(),
+      updatedAt:
+          DateTime.tryParse(map['updatedAt'] as String? ?? '') ??
+          DateTime.now(),
     );
   }
 
