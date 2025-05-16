@@ -96,7 +96,9 @@ class CustomerRepositoryImpl implements CustomerRepository {
                   .get();
 
           if (!businessDoc.exists) return null;
-          return Business.fromMap(businessDoc.data()!..['id'] = businessDoc.id);
+          final data = Map<String, dynamic>.from(businessDoc.data()!);
+          data['id'] = businessDoc.id;
+          return Business.fromMap(data);
         }),
       );
 
@@ -137,9 +139,11 @@ class CustomerRepositoryImpl implements CustomerRepository {
             .orderBy('startTime', descending: true)
             .get();
 
-    return querySnapshot.docs
-        .map((doc) => Booking.fromMap(doc.data()..['id'] = doc.id))
-        .toList();
+    return querySnapshot.docs.map((doc) {
+      final data = Map<String, dynamic>.from(doc.data());
+      data['id'] = doc.id;
+      return Booking.fromMap(data);
+    }).toList();
   }
 
   @override
@@ -154,9 +158,11 @@ class CustomerRepositoryImpl implements CustomerRepository {
             .orderBy('startTime')
             .get();
 
-    return querySnapshot.docs
-        .map((doc) => Booking.fromMap(doc.data()..['id'] = doc.id))
-        .toList();
+    return querySnapshot.docs.map((doc) {
+      final data = Map<String, dynamic>.from(doc.data());
+      data['id'] = doc.id;
+      return Booking.fromMap(data);
+    }).toList();
   }
 
   @override
@@ -172,7 +178,19 @@ class CustomerRepositoryImpl implements CustomerRepository {
     }
 
     final bookingData = bookingDoc.data()!;
-    final timeSlotId = bookingData['timeSlotId'] as String;
+    final timeSlotId = bookingData['timeSlotId'] as String?;
+
+    if (timeSlotId == null) {
+      // If no timeSlotId, just update the booking status
+      await _firestore
+          .collection(AppConstants.colBookings)
+          .doc(bookingId)
+          .update({
+            'status': 'cancelled',
+            'updatedAt': DateTime.now().toIso8601String(),
+          });
+      return;
+    }
 
     // Use a transaction to ensure both updates happen atomically
     await _firestore.runTransaction((transaction) async {
@@ -203,9 +221,11 @@ class CustomerRepositoryImpl implements CustomerRepository {
         .orderBy('startTime', descending: true)
         .snapshots()
         .map((snapshot) {
-          return snapshot.docs
-              .map((doc) => Booking.fromMap(doc.data()..['id'] = doc.id))
-              .toList();
+          return snapshot.docs.map((doc) {
+            final data = Map<String, dynamic>.from(doc.data());
+            data['id'] = doc.id;
+            return Booking.fromMap(data);
+          }).toList();
         });
   }
 
@@ -220,9 +240,11 @@ class CustomerRepositoryImpl implements CustomerRepository {
         .orderBy('startTime')
         .snapshots()
         .map((snapshot) {
-          return snapshot.docs
-              .map((doc) => Booking.fromMap(doc.data()..['id'] = doc.id))
-              .toList();
+          return snapshot.docs.map((doc) {
+            final data = Map<String, dynamic>.from(doc.data());
+            data['id'] = doc.id;
+            return Booking.fromMap(data);
+          }).toList();
         });
   }
 
@@ -240,7 +262,9 @@ class CustomerRepositoryImpl implements CustomerRepository {
     }
 
     final doc = querySnapshot.docs.first;
-    return Business.fromMap(doc.data()..['id'] = doc.id);
+    final data = Map<String, dynamic>.from(doc.data());
+    data['id'] = doc.id;
+    return Business.fromMap(data);
   }
 
   @override
@@ -253,7 +277,9 @@ class CustomerRepositoryImpl implements CustomerRepository {
     if (!doc.exists) {
       throw Exception('Business not found');
     }
-    return Business.fromMap(doc.data()!..['id'] = doc.id);
+    final data = Map<String, dynamic>.from(doc.data()!);
+    data['id'] = doc.id;
+    return Business.fromMap(data);
   }
 
   @override
@@ -265,9 +291,11 @@ class CustomerRepositoryImpl implements CustomerRepository {
             .orderBy('createdAt', descending: true)
             .get();
 
-    return querySnapshot.docs
-        .map((doc) => Service.fromMap(doc.data()..['id'] = doc.id))
-        .toList();
+    return querySnapshot.docs.map((doc) {
+      final data = Map<String, dynamic>.from(doc.data());
+      data['id'] = doc.id;
+      return Service.fromMap(data);
+    }).toList();
   }
 
   @override
@@ -291,9 +319,11 @@ class CustomerRepositoryImpl implements CustomerRepository {
             .orderBy('startTime')
             .get();
 
-    return querySnapshot.docs
-        .map((doc) => TimeSlot.fromMap(doc.data()..['id'] = doc.id))
-        .toList();
+    return querySnapshot.docs.map((doc) {
+      final data = Map<String, dynamic>.from(doc.data());
+      data['id'] = doc.id;
+      return TimeSlot.fromMap(data);
+    }).toList();
   }
 
   @override
@@ -308,7 +338,9 @@ class CustomerRepositoryImpl implements CustomerRepository {
             .collection(AppConstants.colBookings)
             .doc(bookingId)
             .get();
-    return Booking.fromMap(doc.data()!..['id'] = doc.id);
+    final data = Map<String, dynamic>.from(doc.data()!);
+    data['id'] = doc.id;
+    return Booking.fromMap(data);
   }
 
   @override

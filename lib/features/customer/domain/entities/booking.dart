@@ -65,7 +65,7 @@ class Booking extends Equatable {
       'startTime': startTime.toIso8601String(),
       'endTime': endTime.toIso8601String(),
       'status': status,
-      'notes': notes,
+      'notes': notes ?? '-',
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };
@@ -73,15 +73,15 @@ class Booking extends Equatable {
 
   factory Booking.fromMap(Map<String, dynamic> map) {
     return Booking(
-      id: map['id'] as String,
+      id: map['id'] as String ,
       customerId: map['customerId'] as String,
       businessId: map['businessId'] as String,
       serviceId: map['serviceId'] as String,
       timeSlotId: map['timeSlotId'] as String,
       startTime: DateTime.parse(map['startTime'] as String),
       endTime: DateTime.parse(map['endTime'] as String),
-      status: map['status'] as String,
-      notes: map['notes'] as String?,
+      status: map['status'] as String ,
+      notes: map['notes'] as String? ?? '-',
       createdAt: DateTime.parse(map['createdAt'] as String),
       updatedAt: DateTime.parse(map['updatedAt'] as String),
     );
