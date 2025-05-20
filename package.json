@@ -1,0 +1,27 @@
+{
+  "name": "barber",
+  "version": "1.0.0",
+  "description": "A Flutter application for booking barber shop appointments, built with clean architecture principles and modern Flutter practices.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mahabdo571/barber.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mahabdo571/barber/issues"
+  },
+  "homepage": "https://github.com/mahabdo571/barber#readme",
+  "dependencies": {
+    "firebase-admin": "^13.4.0"
+  }
+}
