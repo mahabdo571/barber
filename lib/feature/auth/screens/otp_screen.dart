@@ -2,6 +2,7 @@ import 'package:barber/core/constants/app_colors.dart';
 import 'package:barber/feature/auth/widget/app_status_bar.dart';
 import 'package:barber/feature/auth/widget/app_title.dart';
 import 'package:barber/feature/auth/widget/otp_input_field.dart';
+import 'package:barber/feature/auth/widget/verify_code_button.dart';
 import 'package:flutter/material.dart';
 
 class OtpScreen extends StatefulWidget {
@@ -32,6 +33,8 @@ class _OtpScreenState extends State<OtpScreen> {
               AppTitle(),
               const SizedBox(height: 140),
               OtpInputField(controller: _controller),
+              SizedBox(height: 16),
+              VerifyCodeButton(controller: _controller),
             ],
           ),
         ),
