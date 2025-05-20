@@ -1,14 +1,28 @@
-import 'package:barber/futuer/splash_screen/pres/splash_screen.dart';
+import 'package:barber/core/router/app_router.dart';
+import 'package:barber/feature/auth/auth_cubit/auth_cubit.dart';
+import 'package:barber/feature/auth/data/auth_repo.dart';
+import 'package:barber/feature/auth/data/auth_repo_impl.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StartApp extends StatelessWidget {
   const StartApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SafeArea(child: Scaffold(body: SplashScreen())),
+    return MultiRepositoryProvider(
+      providers: [RepositoryProvider<AuthRepo>(create: (_) => AuthRepoImpl())],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthCubit>(
+            create: (context) => AuthCubit(context.read<AuthRepo>()),
+          ),
+        ],
+        child: MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          routerConfig: router,
+        ),
+      ),
     );
   }
 }
