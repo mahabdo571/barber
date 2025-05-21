@@ -15,7 +15,11 @@ class StartApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider<AuthCubit>(
-            create: (context) => AuthCubit(context.read<AuthRepo>()),
+            create: (context) {
+              final cubit = AuthCubit(context.read<AuthRepo>());
+              Future.microtask(() => cubit.checkAuthAndRole());
+              return cubit;
+            },
           ),
         ],
         child: MaterialApp.router(

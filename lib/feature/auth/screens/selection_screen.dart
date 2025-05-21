@@ -1,4 +1,7 @@
+import 'package:barber/core/constants/app_path.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 /// Screen to select between Merchant and Customer modes
 class SelectionScreen extends StatelessWidget {
@@ -6,12 +9,12 @@ class SelectionScreen extends StatelessWidget {
 
   void _onMerchantSelected(BuildContext context) {
     // Navigate to merchant home
-    // GoRouter.of(context).go('/merchantHome');
+    context.go(AppPath.companyHome);
   }
 
   void _onCustomerSelected(BuildContext context) {
     // Navigate to customer home
-    // GoRouter.of(context).go('/customerHome');
+    context.go(AppPath.customerHome);
   }
 
   @override

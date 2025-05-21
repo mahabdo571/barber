@@ -6,6 +6,9 @@ sealed class AuthState {}
 final class AuthInitial extends AuthState {}
 
 final class AuthLoading extends AuthState {}
+final class AuthUnauthenticated extends AuthState {}
+final class AuthCustomer  extends AuthState {}
+final class AuthCompany  extends AuthState {}
 
 final class OtpSent extends AuthState {
   final String verificationId;

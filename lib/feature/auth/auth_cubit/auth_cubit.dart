@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:barber/core/models/error_model.dart';
 import 'package:barber/feature/auth/data/auth_repo.dart';
 import 'package:barber/feature/auth/models/user_model.dart';
@@ -42,5 +44,28 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (e) {
       emit(AuthFailed(model: ErrorModel(errMessage: e.toString())));
     }
+  }
+
+  Future<void> checkAuthAndRole() async {
+
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      emit(AuthUnauthenticated());
+      return;
+    }
+    final tknRes = await user.getIdTokenResult(true);
+    final role = tknRes.claims?['role'] as String?;
+
+    if (role == 'company')
+      emit(AuthCompany());
+    else if (role == 'customer')
+      emit(AuthCustomer());
+    else
+      emit(AuthUnauthenticated());
+  }
+
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
+    emit(AuthUnauthenticated());
   }
 }
