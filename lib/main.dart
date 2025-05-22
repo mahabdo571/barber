@@ -12,7 +12,6 @@ void main() async {
     StartApp(),
   );
 }
-
 Future<void> _initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
 

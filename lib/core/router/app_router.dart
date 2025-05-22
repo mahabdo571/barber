@@ -7,8 +7,8 @@ import 'package:barber/feature/auth/models/user_model.dart';
 import 'package:barber/feature/auth/screens/login_screen.dart';
 import 'package:barber/feature/auth/screens/otp_screen.dart';
 import 'package:barber/feature/auth/screens/selection_screen.dart';
-import 'package:barber/feature/home/screens/company_home.dart';
-import 'package:barber/feature/home/screens/customer_home.dart';
+import 'package:barber/feature/company_home/screens/company_home.dart';
+import 'package:barber/feature/company_home/screens/customer_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +63,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppPath.companyHome,
       name: 'companyHome',
-      builder: (context, state) => const CompanyHome(),
+      builder: (context, state) => CompanyHome(),
     ),
   ],
 
@@ -81,7 +81,7 @@ final GoRouter router = GoRouter(
 
     // If user is not signed in, and tries to access protected route, send to login
     if (authState is AuthUnauthenticated && !publicPaths.contains(location)) {
-        return AppPath.login;
+      return AppPath.login;
     }
 
     // تم تسجيل الدخول لكن لم يتم تحديد الدور
