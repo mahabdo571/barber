@@ -41,6 +41,9 @@ class AuthCubit extends Cubit<AuthState> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('uid', user.uid);
       
+      if(await repo.getCurrentUser() == null){
+emit(isProfileComplete());
+      }
       emit(AuthSuccess(model: user));
 //TODO : فحص المستخدم اذا مسجل بياناته في الفاير ستور  واذا مسجل تخطي وفحص حالة الرول 
 

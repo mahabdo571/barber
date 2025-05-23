@@ -45,9 +45,13 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<UserModel?> getCurrentUser() {
-    // TODO: implement getCurrentUser
-    throw UnimplementedError();
+  Future<UserModel?> getCurrentUser() async {
+    var model = await _db.fetchUser(_auth.currentUser!.uid);
+    if (model != null) {
+      return model;
+    }
+
+    return null;
   }
 
   @override
