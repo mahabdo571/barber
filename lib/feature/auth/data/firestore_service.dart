@@ -1,10 +1,11 @@
+import 'package:barber/core/constants/app_collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user_model.dart';
 
 class FirestoreService {
   final _col = FirebaseFirestore.
   instance.
-  collection('users');
+  collection(AppCollection.users);
 
   Future<void> saveUser(UserModel user) {
     return _col.doc(user.uid).set(user.toMap());

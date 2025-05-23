@@ -9,10 +9,10 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<void> sendOtp(
-     String phoneNumber,
-     Function(String verificationId) onCodeSent,
-     Function(FirebaseAuthException e) onFailed,
-  )async  {
+    String phoneNumber,
+    Function(String verificationId) onCodeSent,
+    Function(FirebaseAuthException e) onFailed,
+  ) async {
     await _auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       timeout: const Duration(seconds: 60),
@@ -30,7 +30,10 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<UserModel> verifyOtp(String smsCode ,String savedVerificationId) async {
+  Future<UserModel> verifyOtp(
+    String smsCode,
+    String savedVerificationId,
+  ) async {
     final cred = PhoneAuthProvider.credential(
       verificationId: savedVerificationId,
       smsCode: smsCode,
@@ -40,22 +43,21 @@ class AuthRepoImpl implements AuthRepo {
     await _db.saveUser(model);
     return model;
   }
-  
+
   @override
   Future<UserModel?> getCurrentUser() {
     // TODO: implement getCurrentUser
     throw UnimplementedError();
   }
-  
+
   @override
   Future<bool> isSignedIn() {
     // TODO: implement isSignedIn
     throw UnimplementedError();
   }
-  
+
   @override
-  Future<void> signOut() {
-    // TODO: implement signOut
-    throw UnimplementedError();
+  Future<void> signOut() async {
+    await _auth.signOut();
   }
 }

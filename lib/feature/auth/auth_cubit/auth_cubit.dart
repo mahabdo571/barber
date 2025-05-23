@@ -40,7 +40,11 @@ class AuthCubit extends Cubit<AuthState> {
       final user = await repo.verifyOtp(code, savedVerificationId!);
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('uid', user.uid);
+      
       emit(AuthSuccess(model: user));
+//TODO : فحص المستخدم اذا مسجل بياناته في الفاير ستور  واذا مسجل تخطي وفحص حالة الرول 
+
+
     } catch (e) {
       emit(AuthFailed(model: ErrorModel(errMessage: e.toString())));
     }
@@ -65,7 +69,8 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> signOut() async {
-    await FirebaseAuth.instance.signOut();
+  await repo.signOut();
+  
     emit(AuthUnauthenticated());
   }
 }

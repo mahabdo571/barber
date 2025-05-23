@@ -1,5 +1,4 @@
 import 'package:barber/core/constants/app_path.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -9,7 +8,7 @@ class SelectionScreen extends StatelessWidget {
 
   void _onMerchantSelected(BuildContext context) {
     // Navigate to merchant home
-    context.go(AppPath.companyHome);
+    context.go(AppPath.storeOwnerForm);
   }
 
   void _onCustomerSelected(BuildContext context) {

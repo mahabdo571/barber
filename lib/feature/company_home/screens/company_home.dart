@@ -1,5 +1,5 @@
 import 'package:barber/feature/company_home/widget/add_appointment_widget.dart';
-import 'package:barber/feature/company_home/widget/customer_home.dart';
+import 'package:barber/feature/company_home/widget/settings_widget.dart';
 import 'package:barber/feature/company_home/widget/services_widget.dart';
 import 'package:barber/feature/company_home/widget/today_appointments_widget.dart';
 import 'package:flutter/material.dart';

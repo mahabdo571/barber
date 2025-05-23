@@ -3,10 +3,11 @@ import 'dart:developer';
 
 import 'package:barber/core/constants/app_path.dart';
 import 'package:barber/feature/auth/auth_cubit/auth_cubit.dart';
-import 'package:barber/feature/auth/models/user_model.dart';
 import 'package:barber/feature/auth/screens/login_screen.dart';
 import 'package:barber/feature/auth/screens/otp_screen.dart';
 import 'package:barber/feature/auth/screens/selection_screen.dart';
+import 'package:barber/feature/auth/screens/splash_screen.dart';
+import 'package:barber/feature/auth/screens/store_owner_form.dart';
 import 'package:barber/feature/company_home/screens/company_home.dart';
 import 'package:barber/feature/company_home/screens/customer_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -36,7 +37,7 @@ final GoRouter router = GoRouter(
   ),
 
   // Initial route when app launches
-  initialLocation: AppPath.login,
+  initialLocation: AppPath.initial,
 
   // Define all routes here
   routes: <GoRoute>[
@@ -44,6 +45,11 @@ final GoRouter router = GoRouter(
       path: AppPath.login,
       name: 'login',
       builder: (context, state) => const LoginScreen(),
+    ),
+    GoRoute(
+      path: AppPath.initial,
+      name: 'initial',
+      builder: (context, state) => SplashScreen(),
     ),
     GoRoute(
       path: AppPath.otp,
@@ -65,11 +71,15 @@ final GoRouter router = GoRouter(
       name: 'companyHome',
       builder: (context, state) => CompanyHome(),
     ),
+    GoRoute(
+      path: AppPath.storeOwnerForm,
+      name: 'storeOwnerForm',
+      builder: (context, state) => StoreOwnerForm(),
+    ),
   ],
 
   // Redirect logic to guard protected routes
   redirect: (BuildContext context, GoRouterState state) {
-    //  final User user = FirebaseAuth.instance.currentUser!;
     final String location = state.matchedLocation;
     final authState = context.read<AuthCubit>().state;
 
