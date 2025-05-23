@@ -14,7 +14,7 @@ class SettingsWidget extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               context.read<AuthCubit>().signOut();
-              context.go(AppPath.initial);
+              context.go(AppPath.login);
             },
             child: Text('خروج'),
           ),
