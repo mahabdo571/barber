@@ -41,18 +41,24 @@ class AuthCubit extends Cubit<AuthState> {
       final user = await repo.verifyOtp(code, savedVerificationId!);
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('uid', user.uid);
-
-      emit(AuthSuccess(model: user));
-
       if (await repo.getCurrentUser() == null) {
-        emit(isProfileComplete(user: user));
+        emit(AuthSuccess(model: user));
+      } else {
+        checkAuthAndRole(user);
       }
     } catch (e) {
       emit(AuthFailed(model: ErrorModel(errMessage: e.toString())));
     }
   }
 
-  Future<void> checkAuthAndRole() async {
+  Future<void> checkisProfileComplete() async {
+    final user =FirebaseAuth.instance.currentUser;
+    if (await repo.getCurrentUser() == null) {
+      emit(isProfileComplete(user: user));
+    }
+  }
+
+  Future<void> checkAuthAndRole(UserModel? user) async {
     if (await repo.getCurrentUser() != null) {
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) {
@@ -79,6 +85,6 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> saveData(StoreModel model) async {
     await repo.saveUserData(model);
-    checkAuthAndRole();
+    checkAuthAndRole(null);
   }
 }

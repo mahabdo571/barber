@@ -17,7 +17,7 @@ class StartApp extends StatelessWidget {
           BlocProvider<AuthCubit>(
             create: (context) {
               final cubit = AuthCubit(context.read<AuthRepo>());
-              Future.microtask(() => cubit.checkAuthAndRole());
+              Future.microtask(() => cubit.checkAuthAndRole(null));
               return cubit;
             },
           ),

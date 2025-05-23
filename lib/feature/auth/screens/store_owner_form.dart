@@ -1,8 +1,10 @@
+import 'package:barber/core/constants/app_path.dart';
 import 'package:barber/feature/auth/auth_cubit/auth_cubit.dart';
 import 'package:barber/feature/auth/models/store_model.dart';
 import 'package:barber/feature/auth/widget/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class StoreOwnerForm extends StatefulWidget {
   @override
@@ -103,13 +105,13 @@ class _StoreOwnerFormState extends State<StoreOwnerForm> {
                         uid:
                             (context.read<AuthCubit>().state
                                     as isProfileComplete)
-                                .user
-                                !.uid,
+                                .user!
+                                .uid,
                         phone:
                             (context.read<AuthCubit>().state
                                     as isProfileComplete)
-                                .user
-                                !.phone,
+                                .user!
+                                .phoneNumber!,
                         storeName: _storeNameController.text.trim(),
                         ownerName: _ownerNameController.text.trim(),
                         location: _locationController.text.trim(),
@@ -122,6 +124,7 @@ class _StoreOwnerFormState extends State<StoreOwnerForm> {
                       );
 
                       context.read<AuthCubit>().saveData(storeModel);
+                      context.go(AppPath.initial);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('تم حفظ البيانات')),
                       );

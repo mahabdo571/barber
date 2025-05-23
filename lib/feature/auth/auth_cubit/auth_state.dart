@@ -10,7 +10,7 @@ final class AuthUnauthenticated extends AuthState {}
 final class AuthCustomer  extends AuthState {}
 final class AuthCompany  extends AuthState {}
 final class isProfileComplete  extends AuthState {
-   UserModel? user;
+   User? user;
 
   isProfileComplete({ this.user});
 
