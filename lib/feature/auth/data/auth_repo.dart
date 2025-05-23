@@ -12,4 +12,5 @@ abstract class AuthRepo {
   Future<void> signOut();
   Future<bool> isSignedIn();
   Future<UserModel?> getCurrentUser();
+  Future<bool> saveUserData(UserModel model);
 }

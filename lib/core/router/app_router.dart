@@ -100,6 +100,11 @@ final GoRouter router = GoRouter(
         return AppPath.selection;
       }
     }
+    if (authState is isProfileComplete) {
+      if (location != AppPath.storeOwnerForm) {
+        return AppPath.storeOwnerForm;
+      }
+    }
 
     // المستخدم زبون
     if (authState is AuthCustomer) {
