@@ -52,7 +52,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> checkisProfileComplete() async {
-    final user =FirebaseAuth.instance.currentUser;
+    final user = FirebaseAuth.instance.currentUser;
     if (await repo.getCurrentUser() == null) {
       emit(isProfileComplete(user: user));
     }
@@ -69,7 +69,7 @@ class AuthCubit extends Cubit<AuthState> {
       final role = tknRes.claims?['role'] as String?;
 
       if (role == 'company')
-        emit(AuthCompany());
+        emit(AuthCompany(userId: user.uid));
       else if (role == 'customer')
         emit(AuthCustomer());
       else

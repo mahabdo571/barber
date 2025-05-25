@@ -8,7 +8,12 @@ final class AuthInitial extends AuthState {}
 final class AuthLoading extends AuthState {}
 final class AuthUnauthenticated extends AuthState {}
 final class AuthCustomer  extends AuthState {}
-final class AuthCompany  extends AuthState {}
+final class AuthCompany  extends AuthState {
+  final String userId ;
+
+  AuthCompany({required this.userId});
+
+}
 final class isProfileComplete  extends AuthState {
    User? user;
 
