@@ -1,7 +1,6 @@
 import 'package:barber/feature/company_mode/cubit/service_section_cubit/service_section_cubit.dart';
 import 'package:barber/feature/company_mode/models/service_model.dart';
 import 'package:barber/feature/company_mode/widget/service_section/card_swipe_background.dart';
-import 'package:barber/feature/company_mode/widget/service_section/services_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

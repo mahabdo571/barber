@@ -1,4 +1,5 @@
 import 'package:barber/feature/company_mode/cubit/service_section_cubit/service_section_cubit.dart';
+import 'package:barber/feature/company_mode/models/service_model.dart';
 import 'package:barber/feature/company_mode/widget/service_section/service_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,17 +19,27 @@ class ServicesWidget extends StatelessWidget {
           if (services.isEmpty) {
             return const Center(child: Text('لا توجد خدمات حالياً'));
           }
-          return ListView.builder(
-            itemCount: services.length,
-            itemBuilder: (context, index) {
-              final service = services[index];
-              return ServiceCard(service: service);
-            },
-          );
+          return _bluder(services);
+        } else if (state is ServiceSuccess) {
+          final services = state.services;
+          if (services.isEmpty) {
+            return const Center(child: Text('لا توجد خدمات حالياً'));
+          }
+          return _bluder(services);
         } else if (state is ServiceFailure) {
           return Center(child: Text('خطأ: ${state.error}'));
         }
         return const Center(child: Text('خطأ بجلب البيانات'));
+      },
+    );
+  }
+
+  ListView _bluder(List<ServiceModel> services) {
+    return ListView.builder(
+      itemCount: services.length,
+      itemBuilder: (context, index) {
+        final service = services[index];
+        return ServiceCard(service: service);
       },
     );
   }

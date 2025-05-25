@@ -1,6 +1,5 @@
 import 'package:barber/core/constants/app_path.dart';
 import 'package:barber/feature/auth/auth_cubit/auth_cubit.dart';
-import 'package:barber/feature/company_mode/cubit/service_section_cubit/service_section_cubit.dart';
 import 'package:barber/feature/company_mode/screens/services_page.dart';
 import 'package:barber/feature/company_mode/widget/add_appointment_widget.dart';
 import 'package:barber/feature/company_mode/widget/settings_widget.dart';
@@ -10,6 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class CompanyHome extends StatefulWidget {
+  const CompanyHome({super.key});
+
   @override
   _CompanyHomeState createState() => _CompanyHomeState();
 }
@@ -37,17 +38,12 @@ class _CompanyHomeState extends State<CompanyHome> {
           context,
         ).showSnackBar(SnackBar(content: Text('تم الضغط على إضافة موعد')));
       },
-      () async {
-        final result = await context.push(
+      ()  {
+        context.push(
           AppPath.addService,
           extra: {'userId': '5cDtwlG6F9VYGTy65ctIK2WhTq93'},
         );
-        if (result == true) {
-          // نعيد استدعاء البيانات
-          context.read<ServiceSectionCubit>().getServicesByUser(
-            '5cDtwlG6F9VYGTy65ctIK2WhTq93',
-          );
-        }
+     
       },
       null,
     ]);

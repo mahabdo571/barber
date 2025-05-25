@@ -12,7 +12,8 @@ class ServiceLoading extends ServiceSectionState {}
 
 class ServiceSuccess extends ServiceSectionState {
   final String message;
-  const ServiceSuccess({required this.message});
+  final List<ServiceModel> services;
+  const ServiceSuccess({required this.services, required this.message});
   @override
   List<Object?> get props => [message];
 }

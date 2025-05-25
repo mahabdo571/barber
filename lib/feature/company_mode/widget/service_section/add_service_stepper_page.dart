@@ -37,7 +37,7 @@ class _AddServiceStepperPageState extends State<AddServiceStepperPage> {
       );
 
       context.read<ServiceSectionCubit>().addService(service);
-   GoRouter.of(context).pop(true);
+  context.pop();
     }
   }
 

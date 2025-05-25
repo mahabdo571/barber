@@ -18,8 +18,6 @@ class _ServicesPageState extends State<ServicesPage> {
     context.read<ServiceSectionCubit>().getServicesByUser(widget.userId);
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     return ServicesWidget(userId: widget.userId);

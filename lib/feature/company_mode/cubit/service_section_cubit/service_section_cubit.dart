@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 part 'service_section_state.dart';
 
 class ServiceSectionCubit extends Cubit<ServiceSectionState> {
- final ServiceRepository _repository;
+  final ServiceRepository _repository;
 
   ServiceSectionCubit(this._repository) : super(ServiceInitial());
 
@@ -14,7 +14,13 @@ class ServiceSectionCubit extends Cubit<ServiceSectionState> {
     emit(ServiceLoading());
     try {
       await _repository.addService(service);
-      emit(ServiceSuccess(message: 'تمت إضافة الخدمة بنجاح'));
+      final services = await _repository.getServicesByUser(
+        '5cDtwlG6F9VYGTy65ctIK2WhTq93',
+      );
+
+      emit(
+        ServiceSuccess(services: services, message: 'تمت إضافة الخدمة بنجاح'),
+      );
     } catch (e) {
       emit(ServiceFailure(error: e.toString()));
     }
@@ -24,7 +30,11 @@ class ServiceSectionCubit extends Cubit<ServiceSectionState> {
     emit(ServiceLoading());
     try {
       await _repository.updateService(service);
-      emit(ServiceSuccess(message: 'تم تعديل الخدمة'));
+      final services = await _repository.getServicesByUser(
+        '5cDtwlG6F9VYGTy65ctIK2WhTq93',
+      );
+
+      emit(ServiceSuccess(services: services, message: 'تم تعديل الخدمة'));
     } catch (e) {
       emit(ServiceFailure(error: e.toString()));
     }
@@ -34,7 +44,10 @@ class ServiceSectionCubit extends Cubit<ServiceSectionState> {
     emit(ServiceLoading());
     try {
       await _repository.deleteService(serviceId);
-      emit(ServiceSuccess(message: 'تم حذف الخدمة'));
+      final services = await _repository.getServicesByUser(
+        '5cDtwlG6F9VYGTy65ctIK2WhTq93',
+      );
+      emit(ServiceSuccess(services: services, message: 'تم حذف الخدمة'));
     } catch (e) {
       emit(ServiceFailure(error: e.toString()));
     }
@@ -58,6 +71,7 @@ class ServiceSectionCubit extends Cubit<ServiceSectionState> {
     emit(ServiceLoading());
     try {
       final services = await _repository.getServicesByUser(userId);
+
       emit(ServiceListLoaded(services));
     } catch (e) {
       emit(ServiceFailure(error: e.toString()));
@@ -68,11 +82,18 @@ class ServiceSectionCubit extends Cubit<ServiceSectionState> {
     emit(ServiceLoading());
     try {
       await _repository.toggleServiceAvailability(serviceId, status);
-      emit(ServiceSuccess(message: status ? 'تم تفعيل الخدمة' : 'تم تعطيل الخدمة'));
+      final services = await _repository.getServicesByUser(
+        '5cDtwlG6F9VYGTy65ctIK2WhTq93',
+      );
+
+      emit(
+        ServiceSuccess(
+          services: services,
+          message: status ? 'تم تفعيل الخدمة' : 'تم تعطيل الخدمة',
+        ),
+      );
     } catch (e) {
       emit(ServiceFailure(error: e.toString()));
     }
   }
-
-
 }
