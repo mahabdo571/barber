@@ -18,6 +18,28 @@ class _CompanyHomeState extends State<CompanyHome> {
     ServicesWidget(),
     SettingsWidget(),
   ];
+  final List<IconData?> _fabIcons = [null, Icons.add, Icons.add, null];
+
+  final List<VoidCallback?> _fabActions = [];
+
+  @override
+  void initState() {
+    _fabActions.addAll([
+      null,
+      () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Pressed Favorite على تاب Likes')),
+        );
+      },
+      () {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Pressed Share على تاب Share')));
+      },
+      null,
+    ]);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +76,14 @@ class _CompanyHomeState extends State<CompanyHome> {
           ),
         ],
       ),
+      floatingActionButton:
+          (_fabIcons[_currentIndex] != null &&
+                  _fabActions[_currentIndex] != null)
+              ? FloatingActionButton(
+                child: Icon(_fabIcons[_currentIndex]!),
+                onPressed: _fabActions[_currentIndex],
+              )
+              : null,
     );
   }
 }
