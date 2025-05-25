@@ -8,7 +8,7 @@ import 'package:barber/feature/auth/screens/otp_screen.dart';
 import 'package:barber/feature/auth/screens/selection_screen.dart';
 import 'package:barber/feature/auth/screens/splash_screen.dart';
 import 'package:barber/feature/auth/screens/store_owner_form.dart';
-import 'package:barber/feature/company_home/screens/company_home.dart';
+import 'package:barber/feature/company_mode/screens/company_home.dart';
 import 'package:barber/feature/company_home/screens/customer_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';

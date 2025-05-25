@@ -40,7 +40,7 @@ class AuthRepoImpl implements AuthRepo {
     );
     final user = (await _auth.signInWithCredential(cred)).user!;
     final model = UserModel(uid: user.uid, phone: user.phoneNumber!);
-   // await _db.saveUser(model);
+    // await _db.saveUser(model);
     return model;
   }
 
@@ -64,14 +64,14 @@ class AuthRepoImpl implements AuthRepo {
   Future<void> signOut() async {
     await _auth.signOut();
   }
-  
+
   @override
-  Future<bool> saveUserData(UserModel model)async {
- try{
- await _db.saveUser(model);
- return true;
- }catch(e){
-  return false;
- }
+  Future<bool> saveUserData(UserModel model) async {
+    try {
+      await _db.saveUser(model);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
