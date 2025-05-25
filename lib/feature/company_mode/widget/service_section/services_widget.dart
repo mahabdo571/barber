@@ -28,7 +28,7 @@ class ServicesWidget extends StatelessWidget {
         } else if (state is ServiceFailure) {
           return Center(child: Text('خطأ: ${state.error}'));
         }
-        return const Center(child: Text('تحميل الخدمات...'));
+        return const Center(child: Text('خطأ بجلب البيانات'));
       },
     );
   }

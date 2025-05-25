@@ -1,11 +1,13 @@
+import 'package:barber/core/constants/app_path.dart';
 import 'package:barber/feature/auth/auth_cubit/auth_cubit.dart';
+import 'package:barber/feature/company_mode/cubit/service_section_cubit/service_section_cubit.dart';
 import 'package:barber/feature/company_mode/screens/services_page.dart';
 import 'package:barber/feature/company_mode/widget/add_appointment_widget.dart';
 import 'package:barber/feature/company_mode/widget/settings_widget.dart';
 import 'package:barber/feature/company_mode/widget/today_appointments_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:go_router/go_router.dart';
 
 class CompanyHome extends StatefulWidget {
   @override
@@ -16,11 +18,11 @@ class _CompanyHomeState extends State<CompanyHome> {
   int _currentIndex = 0;
 
   List<Widget> _buildPages(String userId) => [
-        TodayAppointmentsWidget(),
-        AddAppointmentWidget(),
-        ServicesPage(userId: userId),
-        SettingsWidget(),
-      ];
+    TodayAppointmentsWidget(),
+    AddAppointmentWidget(),
+    ServicesPage(userId: userId),
+    SettingsWidget(),
+  ];
 
   final List<IconData?> _fabIcons = [null, Icons.add, Icons.add, null];
 
@@ -31,14 +33,21 @@ class _CompanyHomeState extends State<CompanyHome> {
     _fabActions.addAll([
       null,
       () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('تم الضغط على إضافة موعد')),
-        );
-      },
-      () {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('تم الضغط على إضافة خدمة')));
+        ).showSnackBar(SnackBar(content: Text('تم الضغط على إضافة موعد')));
+      },
+      () async {
+        final result = await context.push(
+          AppPath.addService,
+          extra: {'userId': '5cDtwlG6F9VYGTy65ctIK2WhTq93'},
+        );
+        if (result == true) {
+          // نعيد استدعاء البيانات
+          context.read<ServiceSectionCubit>().getServicesByUser(
+            '5cDtwlG6F9VYGTy65ctIK2WhTq93',
+          );
+        }
       },
       null,
     ]);
@@ -91,15 +100,17 @@ class _CompanyHomeState extends State<CompanyHome> {
                 (_fabIcons[_currentIndex] != null &&
                         _fabActions[_currentIndex] != null)
                     ? FloatingActionButton(
-                        child: Icon(_fabIcons[_currentIndex]!),
-                        onPressed: _fabActions[_currentIndex],
-                      )
+                      child: Icon(_fabIcons[_currentIndex]!),
+                      onPressed: _fabActions[_currentIndex],
+                    )
                     : null,
           );
         } else if (state is AuthLoading) {
           return const Center(child: CircularProgressIndicator());
         } else {
-          return const Center(child: Text('غير مصرح لك بالوصول إلى هذه الصفحة'));
+          return const Center(
+            child: Text('غير مصرح لك بالوصول إلى هذه الصفحة'),
+          );
         }
       },
     );

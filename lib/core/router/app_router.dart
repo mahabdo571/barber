@@ -9,7 +9,7 @@ import 'package:barber/feature/auth/screens/selection_screen.dart';
 import 'package:barber/feature/auth/screens/splash_screen.dart';
 import 'package:barber/feature/auth/screens/store_owner_form.dart';
 import 'package:barber/feature/company_mode/screens/company_home.dart';
-import 'package:barber/feature/company_home/screens/customer_home.dart';
+import 'package:barber/feature/company_mode/widget/service_section/add_service_stepper_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +64,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppPath.customerHome,
       name: 'customerHome',
-      builder: (context, state) => const CustomerHome(),
+      builder: (context, state) => CompanyHome(),
     ),
     GoRoute(
       path: AppPath.companyHome,
@@ -76,6 +76,15 @@ final GoRouter router = GoRouter(
       name: 'storeOwnerForm',
       builder: (context, state) => StoreOwnerForm(),
     ),
+    GoRoute(
+      path: AppPath.addService,
+      name: AppPath.addService,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>;
+        final userId = extra['userId'] as String;
+        return AddServiceStepperPage(userId: userId);
+      },
+    ),
   ],
 
   // Redirect logic to guard protected routes
@@ -83,6 +92,9 @@ final GoRouter router = GoRouter(
     final String location = state.matchedLocation;
     final authState = context.read<AuthCubit>().state;
 
+    if (authState is! AuthCompany && location == AppPath.addService) {
+      return AppPath.login;
+    }
     // Pages that don't require authentication
     const publicPaths = <String>[
       AppPath.login, // login
@@ -114,7 +126,7 @@ final GoRouter router = GoRouter(
     }
 
     // المستخدم شركة
-    if (authState is AuthCompany) {
+    if (authState is AuthCompany && location != AppPath.addService) {
       if (location != AppPath.companyHome) {
         return AppPath.companyHome;
       }
