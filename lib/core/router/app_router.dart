@@ -8,6 +8,7 @@ import 'package:barber/feature/auth/screens/otp_screen.dart';
 import 'package:barber/feature/auth/screens/selection_screen.dart';
 import 'package:barber/feature/auth/screens/splash_screen.dart';
 import 'package:barber/feature/auth/screens/store_owner_form.dart';
+import 'package:barber/feature/company_mode/models/service_model.dart';
 import 'package:barber/feature/company_mode/screens/company_home.dart';
 import 'package:barber/feature/company_mode/widget/service_section/add_service_stepper_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -80,9 +81,16 @@ final GoRouter router = GoRouter(
       path: AppPath.addService,
       name: AppPath.addService,
       builder: (context, state) {
+        if(state.extra is ServiceModel){
+        final extraSM = state.extra as ServiceModel;
+
+        return AddServiceStepperPage(userId: extraSM.userId,model:extraSM ,);
+
+        }else{
         final extra = state.extra as Map<String, dynamic>;
         final userId = extra['userId'] as String;
         return AddServiceStepperPage(userId: userId);
+        }
       },
     ),
   ],

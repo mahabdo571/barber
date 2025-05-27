@@ -1,8 +1,10 @@
+import 'package:barber/core/constants/app_path.dart';
 import 'package:barber/feature/company_mode/cubit/service_section_cubit/service_section_cubit.dart';
 import 'package:barber/feature/company_mode/models/service_model.dart';
 import 'package:barber/feature/company_mode/widget/service_section/card_swipe_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class ServiceCard extends StatefulWidget {
   final ServiceModel service;
@@ -26,7 +28,7 @@ class _ServiceCardState extends State<ServiceCard> {
           context.read<ServiceSectionCubit>().deleteService(widget.service.id);
           return true;
         } else if (direction == DismissDirection.endToStart) {
-          Navigator.pushNamed(context, '/editService', arguments: widget.service);
+          context.push(AppPath.addService, extra: widget.service) ;   
           return false;
         }
         return false;

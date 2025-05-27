@@ -7,8 +7,9 @@ import 'package:uuid/uuid.dart';
 
 class AddServiceStepperPage extends StatefulWidget {
   final String userId;
-  const AddServiceStepperPage({required this.userId, super.key});
+  AddServiceStepperPage({required this.userId, this.model, super.key});
 
+  ServiceModel? model;
   @override
   State<AddServiceStepperPage> createState() => _AddServiceStepperPageState();
 }
@@ -22,22 +23,34 @@ class _AddServiceStepperPageState extends State<AddServiceStepperPage> {
   final _descriptionController = TextEditingController();
   final _priceController = TextEditingController();
   bool _isAvailable = true;
+  @override
+  void initState() {
+    _nameController.text = widget.model?.name ?? '';
+    _descriptionController.text = widget.model?.description ?? '';
+    _priceController.text = widget.model?.price.toString() ?? '';
+    _isAvailable = widget.model?.isAvailable ?? false;
+    super.initState();
+  }
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       final service = ServiceModel(
-        id: const Uuid().v4(),
+        id: widget.model == null ? const Uuid().v4() : widget.model!.id,
         name: _nameController.text.trim(),
         description: _descriptionController.text.trim(),
         price: double.parse(_priceController.text),
         isAvailable: _isAvailable,
-        createdAt: DateTime.now(),
+        createdAt:
+            widget.model == null ? DateTime.now() : widget.model!.createdAt,
         updatedAt: DateTime.now(),
         userId: widget.userId,
       );
-
-      context.read<ServiceSectionCubit>().addService(service);
-  context.pop();
+      if (widget.model == null) {
+        context.read<ServiceSectionCubit>().addService(service);
+      } else {
+        context.read<ServiceSectionCubit>().updateService(service);
+      }
+      context.pop();
     }
   }
 
@@ -102,7 +115,12 @@ class _AddServiceStepperPageState extends State<AddServiceStepperPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('إضافة خدمة جديدة')),
+      appBar: AppBar(
+        title:
+            widget.model == null
+                ? const Text('إضافة خدمة جديدة')
+                : const Text('تعديل'),
+      ),
       body: Form(
         key: _formKey,
         child: Stepper(
@@ -118,7 +136,7 @@ class _AddServiceStepperPageState extends State<AddServiceStepperPage> {
             if (_currentStep > 0) {
               setState(() => _currentStep--);
             } else {
-              Navigator.pop(context);
+              context.pop(context);
             }
           },
           steps: _buildSteps(),
