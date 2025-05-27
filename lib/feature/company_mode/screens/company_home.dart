@@ -31,22 +31,6 @@ class _CompanyHomeState extends State<CompanyHome> {
 
   @override
   void initState() {
-    _fabActions.addAll([
-      null,
-      () {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('تم الضغط على إضافة موعد')));
-      },
-      ()  {
-        context.push(
-          AppPath.addService,
-          extra: {'userId': '5cDtwlG6F9VYGTy65ctIK2WhTq93'},
-        );
-     
-      },
-      null,
-    ]);
     super.initState();
   }
 
@@ -56,7 +40,18 @@ class _CompanyHomeState extends State<CompanyHome> {
       builder: (context, state) {
         if (state is AuthCompany) {
           final String userId = state.userId;
-
+          _fabActions.addAll([
+            null,
+            () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('تم الضغط على إضافة موعد')),
+              );
+            },
+            () {
+              context.push(AppPath.addService, extra: {'userId': userId});
+            },
+            null,
+          ]);
           final List<Widget> _pages = _buildPages(userId);
 
           return Scaffold(

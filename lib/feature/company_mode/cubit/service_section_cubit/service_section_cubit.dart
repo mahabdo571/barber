@@ -1,3 +1,5 @@
+import 'package:barber/feature/auth/data/auth_repo.dart';
+import 'package:barber/feature/auth/models/user_model.dart';
 import 'package:barber/feature/company_mode/data/service_section/service_repository.dart';
 import 'package:barber/feature/company_mode/models/service_model.dart';
 import 'package:bloc/bloc.dart';
@@ -7,16 +9,17 @@ part 'service_section_state.dart';
 
 class ServiceSectionCubit extends Cubit<ServiceSectionState> {
   final ServiceRepository _repository;
+  final AuthRepo _authRepo;
 
-  ServiceSectionCubit(this._repository) : super(ServiceInitial());
+  ServiceSectionCubit(this._repository, this._authRepo)
+    : super(ServiceInitial());
 
   Future<void> addService(ServiceModel service) async {
     emit(ServiceLoading());
     try {
       await _repository.addService(service);
-      final services = await _repository.getServicesByUser(
-        '5cDtwlG6F9VYGTy65ctIK2WhTq93',
-      );
+      UserModel? user = await _authRepo.getCurrentUser();
+      final services = await _repository.getServicesByUser(user!.uid);
 
       emit(
         ServiceSuccess(services: services, message: 'تمت إضافة الخدمة بنجاح'),
@@ -30,9 +33,8 @@ class ServiceSectionCubit extends Cubit<ServiceSectionState> {
     emit(ServiceLoading());
     try {
       await _repository.updateService(service);
-      final services = await _repository.getServicesByUser(
-        '5cDtwlG6F9VYGTy65ctIK2WhTq93',
-      );
+      UserModel? user = await _authRepo.getCurrentUser();
+      final services = await _repository.getServicesByUser(user!.uid);
 
       emit(ServiceSuccess(services: services, message: 'تم تعديل الخدمة'));
     } catch (e) {
@@ -44,9 +46,9 @@ class ServiceSectionCubit extends Cubit<ServiceSectionState> {
     emit(ServiceLoading());
     try {
       await _repository.deleteService(serviceId);
-      final services = await _repository.getServicesByUser(
-        '5cDtwlG6F9VYGTy65ctIK2WhTq93',
-      );
+      UserModel? user = await _authRepo.getCurrentUser();
+
+      final services = await _repository.getServicesByUser(user!.uid);
       emit(ServiceSuccess(services: services, message: 'تم حذف الخدمة'));
     } catch (e) {
       emit(ServiceFailure(error: e.toString()));
@@ -69,6 +71,7 @@ class ServiceSectionCubit extends Cubit<ServiceSectionState> {
 
   Future<void> getServicesByUser(String userId) async {
     emit(ServiceLoading());
+    userId = userId;
     try {
       final services = await _repository.getServicesByUser(userId);
 

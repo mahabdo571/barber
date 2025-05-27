@@ -31,8 +31,11 @@ class StartApp extends StatelessWidget {
           ),
           BlocProvider<ServiceSectionCubit>(
             create: (context) {
-              final cubit = ServiceSectionCubit(context.read<ServiceRepository>());
-             // Future.microtask(() => cubit.checkAuthAndRole(null));
+              final cubit = ServiceSectionCubit(
+                context.read<ServiceRepository>(),
+                context.read<AuthRepo>(),
+              );
+              // Future.microtask(() => cubit.checkAuthAndRole(null));
               return cubit;
             },
           ),
