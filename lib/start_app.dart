@@ -40,7 +40,7 @@ class StartApp extends StatelessWidget {
               final cubit = AppointmentCubit(
                 context.read<AppointmentRepository>(),
               );
-              // Future.microtask(() => cubit.checkAuthAndRole(null));
+              cubit.loadAppointments('5cDtwlG6F9VYGTy65ctIK2WhTq93');
               return cubit;
             },
           ),

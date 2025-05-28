@@ -96,10 +96,12 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/appointments',
+      name: '/appointments',
       builder: (context, state) => const AppointmentsPage(),
     ),
     GoRoute(
-      path: '/appointments/add',
+      path: '/appointmentsAdd',
+      name: '/appointmentsAdd',
       builder: (context, state) => const AddAppointmentsPage(),
     ),
   ],
@@ -109,16 +111,13 @@ final GoRouter router = GoRouter(
     final String location = state.matchedLocation;
     final authState = context.read<AuthCubit>().state;
 
-    if (authState is! AuthCompany && location == AppPath.addService) {
-      return AppPath.login;
-    }
-    // Pages that don't require authentication
+    // الصفحات التي لا تحتاج مصادقة
     const publicPaths = <String>[
-      AppPath.login, // login
-      AppPath.otp, // otp verification
+      AppPath.login, // تسجيل الدخول
+      AppPath.otp, // التحقق من الرمز
     ];
 
-    // If user is not signed in, and tries to access protected route, send to login
+    // إذا لم يتم تسجيل الدخول ويحاول الوصول لصفحة محمية
     if (authState is AuthUnauthenticated && !publicPaths.contains(location)) {
       return AppPath.login;
     }
@@ -130,26 +129,38 @@ final GoRouter router = GoRouter(
       }
     }
 
-
-    // المستخدم زبون
+    // المستخدم زبون - توجيه للصفحة الرئيسية للزبائن
     if (authState is AuthCustomer) {
-      if (location != AppPath.customerHome) {
-        return AppPath.customerHome;
+      // السماح بالبقاء في الصفحة الرئيسية للزبائن
+      if (location == AppPath.customerHome) {
+        return null;
       }
+      // توجيه أي مسار آخر إلى الصفحة الرئيسية للزبائن
+      return AppPath.customerHome;
     }
 
     // المستخدم شركة
-    if (authState is AuthCompany && location != AppPath.addService) {
-      if (location != AppPath.companyHome) {
-        return AppPath.companyHome;
-      }
-    }
- 
+    if (authState is AuthCompany) {
+      // المسارات المسموحة للشركات
+      const companyAllowedPaths = <String>[
+        AppPath.companyHome, // الصفحة الرئيسية للشركة
+        AppPath.addService, // إضافة خدمة
+        '/appointmentsAdd', // إضافة موعد
+        // يمكنك إضافة مسارات أخرى هنا حسب الحاجة
+      ];
 
-    // لا يوجد توجيه
+      // إذا كان المسار الحالي من المسارات المسموحة للشركات
+      if (companyAllowedPaths.contains(location)) {
+        return null; // السماح بالبقاء في هذا المسار
+      }
+
+      // إذا لم يكن من المسارات المسموحة، توجيه للصفحة الرئيسية للشركة
+      return AppPath.companyHome;
+    }
+
+    // لا يوجد توجيه مطلوب
     return null;
   },
-
   // Debug logging
   debugLogDiagnostics: kDebugMode,
 );

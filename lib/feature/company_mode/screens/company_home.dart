@@ -43,7 +43,7 @@ class _CompanyHomeState extends State<CompanyHome> {
           _fabActions.addAll([
             null,
             () {
-              context.push('/appointments/add');
+              context.push('/appointmentsAdd');
             },
             () {
               context.push(AppPath.addService, extra: {'userId': userId});
