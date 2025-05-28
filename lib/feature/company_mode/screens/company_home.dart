@@ -1,7 +1,7 @@
 import 'package:barber/core/constants/app_path.dart';
 import 'package:barber/feature/auth/auth_cubit/auth_cubit.dart';
+import 'package:barber/feature/company_mode/screens/appointments_page.dart';
 import 'package:barber/feature/company_mode/screens/services_page.dart';
-import 'package:barber/feature/company_mode/widget/add_appointment_widget.dart';
 import 'package:barber/feature/company_mode/widget/settings_widget.dart';
 import 'package:barber/feature/company_mode/widget/today_appointments_widget.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,7 @@ class _CompanyHomeState extends State<CompanyHome> {
 
   List<Widget> _buildPages(String userId) => [
     TodayAppointmentsWidget(),
-    AddAppointmentWidget(),
+    AppointmentsPage(),
     ServicesPage(userId: userId),
     SettingsWidget(),
   ];
@@ -43,9 +43,7 @@ class _CompanyHomeState extends State<CompanyHome> {
           _fabActions.addAll([
             null,
             () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('تم الضغط على إضافة موعد')),
-              );
+              context.push('/appointments/add');
             },
             () {
               context.push(AppPath.addService, extra: {'userId': userId});

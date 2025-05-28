@@ -2,7 +2,10 @@ import 'package:barber/core/router/app_router.dart';
 import 'package:barber/feature/auth/auth_cubit/auth_cubit.dart';
 import 'package:barber/feature/auth/data/auth_repo.dart';
 import 'package:barber/feature/auth/data/auth_repo_impl.dart';
+import 'package:barber/feature/company_mode/cubit/appointment_cubit/appointment_cubit.dart';
 import 'package:barber/feature/company_mode/cubit/service_section_cubit/service_section_cubit.dart';
+import 'package:barber/feature/company_mode/data/appointment/appointment_repository.dart';
+import 'package:barber/feature/company_mode/data/appointment/appointment_repository_impl.dart';
 import 'package:barber/feature/company_mode/data/service_section/service_repository.dart';
 import 'package:barber/feature/company_mode/data/service_section/service_repository_impl.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +22,9 @@ class StartApp extends StatelessWidget {
         RepositoryProvider<ServiceRepository>(
           create: (_) => ServiceRepositoryImpl(),
         ),
+        RepositoryProvider<AppointmentRepository>(
+          create: (_) => AppointmentRepositoryImpl(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -26,6 +32,15 @@ class StartApp extends StatelessWidget {
             create: (context) {
               final cubit = AuthCubit(context.read<AuthRepo>());
               Future.microtask(() => cubit.checkAuthAndRole(null));
+              return cubit;
+            },
+          ),
+          BlocProvider<AppointmentCubit>(
+            create: (context) {
+              final cubit = AppointmentCubit(
+                context.read<AppointmentRepository>(),
+              );
+              // Future.microtask(() => cubit.checkAuthAndRole(null));
               return cubit;
             },
           ),
