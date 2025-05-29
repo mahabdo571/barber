@@ -1,6 +1,7 @@
 import 'package:barber/core/constants/app_path.dart';
 import 'package:barber/feature/auth/auth_cubit/auth_cubit.dart';
 import 'package:barber/feature/auth/models/store_model.dart';
+import 'package:barber/feature/auth/models/user_model.dart';
 import 'package:barber/feature/auth/widget/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -65,11 +66,8 @@ class _InfoDataState extends State<InfoData> {
                 ),
                 SizedBox(height: 24),
 
-                CustomTextField(
-                  label: 'اسمك',
-                  controller: _nameController,
-                ),
-            
+                CustomTextField(label: 'اسمك', controller: _nameController),
+
                 CustomTextField(
                   label: 'رقم إضافي',
                   controller: _otherPhoneController,
@@ -80,7 +78,7 @@ class _InfoDataState extends State<InfoData> {
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                 ),
-        
+
                 CustomTextField(
                   label: 'ملاحظات',
                   controller: _notesController,
@@ -91,7 +89,7 @@ class _InfoDataState extends State<InfoData> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      final storeModel = StoreModel(
+                      final userModel = UserModel(
                         uid:
                             (context.read<AuthCubit>().state
                                     as isProfileComplete)
@@ -102,18 +100,17 @@ class _InfoDataState extends State<InfoData> {
                                     as isProfileComplete)
                                 .user!
                                 .phoneNumber!,
-                        storeName: _nameController.text.trim(),
-                        ownerName: _ownerNameController.text.trim(),
-                        location: _locationController.text.trim(),
+                        name: _nameController.text.trim(),
+
                         otherPhone: _otherPhoneController.text.trim(),
                         email: _emailController.text.trim(),
-                        specialty: _specialtyController.text.trim(),
+
                         notes: _notesController.text.trim(),
                         createAt: DateTime.now(),
                         updatedAt: DateTime.now(),
                       );
 
-                      context.read<AuthCubit>().saveData(storeModel);
+                      context.read<AuthCubit>().saveData(userModel);
                       context.go(AppPath.initial);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('تم حفظ البيانات')),

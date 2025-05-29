@@ -4,12 +4,8 @@ class StoreModel extends UserModel {
   final String storeName;
   final String ownerName;
   final String location;
-  final String otherPhone;
-  final String email;
   final String specialty;
-  final String notes;
-  final DateTime createAt;
-  final DateTime updatedAt;
+
 
   StoreModel({
     required super.uid,
@@ -17,12 +13,13 @@ class StoreModel extends UserModel {
     required this.storeName,
     required this.ownerName,
     required this.location,
-    required this.otherPhone,
-    required this.email,
+    required super.otherPhone,
+    required super.email,
     required this.specialty,
-    required this.notes,
-    required this.createAt,
-    required this.updatedAt,
+    required super.notes,
+    required super.createAt,
+    required super.updatedAt,
+     
   });
 
   Map<String, dynamic> toMap() {

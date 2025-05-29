@@ -97,9 +97,7 @@ class _CustomerHomeState extends State<CustomerHome> {
         } else if (state is AuthLoading) {
           return const Center(child: CircularProgressIndicator());
         } else {
-          return const Center(
-            child: Text('غير مصرح لك بالوصول إلى هذه الصفحة'),
-          );
+          return const Center(child: Text('erorr'));
         }
       },
     );

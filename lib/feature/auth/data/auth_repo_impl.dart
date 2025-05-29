@@ -39,7 +39,16 @@ class AuthRepoImpl implements AuthRepo {
       smsCode: smsCode,
     );
     final user = (await _auth.signInWithCredential(cred)).user!;
-    final model = UserModel(uid: user.uid, phone: user.phoneNumber!);
+    final model = UserModel(
+      uid: user.uid,
+      phone: user.phoneNumber!,
+      email: '',
+      notes: '',
+      otherPhone: '',
+      name: '',
+      createAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
     // await _db.saveUser(model);
     return model;
   }
@@ -66,7 +75,7 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<bool> saveUserData(UserModel model) async {
+  Future<bool> saveUserData(Object? model) async {
     try {
       await _db.saveUser(model);
       return true;

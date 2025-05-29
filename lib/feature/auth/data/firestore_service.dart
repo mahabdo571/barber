@@ -3,12 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user_model.dart';
 
 class FirestoreService {
-  final _col = FirebaseFirestore.
-  instance.
-  collection(AppCollection.users);
+  final _col = FirebaseFirestore.instance.collection(AppCollection.users);
 
-  Future<void> saveUser(UserModel user) {
-    return _col.doc(user.uid).set(user.toMap());
+  Future<void> saveUser(Object? user) {
+    UserModel model = user as UserModel;
+    return _col.doc(model.uid).set(model.toMap());
   }
 
   Future<UserModel?> fetchUser(String uid) async {
