@@ -68,12 +68,15 @@ class AuthCubit extends Cubit<AuthState> {
       final tknRes = await user.getIdTokenResult(true);
       final role = tknRes.claims?['role'] as String?;
 
-      if (role == 'company')
+      if (role == 'company'){
         emit(AuthCompany(userId: user.uid));
-      else if (role == 'customer')
+      }
+      else if (role == 'customer'){
         emit(AuthCustomer());
-      else
+      }
+      else{
         emit(AuthUnauthenticated());
+    }
     }
   }
 

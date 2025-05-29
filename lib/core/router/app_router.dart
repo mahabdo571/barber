@@ -14,6 +14,7 @@ import 'package:barber/feature/company_mode/screens/company_home.dart';
 import 'package:barber/feature/company_mode/widget/appointment/add_appointments_page.dart';
 import 'package:barber/feature/company_mode/widget/service_section/add_service_stepper_page.dart';
 import 'package:barber/feature/customer_mode/screens/customer_home.dart';
+import 'package:barber/feature/customer_mode/screens/info_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -107,6 +108,13 @@ final GoRouter router = GoRouter(
         return AddAppointmentsPage(userId: userId);
       },
     ),
+    GoRoute(
+      path: AppPath.infoData,
+      name: AppPath.infoData,
+      builder: (context, state) {
+        return InfoData();
+      },
+    ),
   ],
 
   // Redirect logic to guard protected routes
@@ -118,6 +126,7 @@ final GoRouter router = GoRouter(
     const publicPaths = <String>[
       AppPath.login, // تسجيل الدخول
       AppPath.otp, // التحقق من الرمز
+      // التحقق من الرمز
     ];
 
     // إذا لم يتم تسجيل الدخول ويحاول الوصول لصفحة محمية
@@ -148,7 +157,8 @@ final GoRouter router = GoRouter(
       const companyAllowedPaths = <String>[
         AppPath.companyHome, // الصفحة الرئيسية للشركة
         AppPath.addService, // إضافة خدمة
-        AppPath.appointmentsAdd, // إضافة موعد
+        AppPath.appointmentsAdd,
+        AppPath.infoData, // إضافة موعد
         // يمكنك إضافة مسارات أخرى هنا حسب الحاجة
       ];
 

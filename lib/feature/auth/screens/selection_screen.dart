@@ -14,8 +14,9 @@ class SelectionScreen extends StatelessWidget {
   }
 
   void _onCustomerSelected(BuildContext context) {
-    // Navigate to customer home
-    context.go(AppPath.customerHome);
+    context.read<AuthCubit>().checkisProfileComplete();
+
+    context.go(AppPath.infoData);
   }
 
   @override

@@ -37,10 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
           // انتقل لشاشة إدخال الكود
           context.go(AppPath.customerHome);
         }
-        if (state is AuthCustomer) {
-          // انتقل لشاشة إدخال الكود
-          context.go(AppPath.customerHome);
-        }
+ 
         if (state is AuthCompany) {
           // انتقل لشاشة إدخال الكود
           context.go(AppPath.companyHome);

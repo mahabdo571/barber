@@ -10,5 +10,6 @@ class AppPath {
     static const String addService = '/addService';
     static const String appointmentsAdd = '/appointmentsAdd';
     static const String appointments = '/appointments';
+    static const String infoData = '/infoData';
 
 }
