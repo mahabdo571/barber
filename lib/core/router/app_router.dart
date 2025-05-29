@@ -95,15 +95,17 @@ final GoRouter router = GoRouter(
         }
       },
     ),
-    GoRoute(
-      path: AppPath.appointments,
-      name: AppPath.appointments,
-      builder: (context, state) => const AppointmentsPage(),
-    ),
+
     GoRoute(
       path: AppPath.appointmentsAdd,
       name: AppPath.appointmentsAdd,
-      builder: (context, state) => const AddAppointmentsPage(),
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>;
+
+        final userId = extra['userId'] as String;
+
+        return AddAppointmentsPage(userId: userId);
+      },
     ),
   ],
 

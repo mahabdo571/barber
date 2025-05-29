@@ -20,7 +20,7 @@ class _CompanyHomeState extends State<CompanyHome> {
 
   List<Widget> _buildPages(String userId) => [
     TodayAppointmentsWidget(),
-    AppointmentsPage(),
+    AppointmentsPage(userId: userId),
     ServicesPage(userId: userId),
     SettingsWidget(),
   ];
@@ -43,7 +43,7 @@ class _CompanyHomeState extends State<CompanyHome> {
           _fabActions.addAll([
             null,
             () {
-              context.push('/appointmentsAdd');
+              context.push(AppPath.appointmentsAdd,extra: {'userId': userId});
             },
             () {
               context.push(AppPath.addService, extra: {'userId': userId});

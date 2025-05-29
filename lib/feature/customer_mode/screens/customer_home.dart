@@ -20,7 +20,7 @@ class _CustomerHomeState extends State<CustomerHome> {
 
   List<Widget> _buildPages(String userId) => [
     TodayAppointmentsWidget(),
-    AppointmentsPage(),
+    //AppointmentsPage(),
     ServicesPage(userId: userId),
     SettingsWidget(),
   ];

@@ -3,9 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-class AppointmentsPage extends StatelessWidget {
-  const AppointmentsPage({Key? key}) : super(key: key);
+class AppointmentsPage extends StatefulWidget {
+  const AppointmentsPage({Key? key, required this.userId}) : super(key: key);
+final String userId;
 
+  @override
+  State<AppointmentsPage> createState() => _AppointmentsPageState();
+}
+
+class _AppointmentsPageState extends State<AppointmentsPage> {
+  @override
+  void initState() {
+    context.read<AppointmentCubit>().loadAppointments(widget.userId);
+    super.initState();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppointmentCubit, AppointmentState>(

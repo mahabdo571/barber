@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class AddAppointmentsPage extends StatefulWidget {
-  const AddAppointmentsPage({Key? key}) : super(key: key);
-
+  const AddAppointmentsPage({Key? key, required this.userId}) : super(key: key);
+final String userId;
   @override
   _AddAppointmentsPageState createState() => _AddAppointmentsPageState();
 }
@@ -104,7 +104,7 @@ class _AddAppointmentsPageState extends State<AddAppointmentsPage> {
                     startTime!,
                     endTime!,
                     int.parse(intervalController.text),
-                    'USER_ID', // replace with actual user ID
+                 widget.userId, // replace with actual user ID
                   );
                   Navigator.pop(context);
                 }
