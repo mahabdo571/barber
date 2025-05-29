@@ -13,6 +13,7 @@ import 'package:barber/feature/company_mode/screens/appointments_page.dart';
 import 'package:barber/feature/company_mode/screens/company_home.dart';
 import 'package:barber/feature/company_mode/widget/appointment/add_appointments_page.dart';
 import 'package:barber/feature/company_mode/widget/service_section/add_service_stepper_page.dart';
+import 'package:barber/feature/customer_mode/screens/customer_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +68,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppPath.customerHome,
       name: 'customerHome',
-      builder: (context, state) => CompanyHome(),
+      builder: (context, state) => CustomerHome(),
     ),
     GoRoute(
       path: AppPath.companyHome,
@@ -95,13 +96,13 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path:AppPath.appointments,
+      path: AppPath.appointments,
       name: AppPath.appointments,
       builder: (context, state) => const AppointmentsPage(),
     ),
     GoRoute(
-      path:  AppPath.appointmentsAdd,
-      name:  AppPath.appointmentsAdd,
+      path: AppPath.appointmentsAdd,
+      name: AppPath.appointmentsAdd,
       builder: (context, state) => const AddAppointmentsPage(),
     ),
   ],
