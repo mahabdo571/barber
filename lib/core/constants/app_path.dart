@@ -8,5 +8,7 @@ class AppPath {
     static const String companyHome = '/companyHome';
     static const String storeOwnerForm = '/storeOwnerForm';
     static const String addService = '/addService';
+    static const String appointmentsAdd = '/appointmentsAdd';
+    static const String appointments = '/appointments';
 
 }

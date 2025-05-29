@@ -95,13 +95,13 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/appointments',
-      name: '/appointments',
+      path:AppPath.appointments,
+      name: AppPath.appointments,
       builder: (context, state) => const AppointmentsPage(),
     ),
     GoRoute(
-      path: '/appointmentsAdd',
-      name: '/appointmentsAdd',
+      path:  AppPath.appointmentsAdd,
+      name:  AppPath.appointmentsAdd,
       builder: (context, state) => const AddAppointmentsPage(),
     ),
   ],
@@ -145,7 +145,7 @@ final GoRouter router = GoRouter(
       const companyAllowedPaths = <String>[
         AppPath.companyHome, // الصفحة الرئيسية للشركة
         AppPath.addService, // إضافة خدمة
-        '/appointmentsAdd', // إضافة موعد
+        AppPath.appointmentsAdd, // إضافة موعد
         // يمكنك إضافة مسارات أخرى هنا حسب الحاجة
       ];
 
