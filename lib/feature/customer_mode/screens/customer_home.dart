@@ -38,12 +38,12 @@ class _CustomerHomeState extends State<CustomerHome> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
-        if (state is AuthCompany) {
+        if (state is AuthCustomer) {
           final String userId = state.userId;
           _fabActions.addAll([
             null,
             () {
-              context.push('/appointmentsAdd');
+              context.push(AppPath.appointmentsAdd);
             },
             () {
               context.push(AppPath.addService, extra: {'userId': userId});

@@ -71,7 +71,7 @@ class AuthCubit extends Cubit<AuthState> {
       if (role == 'company') {
         emit(AuthCompany(userId: user.uid));
       } else if (role == 'customer') {
-        emit(AuthCustomer());
+        emit(AuthCustomer(userId: user.uid));
       } else {
         emit(AuthUnauthenticated());
       }

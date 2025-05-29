@@ -7,7 +7,11 @@ final class AuthInitial extends AuthState {}
 
 final class AuthLoading extends AuthState {}
 final class AuthUnauthenticated extends AuthState {}
-final class AuthCustomer  extends AuthState {}
+final class AuthCustomer  extends AuthState {
+    final String userId ;
+
+  AuthCustomer({required this.userId});
+}
 final class AuthCompany  extends AuthState {
   final String userId ;
 
