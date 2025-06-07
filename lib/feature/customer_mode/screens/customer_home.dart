@@ -1,6 +1,5 @@
 import 'package:barber/core/constants/app_path.dart';
 import 'package:barber/feature/auth/auth_cubit/auth_cubit.dart';
-import 'package:barber/feature/company_mode/screens/appointments_page.dart';
 import 'package:barber/feature/company_mode/screens/services_page.dart';
 import 'package:barber/feature/company_mode/widget/settings_widget.dart';
 import 'package:barber/feature/company_mode/widget/today_appointments_widget.dart';
@@ -19,10 +18,10 @@ class _CustomerHomeState extends State<CustomerHome> {
   int _currentIndex = 0;
 
   List<Widget> _buildPages(String userId) => [
-    TodayAppointmentsWidget(),
-    //AppointmentsPage(),
-    ServicesPage(userId: userId),
-    SettingsWidget(),
+    Text('dd'),
+    Text('dd'),
+    Text('dd'),
+    Text('dd'),
   ];
 
   final List<IconData?> _fabIcons = [null, Icons.add, Icons.add, null];
@@ -67,17 +66,14 @@ class _CustomerHomeState extends State<CustomerHome> {
               unselectedItemColor: Colors.grey,
               showUnselectedLabels: true,
               items: const [
+                BottomNavigationBarItem(icon: Icon(Icons.search), label: 'بحث'),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.today),
-                  label: 'مواعيد اليوم',
+                  icon: Icon(Icons.favorite),
+                  label: 'المفضلة',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.add_circle_outline),
-                  label: 'إضافة موعد',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.miscellaneous_services),
-                  label: 'الخدمات',
+                  icon: Icon(Icons.timelapse),
+                  label: 'مواعيدي',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.settings),
