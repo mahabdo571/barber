@@ -46,6 +46,7 @@ class AuthRepoImpl implements AuthRepo {
       notes: '',
       otherPhone: '',
       name: '',
+      role: '',
       createAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );

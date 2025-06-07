@@ -106,6 +106,7 @@ class _InfoDataState extends State<InfoData> {
 
                         notes: _notesController.text.trim(),
                         createAt: DateTime.now(),
+                        role: 'customer',
                         updatedAt: DateTime.now(),
                       );
 

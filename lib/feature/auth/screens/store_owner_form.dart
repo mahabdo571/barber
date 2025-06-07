@@ -121,6 +121,7 @@ class _StoreOwnerFormState extends State<StoreOwnerForm> {
                         notes: _notesController.text.trim(),
                         createAt: DateTime.now(),
                         updatedAt: DateTime.now(),
+                        role: 'company'
                       );
 
                       context.read<AuthCubit>().saveData(storeModel);
