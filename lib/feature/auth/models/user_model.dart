@@ -5,6 +5,7 @@ class UserModel {
   final String otherPhone;
   final String email;
   final String notes;
+  final String role;
   final DateTime createAt;
   final DateTime updatedAt;
 
@@ -17,6 +18,7 @@ class UserModel {
     required this.updatedAt,
     required this.uid,
     required this.phone,
+    required this.role,
   });
 
   Map<String, dynamic> toMap() {
@@ -27,6 +29,7 @@ class UserModel {
       'otherPhone': otherPhone,
       'email': email,
       'notes': notes,
+      'role': role,
       'createAt': createAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };
@@ -39,6 +42,7 @@ class UserModel {
       name: map['name'] ?? '',
       otherPhone: map['otherPhone'] ?? '',
       email: map['email'] ?? '',
+      role: map['role'] ?? '',
 
       notes: map['notes'] ?? '',
       createAt: DateTime.tryParse(map['createAt'] ?? '') ?? DateTime.now(),

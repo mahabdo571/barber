@@ -17,6 +17,7 @@ class StoreModel extends UserModel {
     required super.email,
     required this.specialty,
     required super.notes,
+    required super.role,
     required super.createAt,
     required super.updatedAt,
      
@@ -33,6 +34,7 @@ class StoreModel extends UserModel {
       'email': email,
       'specialty': specialty,
       'notes': notes,
+      'role': role,
       'createAt': createAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };
@@ -49,6 +51,7 @@ class StoreModel extends UserModel {
       email: map['email'] ?? '',
       specialty: map['specialty'] ?? '',
       notes: map['notes'] ?? '',
+      role: map['role'] ?? '',
       createAt: DateTime.tryParse(map['createAt'] ?? '') ?? DateTime.now(),
       updatedAt: DateTime.tryParse(map['updatedAt'] ?? '') ?? DateTime.now(),
     );
