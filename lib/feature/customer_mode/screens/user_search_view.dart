@@ -17,7 +17,7 @@ class _UserSearchViewState extends State<UserSearchView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("البحث عن مستخدم")),
+      appBar: AppBar(title: const Text("البحث")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -25,7 +25,7 @@ class _UserSearchViewState extends State<UserSearchView> {
             TextField(
               controller: _uidController,
               decoration: const InputDecoration(
-                labelText: 'رقم المستخدم',
+                labelText: 'رقم المحمول',
                 prefixIcon: Icon(LucideIcons.search),
               ),
             ),
