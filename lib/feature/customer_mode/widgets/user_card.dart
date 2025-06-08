@@ -1,10 +1,10 @@
 
-import 'package:barber/feature/users/models/user_model.dart';
+import 'package:barber/feature/users/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class UserCard extends StatelessWidget {
-  final UserModel user;
+  final StoreModel user;
 
   const UserCard({super.key, required this.user});
 
@@ -24,7 +24,7 @@ class UserCard extends StatelessWidget {
                 const Icon(LucideIcons.store),
                 const SizedBox(width: 8),
                 Text(
-                  user.name!,
+                  user.storeName,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ],
@@ -34,7 +34,7 @@ class UserCard extends StatelessWidget {
               children: [
                 const Icon(LucideIcons.mapPin),
                 const SizedBox(width: 8),
-                Text(user.otherPhone),
+                Text(user.location),
               ],
             ),
             const SizedBox(height: 8),

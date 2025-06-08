@@ -1,4 +1,5 @@
 import 'package:barber/feature/users/data/user_repository.dart';
+import 'package:barber/feature/users/models/store_model.dart';
 import 'package:barber/feature/users/models/user_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -11,10 +12,10 @@ class UserSearchCubit extends Cubit<UserSearchState> {
 
   UserSearchCubit(this.repository) : super(UserSearchInitial());
 
-  Future<void> searchUser(String phone, String role) async {
+  Future<void> searchCompany(String phone) async {
     emit(UserSearchLoading());
     try {
-      final user = await repository.getUserByPhoneAndRole(phone, role);
+      final user = await repository.getCompanyByPhone(phone);
       if (user != null) {
         emit(UserSearchSuccess(user));
       } else {

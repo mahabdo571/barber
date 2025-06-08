@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-
 class UserSearchView extends StatefulWidget {
   const UserSearchView({super.key});
 
@@ -30,14 +29,13 @@ class _UserSearchViewState extends State<UserSearchView> {
                 prefixIcon: Icon(LucideIcons.search),
               ),
             ),
-          
+
             const SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: () {
-                context.read<UserSearchCubit>().searchUser(
-                      _uidController.text.trim(),
-                      'company'
-                    );
+                context.read<UserSearchCubit>().searchCompany(
+                  _uidController.text.trim(),
+                );
               },
               icon: const Icon(LucideIcons.searchCheck),
               label: const Text("بحث"),
@@ -56,7 +54,7 @@ class _UserSearchViewState extends State<UserSearchView> {
                 }
                 return const SizedBox();
               },
-            )
+            ),
           ],
         ),
       ),

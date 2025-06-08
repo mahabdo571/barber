@@ -8,7 +8,7 @@ sealed class UserSearchState {}
 class UserSearchInitial extends UserSearchState {}
 class UserSearchLoading extends UserSearchState {}
 class UserSearchSuccess extends UserSearchState {
-  final UserModel user;
+  final StoreModel user;
   UserSearchSuccess(this.user);
 }
 class UserSearchEmpty extends UserSearchState {}
