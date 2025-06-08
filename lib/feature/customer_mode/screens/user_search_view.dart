@@ -43,7 +43,9 @@ class _UserSearchViewState extends State<UserSearchView> {
             const SizedBox(height: 16),
             BlocBuilder<UserSearchCubit, UserSearchState>(
               builder: (context, state) {
-                if (state is UserSearchLoading) {
+                if (state is UserSearchFavoriteSuccess) {
+                  return const Text("تم الاضافة للمفضلة ");
+                } else if (state is UserSearchLoading) {
                   return const CircularProgressIndicator();
                 } else if (state is UserSearchSuccess) {
                   return UserCard(user: state.user);

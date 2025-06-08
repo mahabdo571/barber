@@ -46,6 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text('جاري ارسال الكود')));
+       
         }
         if (state is AuthFailed) {
           // أعرض رسالة خطأ

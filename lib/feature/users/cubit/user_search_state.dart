@@ -12,6 +12,8 @@ class UserSearchSuccess extends UserSearchState {
   UserSearchSuccess(this.user);
 }
 class UserSearchEmpty extends UserSearchState {}
+class UserSearchFavoriteSuccess extends UserSearchState {}
+
 class UserSearchError extends UserSearchState {
   final String message;
   UserSearchError(this.message);

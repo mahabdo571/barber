@@ -1,6 +1,8 @@
 
+import 'package:barber/feature/users/cubit/user_search_cubit.dart';
 import 'package:barber/feature/users/models/store_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class UserCard extends StatelessWidget {
@@ -43,7 +45,9 @@ class UserCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                IconButton(onPressed: () {}, icon: const Icon(LucideIcons.star)),
+                IconButton(onPressed: () {
+                    context.read<UserSearchCubit>().addFavorite(user.uid);
+                }, icon: const Icon(LucideIcons.star)),
                 const SizedBox(width: 12),
                 ElevatedButton.icon(
                   onPressed: () {},

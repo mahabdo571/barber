@@ -23,4 +23,13 @@ class UserRepositoryImpl implements UserRepository {
     }
     return null;
   }
+
+    @override
+  Future<void> addFavorite(String userUid, String companyUid) async {
+    await firestore.collection(AppCollection.users)
+        .doc(userUid)
+        .update({
+      'favorites': FieldValue.arrayUnion([companyUid])
+    });
+  }
 }
