@@ -1,6 +1,6 @@
 import 'package:barber/core/constants/app_collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/user_model.dart';
+import '../../users/models/user_model.dart';
 
 class FirestoreService {
   final _col = FirebaseFirestore.instance.collection(AppCollection.users);

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../models/user_model.dart';
+import '../../users/models/user_model.dart';
 
 abstract class AuthRepo {
   Future<void> sendOtp(
@@ -13,4 +13,5 @@ abstract class AuthRepo {
   Future<bool> isSignedIn();
   Future<UserModel?> getCurrentUser();
   Future<bool> saveUserData(Object? model);
+
 }

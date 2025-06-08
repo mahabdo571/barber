@@ -1,4 +1,4 @@
-import 'package:barber/feature/auth/models/user_model.dart';
+import 'package:barber/feature/users/models/user_model.dart';
 
 class StoreModel extends UserModel {
   final String storeName;

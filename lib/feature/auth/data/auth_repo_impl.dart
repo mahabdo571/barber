@@ -1,7 +1,7 @@
 import 'package:barber/feature/auth/data/auth_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'firestore_service.dart';
-import '../models/user_model.dart';
+import '../../users/models/user_model.dart';
 
 class AuthRepoImpl implements AuthRepo {
   final FirebaseAuth _auth = FirebaseAuth.instance;

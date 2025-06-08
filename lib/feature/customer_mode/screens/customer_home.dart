@@ -3,6 +3,7 @@ import 'package:barber/feature/auth/auth_cubit/auth_cubit.dart';
 import 'package:barber/feature/company_mode/screens/services_page.dart';
 import 'package:barber/feature/company_mode/widget/settings_widget.dart';
 import 'package:barber/feature/company_mode/widget/today_appointments_widget.dart';
+import 'package:barber/feature/customer_mode/screens/user_search_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -18,7 +19,7 @@ class _CustomerHomeState extends State<CustomerHome> {
   int _currentIndex = 0;
 
   List<Widget> _buildPages(String userId) => [
-    Text('dd'),
+    UserSearchView(),
     Text('dd'),
     Text('dd'),
     Text('dd'),

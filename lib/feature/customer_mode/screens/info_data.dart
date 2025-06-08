@@ -1,6 +1,6 @@
 import 'package:barber/core/constants/app_path.dart';
 import 'package:barber/feature/auth/auth_cubit/auth_cubit.dart';
-import 'package:barber/feature/auth/models/user_model.dart';
+import 'package:barber/feature/users/models/user_model.dart';
 import 'package:barber/feature/auth/widget/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

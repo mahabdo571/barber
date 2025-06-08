@@ -8,6 +8,10 @@ import 'package:barber/feature/company_mode/data/appointment/appointment_reposit
 import 'package:barber/feature/company_mode/data/appointment/appointment_repository_impl.dart';
 import 'package:barber/feature/company_mode/data/service_section/service_repository.dart';
 import 'package:barber/feature/company_mode/data/service_section/service_repository_impl.dart';
+import 'package:barber/feature/users/cubit/user_search_cubit.dart';
+import 'package:barber/feature/users/data/user_repository.dart';
+import 'package:barber/feature/users/data/user_repository_impl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,6 +28,9 @@ class StartApp extends StatelessWidget {
         ),
         RepositoryProvider<AppointmentRepository>(
           create: (_) => AppointmentRepositoryImpl(),
+        ),
+        RepositoryProvider<UserRepository>(
+          create: (_) => UserRepositoryImpl(FirebaseFirestore.instance),
         ),
       ],
       child: MultiBlocProvider(
@@ -48,6 +55,15 @@ class StartApp extends StatelessWidget {
               final cubit = ServiceSectionCubit(
                 context.read<ServiceRepository>(),
                 context.read<AuthRepo>(),
+              );
+              return cubit;
+            },
+          ),
+          BlocProvider<UserSearchCubit>(
+            create: (context) {
+              final cubit = UserSearchCubit(
+                        context.read<UserRepository>(),
+
               );
               return cubit;
             },

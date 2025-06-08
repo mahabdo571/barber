@@ -1,5 +1,5 @@
 import 'package:barber/feature/auth/data/auth_repo.dart';
-import 'package:barber/feature/auth/models/user_model.dart';
+import 'package:barber/feature/users/models/user_model.dart';
 import 'package:barber/feature/company_mode/data/service_section/service_repository.dart';
 import 'package:barber/feature/company_mode/models/service_model.dart';
 import 'package:bloc/bloc.dart';
