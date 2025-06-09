@@ -41,7 +41,12 @@ class _UserSearchViewState extends State<UserSearchView> {
               label: const Text("بحث"),
             ),
             const SizedBox(height: 16),
-            BlocBuilder<UserSearchCubit, UserSearchState>(
+            BlocConsumer<UserSearchCubit, UserSearchState>(
+              listener: (context, state) {
+                if (state is UserSearchFavoriteSuccess) {
+                  _uidController.text = '';
+                }
+              },
               builder: (context, state) {
                 if (state is UserSearchFavoriteSuccess) {
                   return const Text("تم الاضافة للمفضلة ");
