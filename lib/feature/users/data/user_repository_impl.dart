@@ -9,6 +9,18 @@ class UserRepositoryImpl implements UserRepository {
 
   UserRepositoryImpl(this.firestore);
 
+    @override
+  Future<List<String>> getFavoriteCompanyIds(String userId) async {
+    final snapshot = await firestore.collection(AppCollection.users).doc(userId).get();
+    final data = snapshot.data();
+    return List<String>.from(data?['favorites'] ?? []);
+  }
+  @override
+  Future<StoreModel> getCompanyById(String uid) async {
+    final snapshot = await firestore.collection(AppCollection.users).doc(uid).get();
+    return StoreModel.fromMap(snapshot.data()!);
+  }
+
   @override
   Future<StoreModel?> getCompanyByPhone(String phone) async {
     final query = await firestore

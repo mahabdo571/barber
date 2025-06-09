@@ -11,6 +11,10 @@ class UserSearchSuccess extends UserSearchState {
   final StoreModel user;
   UserSearchSuccess(this.user);
 }
+class FavoritesListLoadedSuccessfully extends UserSearchState {
+  final List<StoreModel> list;
+  FavoritesListLoadedSuccessfully(this.list);
+}
 class UserSearchEmpty extends UserSearchState {}
 class UserSearchFavoriteSuccess extends UserSearchState {}
 

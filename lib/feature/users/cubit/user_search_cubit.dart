@@ -8,8 +8,7 @@ import 'package:meta/meta.dart';
 part 'user_search_state.dart';
 
 class UserSearchCubit extends Cubit<UserSearchState> {
-
-     final UserRepository repository;
+  final UserRepository repository;
 
   UserSearchCubit(this.repository) : super(UserSearchInitial());
 
@@ -27,7 +26,7 @@ class UserSearchCubit extends Cubit<UserSearchState> {
     }
   }
 
-    Future<void> addFavorite(String companyUid) async {
+  Future<void> addFavorite(String companyUid) async {
     final currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser == null) {
       emit(UserSearchError('يجب تسجيل الدخول أولاً'));
@@ -36,6 +35,21 @@ class UserSearchCubit extends Cubit<UserSearchState> {
     try {
       await repository.addFavorite(currentUser.uid, companyUid);
       emit(UserSearchFavoriteSuccess());
+    } catch (e) {
+      emit(UserSearchError(e.toString()));
+    }
+  }
+
+  Future<void> loadFavorites() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+
+    emit(UserSearchLoading());
+    try {
+      final ids = await repository.getFavoriteCompanyIds(currentUser!.uid);
+      final stores = await Future.wait(
+        ids.map((id) => repository.getCompanyById(id)),
+      );
+      emit(FavoritesListLoadedSuccessfully(stores));
     } catch (e) {
       emit(UserSearchError(e.toString()));
     }
