@@ -9,7 +9,6 @@ class FavoritesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<UserSearchCubit>().loadFavorites();
     return Scaffold(
       appBar: AppBar(title: const Text("المفضلة")),
       body: BlocBuilder<UserSearchCubit, UserSearchState>(

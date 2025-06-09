@@ -1,6 +1,5 @@
 import 'package:barber/feature/users/data/user_repository.dart';
 import 'package:barber/feature/users/models/store_model.dart';
-import 'package:barber/feature/users/models/user_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
@@ -34,7 +33,9 @@ class UserSearchCubit extends Cubit<UserSearchState> {
     }
     try {
       await repository.addFavorite(currentUser.uid, companyUid);
+      loadFavorites();
       emit(UserSearchFavoriteSuccess());
+      
     } catch (e) {
       emit(UserSearchError(e.toString()));
     }

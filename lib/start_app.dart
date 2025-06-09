@@ -61,10 +61,8 @@ class StartApp extends StatelessWidget {
           ),
           BlocProvider<UserSearchCubit>(
             create: (context) {
-              final cubit = UserSearchCubit(
-                        context.read<UserRepository>(),
-
-              );
+              final cubit = UserSearchCubit(context.read<UserRepository>())
+                ..loadFavorites();
               return cubit;
             },
           ),
